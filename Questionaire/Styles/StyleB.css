@@ -1,18 +1,4 @@
-﻿body   
-{
-    background: #b6b7bc;
-}
-
-.navbar-default {
-    background-color: #F8F8F8;
-    border-color: #E7E7E7;
-}
-
-.navbar-default .navbar-brand {
-    color: #777;
-}
-
-.footer
+﻿.footer
 {
     color: #4e5766;
     padding: 8px 0px 0px 0px;

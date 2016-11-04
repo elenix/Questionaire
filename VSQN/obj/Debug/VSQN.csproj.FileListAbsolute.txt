@@ -1,0 +1,10 @@
+c:\users\intern\documents\visual studio 2010\Projects\VSQN\VSQN\bin\VSQN.dll
+c:\users\intern\documents\visual studio 2010\Projects\VSQN\VSQN\bin\VSQN.pdb
+c:\users\intern\documents\visual studio 2010\Projects\VSQN\VSQN\obj\Debug\ResolveAssemblyReference.cache
+c:\users\intern\documents\visual studio 2010\Projects\VSQN\VSQN\obj\Debug\VSQN.dll
+c:\users\intern\documents\visual studio 2010\Projects\VSQN\VSQN\obj\Debug\VSQN.pdb
+D:\Projects\Visualsolution\Questionaire\VSQN\bin\VSQN.dll
+D:\Projects\Visualsolution\Questionaire\VSQN\bin\VSQN.pdb
+D:\Projects\Visualsolution\Questionaire\VSQN\obj\Debug\ResolveAssemblyReference.cache
+D:\Projects\Visualsolution\Questionaire\VSQN\obj\Debug\VSQN.dll
+D:\Projects\Visualsolution\Questionaire\VSQN\obj\Debug\VSQN.pdb
