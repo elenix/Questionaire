@@ -15,15 +15,10 @@
     <form runat="server">
     <div class="container">
         <div class="header">
-            <div class="title">
-                <h1>
-                    My ASP.NET Application
-                </h1>
-            </div>
             <div class="clear hideSkiplink">
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
-                        <asp:MenuItem Text="Module" ToolTip="Home">
+                        <asp:MenuItem Text="Module" ToolTip="Home" NavigateUrl="~/Default.aspx">
                             <asp:MenuItem Text="Main" ToolTip="Main" />
                             <asp:MenuItem Text="Employee" ToolTip="Employee" />
                             <asp:MenuItem Text="Payroll" ToolTip="Payroll" />
