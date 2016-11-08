@@ -6,19 +6,21 @@
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
     <div class="container-fluid">
                 <div class="jumbotron" style="margin-top: 30px;">
-                    <form>
+                    <div class="form-group">
                     <div class="form-group row">
                         <label for="example-text-input" class="col-xs-3 col-form-label">
                             Reference Code:</label>
                         <div class="col-xs-8">
-                            <input class="form-control" type="text" value="Auto-Generate(Unique)" id="example-text-input">
+                            <input class="form-control" type="text" value="Auto-Generate(Unique)" 
+                                id="ref_code"/>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="example-text-input" class="col-xs-3 col-form-label">
                             Sequence:</label>
                         <div class="col-xs-8">
-                            <input class="form-control" type="text" value="" id="Text1">
+                            <!--<input class="form-control" type="text" value="" id="seq_num" /-->
+                            <asp:TextBox ID="seq_ques" runat="server" class="form-control" type="text"  ></asp:TextBox>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -26,11 +28,13 @@
                             Question:<br />
                             <small>(Content)</small></label>
                         <div class="col-xs-8">
-                            <input class="form-control" type="text" value="Type Here.." id="Text2">
-                            <asp:Button ID="Button1" runat="server" Text="Add Question" CssClass="btn btn-info form-inline" Style="margin-top:10px; width:100%" />
+                            <asp:TextBox ID="ques" runat="server" class="form-control" type="text"  ></asp:TextBox>
+                            <asp:Button ID="btnCreate" runat="server" Text="Add Question" 
+                                CssClass="btn btn-info form-inline" Style="margin-top:10px; width:100%" 
+                                onclick="btnCreate_Click" />
                         </div>
                     </div><br />
-                    </form>
+                    </div>
                     <div class="container">
                     <table id="question-table" class="table table-bordered">
                         <thead>
