@@ -92,6 +92,12 @@ first child of the left and right table columns */
     text-align:center;
 }
 
+th
+{
+    text-align:center;
+}
+    
+
 .header
 {
     position: relative;

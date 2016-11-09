@@ -8,6 +8,7 @@
     <link href="Content/bootstrap.css" rel="stylesheet" type="text/css" />
     <script src="Scripts/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="Scripts/bootstrap.js" type="text/javascript"></script>
+	
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -19,7 +20,7 @@
             <div class="clear hideSkiplink">
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
-                        <asp:MenuItem Text="Module" ToolTip="Home" NavigateUrl="~/Default.aspx">
+                     <%--   <asp:MenuItem Text="Module" ToolTip="Home" NavigateUrl="~/Default.aspx">
                             <asp:MenuItem Text="Main" ToolTip="Main" />
                             <asp:MenuItem Text="Employee" ToolTip="Employee" />
                             <asp:MenuItem Text="Payroll" ToolTip="Payroll" />
@@ -36,7 +37,7 @@
                             <asp:MenuItem Text="Manpower" ToolTip="Manpower" />
                             <asp:MenuItem Text="Recruitment" ToolTip="Recruitment" />
                             <asp:MenuItem Text="ESOS" ToolTip="ESOS" />
-                        </asp:MenuItem>
+                        </asp:MenuItem>--%>
                         <asp:MenuItem Text="Questionaire Setup" NavigateUrl="~/QuesSetup.aspx"></asp:MenuItem>
                         <asp:MenuItem Text="Input" NavigateUrl="~/Input.aspx"></asp:MenuItem>
                     </Items>

@@ -6,11 +6,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container-fluid">
         <div class="jumbotron" style="margin-top: 30px;">
-            <form>
+            <div class="form">
             <div class="form-group row">
                 <label for="example-text-input" class="col-xs-3 col-form-label">Reference Code:</label>
                 <div class="col-xs-8">
-                    <input class="form-control" type="text" value="Auto-Generate(Unique)" id="example-text-input">
+                    <input class="form-control" type="text" value="Auto-Generate(Unique)" id="example-text-input"/>
                 </div>
             </div>
             <div class="form-group row">
@@ -49,11 +49,11 @@
                         <option>Yes</option>
                         <option>No</option>
                     </select>
-                </div>S
+                </div>
             </div>
           
             <br />
-            </form>
+            </div>
             <div class="container">
                 <table id="question-table" class="table table-bordered">
                     <thead>
