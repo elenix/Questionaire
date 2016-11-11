@@ -10,7 +10,16 @@
 namespace VSQN {
     
     
-    public partial class About {
+    public partial class QuesSetup {
+        
+        /// <summary>
+        /// ModuleMenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ModuleMenu;
         
         /// <summary>
         /// seq_ques control.
@@ -38,14 +47,5 @@ namespace VSQN {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCreate;
-        
-        /// <summary>
-        /// Result control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView Result;
     }
 }

@@ -51,7 +51,7 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Input.aspx" />
+    <Content Include="ViewQuestion.aspx" />
     <Content Include="QuesSetup.aspx" />
     <Content Include="Account\ChangePassword.aspx" />
     <Content Include="Account\ChangePasswordSuccess.aspx" />
@@ -83,12 +83,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Input.aspx.cs">
-      <DependentUpon>Input.aspx</DependentUpon>
+    <Compile Include="ViewQuestion.aspx.cs">
+      <DependentUpon>ViewQuestion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Input.aspx.designer.cs">
-      <DependentUpon>Input.aspx</DependentUpon>
+    <Compile Include="ViewQuestion.aspx.designer.cs">
+      <DependentUpon>ViewQuestion.aspx</DependentUpon>
     </Compile>
     <Compile Include="QuesSetup.aspx.cs">
       <DependentUpon>QuesSetup.aspx</DependentUpon>

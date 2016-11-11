@@ -3,12 +3,12 @@
 
 body   
 {
-    background: #b6b7bc;
+    background-color: #31B0D5;
     font-size: .80em;
     font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
     margin: 0px;
     padding: 0px;
-    color: #696969;
+    color: #31B0D5;
 }
 
 a:link, a:visited
