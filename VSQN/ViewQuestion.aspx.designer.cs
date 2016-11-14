@@ -22,15 +22,6 @@ namespace VSQN {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// UpdateViewQuestion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdateViewQuestion;
-        
-        /// <summary>
         /// ModuleMenu control.
         /// </summary>
         /// <remarks>
@@ -38,6 +29,15 @@ namespace VSQN {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ModuleMenu;
+        
+        /// <summary>
+        /// UpdateViewQuestion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdateViewQuestion;
         
         /// <summary>
         /// Result control.

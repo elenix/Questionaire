@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Input" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+﻿<%@ Page Title="View Question" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="ViewQuestion.aspx.cs" Inherits="VSQN.ViewQuestion" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -6,8 +6,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
-    <asp:UpdatePanel ID="UpdateViewQuestion" runat="server">
-        <ContentTemplate>
+    <%--<asp:UpdatePanel ID="UpdateViewQuestion" runat="server">
+        <ContentTemplate>--%>
             <div class="container-fluid">
                 <div class="jumbotron" style="margin-top: 30px;">
                     <div class="form">
@@ -22,10 +22,13 @@
                         </div>
                         <br />
                         <div class="form-group row">
+
+                        <asp:UpdatePanel ID="UpdateViewQuestion" runat="server">
+                        <ContentTemplate>
                             <%--put table here--%>
                             <asp:GridView ID="Result" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False"
-                                PageSize="10" OnRowCancelingEdit="Result_RowCancelingEdit" OnRowEditing="Result_RowEditing"
-                                OnRowUpdating="Result_RowUpdating" OnRowDeleting="Result_RowDeleting" CssClass="table table-striped table-bordered table-hover">
+                                PageSize="10" OnRowCancelingEdit="Result_RowCancelingEdit" OnRowEditing="Result_RowEditing" OnPageIndexChanging="Result_PageIndexChanging"
+                                OnRowUpdating="Result_RowUpdating" OnRowDeleting="Result_RowDeleting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
                                 <Columns>
                                     <asp:TemplateField HeaderText="Reference Code">
                                         <ItemTemplate>
@@ -65,13 +68,20 @@
                                     </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
+                        
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="ModuleMenu" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+
                         </div>
                     </div>
                 </div>
             </div>
-        </ContentTemplate>
+        <%--</ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="ModuleMenu" />
         </Triggers>
-    </asp:UpdatePanel>
+    </asp:UpdatePanel>--%>
 </asp:Content>

@@ -12,11 +12,14 @@ namespace VSQN
 {
     public partial class QuesSetup : System.Web.UI.Page
     {
+
         string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
         SqlConnection con;
         SqlDataAdapter adapt;
         DataTable dt;
         SqlCommand command;
+
+        public enum MessageType { Success, Error, Info, Warning };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,24 +39,34 @@ namespace VSQN
             }
         }
 
+        protected void ShowMessage(string Message, MessageType type)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
+
+        }
 
         protected void clearAll()
         {
             seq_ques.Text = string.Empty;
             ques.Text = string.Empty;
+            ModuleMenu.SelectedIndex = 0;
         }
 
         protected void btnCreate_Click(object sender, EventArgs e)
         {
             //checking if else
-            if (String.IsNullOrWhiteSpace(seq_ques.Text))
+            if (ModuleMenu.SelectedIndex == 0)
             {
-                Response.Write("<script>alert('Please Enter the Sequence Number')</script>");
+                ShowMessage("Please Choose Your Module.", MessageType.Error);
+            }
+            else if (String.IsNullOrWhiteSpace(seq_ques.Text))
+            {
+                ShowMessage("Please Enter Your Sequence number.", MessageType.Error);
             }
 
             else if (String.IsNullOrWhiteSpace(ques.Text))
             {
-                Response.Write("<script>alert('Please Enter the Question before proceed')</script>");
+                ShowMessage("Please Enter Your Question.", MessageType.Error);
             }
 
             else
@@ -69,12 +82,14 @@ namespace VSQN
                 command.Parameters.AddWithValue("@Module", ModuleID);
                 int m = command.ExecuteNonQuery();
 
-                Response.Write("<script>alert('Data Inserted !!')</script>");
+                ShowMessage("The Question have been saved!", MessageType.Success);
+                //Response.Write("<script>alert('Data Inserted !!')</script>");
 
                 con.Close();
+                clearAll();
             }
 
-            clearAll();
+            
         }
     }
 

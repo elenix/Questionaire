@@ -12,11 +12,14 @@ namespace VSQN
 {
     public partial class ViewQuestion : System.Web.UI.Page
     {
+
         string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
         SqlConnection con;
         SqlDataAdapter adapt;
         SqlCommand command;
         DataTable dt;
+
+        public enum MessageType { Success, Error, Info, Warning };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -48,6 +51,12 @@ namespace VSQN
             ShowData();
         }
 
+        protected void Result_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            Result.PageIndex = e.NewPageIndex;
+            ShowData();
+        }
+
         //ShowData method for Displaying Data in Gridview  
         protected void ShowData()
         {
@@ -66,6 +75,12 @@ namespace VSQN
 
             con.Close();
         }
+
+        protected void ShowMessage(string Message, MessageType type)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
+        }
+
 
         protected void Result_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
         {
@@ -88,6 +103,7 @@ namespace VSQN
             con.Close();
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
             Result.EditIndex = -1;
+            ShowMessage("Your Question have been updated.", MessageType.Info);
             //Call ShowData method for displaying updated data  
             ShowData();
         }
@@ -96,6 +112,7 @@ namespace VSQN
         {
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
             Result.EditIndex = -1;
+            ShowMessage("Your update question have been canceled.", MessageType.Warning);
             ShowData();
         }
 
@@ -116,6 +133,7 @@ namespace VSQN
                 command.ExecuteNonQuery();
                 
                 con.Close();
+                ShowMessage("Your Question have been deleted.", MessageType.Error);
                 ShowData();
             }
         }

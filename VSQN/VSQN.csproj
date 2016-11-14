@@ -51,6 +51,8 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\Alert.js" />
+    <Content Include="Styles\Alert.css" />
     <Content Include="ViewQuestion.aspx" />
     <Content Include="QuesSetup.aspx" />
     <Content Include="Account\ChangePassword.aspx" />

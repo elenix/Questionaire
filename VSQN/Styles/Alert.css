@@ -1,0 +1,37 @@
+﻿.messagealert
+{
+            width: 89%;
+            position: fixed;
+            margin-top: 10px;
+            z-index: 100000;
+            padding: 0;
+            font-size: 15px;
+           
+}
+
+.pgr td table tbody tr td span
+{
+    margin: 5px;
+    padding:5px;
+    text-decoration:none;
+    display: block;
+    background: White;
+    color: Black;
+}
+
+.pgr td table tbody tr td a
+{
+    border:5px;
+    padding:5px;
+    text-decoration:none;
+    display: block;
+}
+
+.pgr td table tbody tr td a:hover
+{
+    background:Black;
+    color:White;
+}
+
+
+
