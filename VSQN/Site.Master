@@ -21,9 +21,11 @@
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false"
                     IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
-                        <asp:MenuItem Text="Question Setup" NavigateUrl="~/QuesSetup.aspx"></asp:MenuItem>
-                        <asp:MenuItem Text="Question Bank" NavigateUrl="~/ViewQuestion.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="QUESTION SETUP" NavigateUrl="~/QuesSetup.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="QUESTION BANK" NavigateUrl="~/ViewQuestion.aspx"></asp:MenuItem>
                     </Items>
+
+                    <StaticSelectedStyle backcolor='LightBlue' borderstyle="Solid" bordercolor="Black" borderwidth="1" />
                 </asp:Menu>
             </div>
         </div>

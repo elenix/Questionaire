@@ -12,9 +12,9 @@
                 <div class="jumbotron" style="margin-top: 30px;">
                     <div class="form">
                         <div class="form-group row">
-                            <label for="Module" class="col-xs-2 col-form-label" style="font-size: x-large">
+                            <label for="Module" class="col-xs-2 col-form-label" style="font-size:x-large">
                                 Module:</label>
-                            <div class="col-xs-3">
+                            <div class="col-xs-4">
                                 <asp:DropDownList ID="ModuleMenu" runat="server" AutoPostBack="true" CssClass="form-control"
                                     ControlStyle-Width="100%" OnSelectedIndexChanged="ModelMenu_SelectedIndexChanged">
                                 </asp:DropDownList>

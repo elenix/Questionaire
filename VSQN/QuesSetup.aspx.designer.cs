@@ -22,15 +22,6 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.DropDownList ModuleMenu;
         
         /// <summary>
-        /// seq_ques control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox seq_ques;
-        
-        /// <summary>
         /// ques control.
         /// </summary>
         /// <remarks>
@@ -40,12 +31,12 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.TextBox ques;
         
         /// <summary>
-        /// btnCreate control.
+        /// seq_ques control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCreate;
+        protected global::System.Web.UI.WebControls.TextBox seq_ques;
     }
 }
