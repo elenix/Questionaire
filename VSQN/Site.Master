@@ -23,6 +23,9 @@
                     <Items>
                         <asp:MenuItem Text="QUESTION SETUP" NavigateUrl="~/QuesSetup.aspx"></asp:MenuItem>
                         <asp:MenuItem Text="QUESTION BANK" NavigateUrl="~/ViewQuestion.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="USER SETUP" NavigateUrl="~/Default.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="USER LOGIN" NavigateUrl="~/Default.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="MAIN" NavigateUrl="~/Default.aspx"></asp:MenuItem>
                     </Items>
 
                     <StaticSelectedStyle backcolor='LightBlue' borderstyle="Solid" bordercolor="Black" borderwidth="1" />

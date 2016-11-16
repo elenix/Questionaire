@@ -148,7 +148,7 @@ th
 
 div.hideSkiplink
 {
-    background-color:#0066FF;
+    background-color:#3B5998;
     width:100%;
 }
 
@@ -161,7 +161,7 @@ div.menu ul
 {
     list-style: none;
     margin: 0px;
-    padding: 1px;
+    padding: 0px;
     width: auto;
 }
 
@@ -172,6 +172,7 @@ div.menu ul li a
     border: 2px #ffffff solid;
     font-family: Lemon/Milk;
     font-weight: bolder;
+    margin-right:3px;
     color: #ffffff;
     display: block;
     line-height: 1.35em;

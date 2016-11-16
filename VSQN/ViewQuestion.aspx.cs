@@ -12,7 +12,6 @@ namespace VSQN
 {
     public partial class ViewQuestion : System.Web.UI.Page
     {
-
         string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
         SqlConnection con;
         SqlDataAdapter adapt;

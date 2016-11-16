@@ -12,7 +12,6 @@ namespace VSQN
 {
     public partial class QuesSetup : System.Web.UI.Page
     {
-
         string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
         SqlConnection con;
         SqlDataAdapter adapt;
@@ -52,6 +51,10 @@ namespace VSQN
             ModuleMenu.SelectedIndex = 0;
         }
 
+        protected void TypeOfInput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TypeOfInputView.ActiveViewIndex = Convert.ToInt32(TypeOfInput.SelectedValue);
+        }
         protected void btnCreate_Click(object sender, EventArgs e)
         {
             //checking if else
