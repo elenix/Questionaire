@@ -17,7 +17,7 @@
                             </asp:DropDownList>
                         </div>
                         <label for="example-text-input" class="col-md-3 col-form-label" style="margin-left: 0px;
-                            padding-right: 0px; width:200px">
+                            padding-right: 0px; width: 200px">
                             REFERENCE CODE :</label>
                         <div class="col-md-3">
                             <input class="form-control" type="text" value="AUTO-GENERATE(UNIQUE)" id="example-text-input"
@@ -129,6 +129,30 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-md-2 col-form-label">
+                                ANSWER:</label>
+                            <div class="col-md-8">
+                                <asp:Repeater ID="RepeaterRBBox" runat="server" OnItemCommand="RepeaterRBBox_ItemCommand">
+                                    <ItemTemplate>
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1"
+                                                        value="option1">
+                                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("RB_BOX").ToString() %>' runat="server"
+                                                        CssClass="form-control textbox-anim"></asp:TextBox></label>
+                                                <asp:Button ID="btn_Remove" runat="server" Text="REMOVE" CommandName="Remove" CssClass="btn btn-danger"
+                                                    OnClientClick="return confirm('Do you want to delete this row?');" />
+                                            </div>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                                <asp:Button ID="btn_Add" runat="server" Text="ADD" CommandName="Add" CssClass="btn btn-success"
+                                OnClick="btnAdd_Click" />
+                        </div>
+                            </div>
+                            
+                        <div class="form-group row">
                             <label for="CBDefault" class="col-md-2 col-form-label" style="padding-right: 0px">
                                 DEFAULT VALUE:<br />
                             </label>
@@ -136,7 +160,7 @@
                                 <asp:TextBox ID="TextBox1" runat="server" class="form-control" type="text"></asp:TextBox>
                             </div>
                         </div>
-                        </asp:View>
+                    </asp:View>
                     <%--FOR TEXT BOX--%>
                     <asp:View ID="ViewCB" runat="server">
                         <label for="example-text-input" class="col-md-2 col-form-label">
@@ -152,7 +176,7 @@
                 </div>
                 <div class="col-md-3">
                     <asp:Button ID="btnCreate" runat="server" Text="ADD QUESTION" CssClass="btn btn-info form-inline"
-                        Style="margin-top: 10px; width: 180px; height: 50px; font-size:large;" OnClick="btnCreate_Click" />
+                        Style="margin-top: 10px; width: 180px; height: 50px; font-size: large;" OnClick="btnCreate_Click" />
                 </div>
             </div>
         </div>

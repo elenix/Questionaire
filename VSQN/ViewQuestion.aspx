@@ -59,7 +59,7 @@
                                     <asp:TemplateField HeaderText="Options">
                                         <ItemTemplate>
                                             <asp:Button ID="btn_Edit" runat="server" Text="EDIT" CommandName="Edit" CssClass="btn btn-success" />
-                                            <asp:Button ID="btn_Delete" runat="server" Text="DELETE" CommandName="Delete" CssClass="btn btn-danger" />
+                                            <asp:Button ID="btn_Delete" runat="server" Text="DELETE" CommandName="Delete" CssClass="btn btn-danger" OnClientClick="return confirm('Do you want to delete this row?');" />
                                         </ItemTemplate>
                                         <EditItemTemplate>
                                             <asp:Button ID="btn_Update" runat="server" Text="UPDATE" CommandName="Update" CssClass="btn btn-info" />

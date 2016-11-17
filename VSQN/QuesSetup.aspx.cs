@@ -13,29 +13,49 @@ namespace VSQN
     public partial class QuesSetup : System.Web.UI.Page
     {
         string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        DataTable myTable = new DataTable();
         SqlConnection con;
         SqlDataAdapter adapt;
         DataTable dt;
         SqlCommand command;
 
+
         public enum MessageType { Success, Error, Info, Warning };
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            myTable.Columns.Add("RB_BOX");
+
             if (!IsPostBack)
             {
-                con = new SqlConnection(cs);
-                string com = "Select * from Module";
-                adapt = new SqlDataAdapter(com, con);
-                dt = new DataTable();
-                adapt.Fill(dt);
-                ModuleMenu.DataSource = dt;
-                ModuleMenu.DataBind();
-                ModuleMenu.DataTextField = "Module";
-                ModuleMenu.DataValueField = "PID";
-                ModuleMenu.DataBind();
-                ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
+                loadModalMenuDropdown();
+
+                if (!this.IsPostBack)
+                {
+                    for (int i = 0; i < 1; i++) // LOAD THREE TEXTBOX FOR EXAMPLE
+                    {
+                        myTable.Rows.Add(myTable.NewRow());
+                    }
+
+                    Bind();
+                }
+
             }
+        }
+
+        protected void loadModalMenuDropdown()
+        {
+            con = new SqlConnection(cs);
+            string com = "Select * from Module";
+            adapt = new SqlDataAdapter(com, con);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            ModuleMenu.DataSource = dt;
+            ModuleMenu.DataBind();
+            ModuleMenu.DataTextField = "Module";
+            ModuleMenu.DataValueField = "PID";
+            ModuleMenu.DataBind();
+            ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
         }
 
         protected void ShowMessage(string Message, MessageType type)
@@ -51,10 +71,43 @@ namespace VSQN
             ModuleMenu.SelectedIndex = 0;
         }
 
+        protected void Bind()
+        {
+            RepeaterRBBox.DataSource = myTable;
+            RepeaterRBBox.DataBind();
+        }
+
+        protected void PopulateDataTable()
+        {
+            foreach (RepeaterItem item in RepeaterRBBox.Items)
+            {
+                TextBox txtDescription = (TextBox)item.FindControl("txtDescription");
+                DataRow row = myTable.NewRow();
+                row["RB_BOX"] = txtDescription.Text;
+                myTable.Rows.Add(row);
+            }
+        }
+
         protected void TypeOfInput_SelectedIndexChanged(object sender, EventArgs e)
         {
             TypeOfInputView.ActiveViewIndex = Convert.ToInt32(TypeOfInput.SelectedValue);
         }
+
+        protected void RepeaterRBBox_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            PopulateDataTable();
+            myTable.Rows[e.Item.ItemIndex].Delete();
+            Bind();
+        }
+
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            PopulateDataTable();
+            myTable.Rows.Add(myTable.NewRow());
+
+            Bind();
+        }
+
         protected void btnCreate_Click(object sender, EventArgs e)
         {
             //checking if else

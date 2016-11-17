@@ -51,6 +51,8 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icon\add.png" />
+    <Content Include="icon\remove.png" />
     <Content Include="Scripts\Alert.js" />
     <Content Include="Styles\Alert.css" />
     <Content Include="ViewQuestion.aspx" />

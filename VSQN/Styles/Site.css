@@ -299,3 +299,28 @@ legend
 {
     font-family:Lemon/Milk;
 }
+
+.btn:hover
+{
+    width:96px;
+    height:auto;
+
+    -webkit-transition  : width 0.2s linear, margin-top 0.2s linear;
+    transition  : width 0.2s linear, margin-top 0.2s linear;
+}
+
+.textbox-anim
+{
+    width:300px !important;
+    
+    -webkit-transition  : width 0.2s linear, margin-top 0.2s linear !important;
+    transition  : width 0.2s linear, margin-top 0.2s linear !important;
+}
+
+.textbox-anim:focus
+{
+    width:360px !important;
+    
+    -webkit-transition  : width 0.2s linear, margin-top 0.2s linear !important;
+    transition  : width 0.2s linear, margin-top 0.2s linear !important;
+}
