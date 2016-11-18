@@ -130,13 +130,13 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.Repeater RepeaterRBBox;
         
         /// <summary>
-        /// btn_Add control.
+        /// btnAddRBClick control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_Add;
+        protected global::System.Web.UI.WebControls.Button btnAddRBClick;
         
         /// <summary>
         /// TextBox1 control.
@@ -157,13 +157,31 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.View ViewCB;
         
         /// <summary>
-        /// ewewe control.
+        /// RepeaterCBBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ewewe;
+        protected global::System.Web.UI.WebControls.Repeater RepeaterCBBox;
+        
+        /// <summary>
+        /// btnAddCBClick control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddCBClick;
+        
+        /// <summary>
+        /// TextBox2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox2;
         
         /// <summary>
         /// btnCreate control.

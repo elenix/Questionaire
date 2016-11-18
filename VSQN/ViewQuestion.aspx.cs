@@ -62,7 +62,7 @@ namespace VSQN
             dt = new DataTable();
             con = new SqlConnection(cs);
             con.Open();
-            string pstringQuery = "Select u_id, u_seq,u_ques,u_date from Question where FID = @ModuleID;";
+            string pstringQuery = "Select u_id, u_seq, u_ques, u_date from Question where FID = @ModuleID;";
             command = new SqlCommand(pstringQuery, con);
             command.Parameters.AddWithValue("@ModuleID", ModuleMenu.SelectedValue);
             command.ExecuteNonQuery();
@@ -79,7 +79,6 @@ namespace VSQN
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
         }
-
 
         protected void Result_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
         {
