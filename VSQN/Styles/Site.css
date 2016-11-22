@@ -195,12 +195,12 @@ div.menu ul li a:active
     text-decoration: none;
 }
 
-.menu-active
+/*.menu-active
 {
     background-color: #ffffff;
     color: #0d0d0d;
     text-decoration: none;
-}
+}*/
 
 /* FORM ELEMENTS   
 ----------------------------------------------------------*/

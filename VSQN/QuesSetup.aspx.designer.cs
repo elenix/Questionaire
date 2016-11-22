@@ -31,15 +31,6 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.TextBox ques;
         
         /// <summary>
-        /// seq_ques control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox seq_ques;
-        
-        /// <summary>
         /// TypeOfInput control.
         /// </summary>
         /// <remarks>
@@ -56,6 +47,15 @@ namespace VSQN {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.MultiView TypeOfInputView;
+        
+        /// <summary>
+        /// ViewEmpty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View ViewEmpty;
         
         /// <summary>
         /// ViewTB control.
@@ -76,15 +76,6 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.TextBox TBAnswer;
         
         /// <summary>
-        /// TBDefault control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBDefault;
-        
-        /// <summary>
         /// ViewMM control.
         /// </summary>
         /// <remarks>
@@ -94,22 +85,13 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.View ViewMM;
         
         /// <summary>
-        /// CBAnswer control.
+        /// MMAnswer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox CBAnswer;
-        
-        /// <summary>
-        /// CBDefault control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox CBDefault;
+        protected global::System.Web.UI.WebControls.TextBox MMAnswer;
         
         /// <summary>
         /// ViewRB control.
@@ -139,15 +121,6 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.Button btnAddRBClick;
         
         /// <summary>
-        /// TextBox1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
-        
-        /// <summary>
         /// ViewCB control.
         /// </summary>
         /// <remarks>
@@ -173,15 +146,6 @@ namespace VSQN {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddCBClick;
-        
-        /// <summary>
-        /// TextBox2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
         
         /// <summary>
         /// btnCreate control.

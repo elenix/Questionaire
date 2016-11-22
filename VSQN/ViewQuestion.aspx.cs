@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Drawing;
 
 namespace VSQN
 {
@@ -39,8 +40,8 @@ namespace VSQN
             adapt.Fill(dt);
             ModuleMenu.DataSource = dt;
             ModuleMenu.DataBind();
-            ModuleMenu.DataTextField = "Module";
-            ModuleMenu.DataValueField = "PID";
+            ModuleMenu.DataTextField = "Name";
+            ModuleMenu.DataValueField = "PK";
             ModuleMenu.DataBind();
             ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
         }
@@ -62,7 +63,7 @@ namespace VSQN
             dt = new DataTable();
             con = new SqlConnection(cs);
             con.Open();
-            string pstringQuery = "Select u_id, u_seq, u_ques, u_date from Question where FID = @ModuleID;";
+            string pstringQuery = "Select Ref_Code, Ques, Date_Time from QuestionInfo where Module_FK = @ModuleID;";
             command = new SqlCommand(pstringQuery, con);
             command.Parameters.AddWithValue("@ModuleID", ModuleMenu.SelectedValue);
             command.ExecuteNonQuery();
@@ -90,28 +91,27 @@ namespace VSQN
         protected void Result_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
         {
             //Finding the controls from Gridview for the row which is going to update  
-            Label ref_num = Result.Rows[e.RowIndex].FindControl("lblReferenceCode") as Label;
-            TextBox seq_num = Result.Rows[e.RowIndex].FindControl("txtSequence") as TextBox;
-            TextBox ques_num = Result.Rows[e.RowIndex].FindControl("txtQuestion") as TextBox;
+            Label id = Result.Rows[e.RowIndex].FindControl("lblReferenceCode") as Label;
+            TextBox ques = Result.Rows[e.RowIndex].FindControl("txtQuestion") as TextBox;
             con = new SqlConnection(cs);
             con.Open();
             //updating the record  
-            SqlCommand cmd = new SqlCommand("Update Question set u_seq='" + seq_num.Text + "',u_ques='" + ques_num.Text + "' where u_id=" + Convert.ToInt32(ref_num.Text), con);
+            SqlCommand cmd = new SqlCommand("Update QuestionInfo set Ques='"+ques.Text+"' where Ref_Code="+Convert.ToInt32(id.Text),con);
             cmd.ExecuteNonQuery();
             con.Close();
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
             Result.EditIndex = -1;
-            ShowMessage("Your Question have been updated.", MessageType.Info);
             //Call ShowData method for displaying updated data  
             ShowData();
+            ShowMessage("Your question have been updated.", MessageType.Info);
         }
 
         protected void Result_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
         {
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
             Result.EditIndex = -1;
-            ShowMessage("Your update question have been canceled.", MessageType.Warning);
             ShowData();
+            ShowMessage("Your question update have been canceled.", MessageType.Warning);
         }
 
         protected void Result_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -127,12 +127,12 @@ namespace VSQN
                 con = new SqlConnection(cs);
 
                 con.Open();
-                command = new SqlCommand("Delete from Question Where u_id='" + ID + "'", con);
+                command = new SqlCommand("Delete from QuestionInfo Where Ref_Code='" + ID + "'", con);
                 command.ExecuteNonQuery();
                 
                 con.Close();
-                ShowMessage("Your Question have been deleted.", MessageType.Error);
                 ShowData();
+                ShowMessage("Your Question have been deleted.", MessageType.Error);
             }
         }
     }

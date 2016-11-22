@@ -32,8 +32,8 @@ namespace VSQN
             {
                 loadModalMenuDropdown();
 
-                if (!this.IsPostBack)
-                {
+                //if (!this.IsPostBack)
+                //{
                     for (int i = 0; i < 1; i++) // LOAD ONE TEXTBOX FOR EXAMPLE
                     {
                         RBTable.Rows.Add(RBTable.NewRow());
@@ -41,7 +41,7 @@ namespace VSQN
                     }
 
                     Bind();
-                }
+                //}
 
             }
         }
@@ -55,8 +55,8 @@ namespace VSQN
             adapt.Fill(dt);
             ModuleMenu.DataSource = dt;
             ModuleMenu.DataBind();
-            ModuleMenu.DataTextField = "Module";
-            ModuleMenu.DataValueField = "PID";
+            ModuleMenu.DataTextField = "Name";
+            ModuleMenu.DataValueField = "PK";
             ModuleMenu.DataBind();
             ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
         }
@@ -69,9 +69,10 @@ namespace VSQN
 
         protected void clearAll()
         {
-            seq_ques.Text = string.Empty;
             ques.Text = string.Empty;
             ModuleMenu.SelectedIndex = 0;
+            TypeOfInput.SelectedIndex = 0;
+            TypeOfInputView.ActiveViewIndex = 0;
         }
 
         protected void TypeOfInput_SelectedIndexChanged(object sender, EventArgs e)
@@ -94,7 +95,7 @@ namespace VSQN
         {
             foreach (RepeaterItem item in RepeaterRBBox.Items)
             {
-                TextBox txtDescription = (TextBox)item.FindControl("txtDescription");
+                TextBox txtDescription = (TextBox)item.FindControl("RBanswer");
                 DataRow row = RBTable.NewRow();
                 row["RB_BOX"] = txtDescription.Text;
                 RBTable.Rows.Add(row);
@@ -121,7 +122,7 @@ namespace VSQN
         {
             foreach (RepeaterItem item in RepeaterCBBox.Items)
             {
-                TextBox txtDescription = (TextBox)item.FindControl("txtDescription");
+                TextBox txtDescription = (TextBox)item.FindControl("CBanswer");
                 DataRow row = CBTable.NewRow();
                 row["CB_BOX"] = txtDescription.Text;
                 CBTable.Rows.Add(row);
@@ -146,19 +147,21 @@ namespace VSQN
         //Button for Add Question
         protected void btnCreate_Click(object sender, EventArgs e)
         {
+            int TypeOfInputID = Int32.Parse(TypeOfInput.SelectedValue.ToString());
             //checking if else
             if (ModuleMenu.SelectedIndex == 0)
             {
                 ShowMessage("Please Choose Your Module.", MessageType.Error);
             }
-            else if (String.IsNullOrWhiteSpace(seq_ques.Text))
-            {
-                ShowMessage("Please Enter Your Sequence number.", MessageType.Error);
-            }
 
             else if (String.IsNullOrWhiteSpace(ques.Text))
             {
                 ShowMessage("Please Enter Your Question.", MessageType.Error);
+            }
+
+            else if (TypeOfInputID == 0)
+            {
+                ShowMessage("Please Choose Your Type Of Input.", MessageType.Error);
             }
 
             else
@@ -167,11 +170,10 @@ namespace VSQN
                 con.Open();
 
                 int ModuleID = Int32.Parse(ModuleMenu.SelectedValue.ToString());
-
-                command = new SqlCommand("insert into Question (u_seq, u_ques, FID) VALUES(@seq,@ques,@Module)", con);
-                command.Parameters.AddWithValue("@seq", seq_ques.Text);
+                command = new SqlCommand("insert into QuestionInfo (Ques, Module_FK, In_Type_FK) VALUES(@ques,@Module,@TOI)", con);
                 command.Parameters.AddWithValue("@ques", ques.Text);
                 command.Parameters.AddWithValue("@Module", ModuleID);
+                command.Parameters.AddWithValue("@TOI", TypeOfInputID);
                 int m = command.ExecuteNonQuery();
 
                 ShowMessage("The Question have been saved!", MessageType.Success);

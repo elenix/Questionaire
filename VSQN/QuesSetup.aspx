@@ -31,15 +31,8 @@
                         QUESTION :<br />
                         <small>(Content)</small></label>
                     <div class="col-md-9">
-                        <asp:TextBox ID="ques" runat="server" class="form-control" type="text" TextMode="MultiLine"
+                        <asp:TextBox ID="ques" runat="server" class="form-control" type="text" TextMode="MultiLine" placeholder="Please write your question here.."
                             Height="100px"></asp:TextBox>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="example-text-input" class="col-md-2 col-form-label">
-                        SEQUENCE :</label>
-                    <div class="col-md-3">
-                        <asp:TextBox ID="seq_ques" runat="server" class="form-control" type="text"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -48,10 +41,11 @@
                     <div class="col-md-3">
                         <asp:DropDownList ID="TypeOfInput" OnSelectedIndexChanged="TypeOfInput_SelectedIndexChanged"
                             runat="server" AutoPostBack="True" CssClass="form-control">
-                            <asp:ListItem Value="0">Text Box</asp:ListItem>
-                            <asp:ListItem Value="1">Memo</asp:ListItem>
-                            <asp:ListItem Value="2">Radio Button</asp:ListItem>
-                            <asp:ListItem Value="3">Check Box</asp:ListItem>
+                            <asp:ListItem Value="0">--Select--</asp:ListItem>
+                            <asp:ListItem Value="1">Text Box</asp:ListItem>
+                            <asp:ListItem Value="2">Memo</asp:ListItem>
+                            <asp:ListItem Value="3">Radio Button</asp:ListItem>
+                            <asp:ListItem Value="4">Check Box</asp:ListItem>
                         </asp:DropDownList>
                         <br />
                     </div>
@@ -59,6 +53,8 @@
                 
                 <%--Type Of Input Area--%>
                 <asp:MultiView ID="TypeOfInputView" runat="server" ActiveViewIndex="0">
+                    <%--NULL VALUE--%>
+                    <asp:View ID="ViewEmpty" runat="server"></asp:View>
                     <%--FOR TEXT BOX VIEW--%>
                     <asp:View ID="ViewTB" runat="server">
                         <div class="form-group row">
@@ -73,18 +69,10 @@
                         </div>
                         <div class="form-group row">
                             <label for="TBAnswer" class="col-md-2 col-form-label">
-                                ANSWER :<br />
+                             ANSWER :<br />
                             </label>
                             <div class="col-md-9">
-                                <asp:TextBox ID="TBAnswer" runat="server" class="form-control" type="text"></asp:TextBox>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="TBDefault" class="col-md-2 col-form-label" style="padding-right: 0px">
-                                DEFAULT VALUE:<br />
-                            </label>
-                            <div class="col-md-9">
-                                <asp:TextBox ID="TBDefault" runat="server" class="form-control" type="text"></asp:TextBox>
+                                <asp:TextBox ID="TBAnswer" runat="server" class="form-control" type="text" placeholder="Place your default answer here.."></asp:TextBox>
                             </div>
                         </div>
                     </asp:View>
@@ -101,22 +89,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="CBAnswer" class="col-md-2 col-form-label">
+                            <label for="MMAnswer" class="col-md-2 col-form-label">
                                 ANSWER :<br />
                             </label>
                             <div class="col-md-9">
-                                <asp:TextBox ID="CBAnswer" runat="server" class="form-control" type="text" TextMode="MultiLine"
+                                <asp:TextBox ID="MMAnswer" runat="server" class="form-control" type="text" TextMode="MultiLine" placeholder="Write your default answer here.."
                                     Height="100px"></asp:TextBox>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="CBDefault" class="col-md-2 col-form-label" style="padding-right: 0px">
-                                DEFAULT VALUE:<br />
-                            </label>
-                            <div class="col-md-9">
-                                <asp:TextBox ID="CBDefault" runat="server" class="form-control" type="text"></asp:TextBox>
-                            </div>
-                        </div>
+                        
                     </asp:View>
                     <%--FOR RADIO BUTTON--%>
                     <asp:View ID="ViewRB" runat="server">
@@ -131,7 +112,7 @@
                                                 <label class="form-check-label">
                                                     <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1"
                                                         value="option1">
-                                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("RB_BOX").ToString() %>' runat="server"
+                                                    <asp:TextBox ID="RBanswer" Text='<%# Eval("RB_BOX").ToString() %>' runat="server"
                                                         CssClass="form-control textbox-anim"></asp:TextBox></label>
                                                 <asp:Button ID="btn_Remove" runat="server" Text="REMOVE" CommandName="Remove" CssClass="btn btn-danger btnQS"
                                                     OnClientClick="return confirm('Do you want to delete this row?');" />
@@ -142,14 +123,6 @@
                                 <div style="margin-left: 17px; margin-top:10px">
                                     <asp:Button ID="btnAddRBClick" runat="server" Text="ADD MORE QUESTION" CommandName="Add"
                                         CssClass="btn btn-success thisbtnanim" OnClick="btnAddRB_Click" /></div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="CBDefault" class="col-md-2 col-form-label" style="padding-right: 0px">
-                                DEFAULT VALUE:<br />
-                            </label>
-                            <div class="col-md-9">
-                                <asp:TextBox ID="TextBox1" runat="server" class="form-control" type="text"></asp:TextBox>
                             </div>
                         </div>
                     </asp:View>
@@ -165,7 +138,7 @@
                                             <div class="form-group">
                                                 <label class="form-check-label">
                                                     <input type="checkbox" class="form-check-input">
-                                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("CB_BOX").ToString() %>' runat="server"
+                                                    <asp:TextBox ID="CBanswer" Text='<%# Eval("CB_BOX").ToString() %>' runat="server"
                                                         CssClass="form-control textbox-anim"></asp:TextBox></label>
                                                 <asp:Button ID="btn_Remove" runat="server" Text="REMOVE" CommandName="Remove" CssClass="btn btn-danger btnQS"
                                                     OnClientClick="return confirm('Do you want to delete this row?');" />
@@ -176,14 +149,6 @@
                                 <div style="margin-left: 17px; margin-top:10px">
                                     <asp:Button ID="btnAddCBClick" runat="server" Text="ADD MORE QUESTION" CommandName="Add"
                                         CssClass="btn btn-success thisbtnanim" OnClick="btnAddCB_Click" /></div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="CBDefault" class="col-md-2 col-form-label" style="padding-right: 0px">
-                                DEFAULT VALUE:<br />
-                            </label>
-                            <div class="col-md-9">
-                                <asp:TextBox ID="TextBox2" runat="server" class="form-control" type="text"></asp:TextBox>
                             </div>
                         </div>
                     </asp:View>
