@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Drawing;
 
 namespace VSQN
 {
@@ -25,13 +24,13 @@ namespace VSQN
         {
             if (!IsPostBack)
             {
-                loadModalMenuDropdown();
+                LoadModalMenuDropdown();
                 ShowData();
             }
 
         }
 
-        protected void loadModalMenuDropdown()
+        protected void LoadModalMenuDropdown()
         {
             con = new SqlConnection(cs);
             string com = "Select * from Module";
@@ -72,8 +71,10 @@ namespace VSQN
 
             Result.DataSource = dt;
             Result.DataBind();
+            ViewState["dirState"] = dt;
+            ViewState["sortdr"] = "Asc";
 
-            con.Close();
+            //con.Close();
         }
 
         protected void ShowMessage(string Message, MessageType type)
@@ -96,7 +97,7 @@ namespace VSQN
             con = new SqlConnection(cs);
             con.Open();
             //updating the record  
-            SqlCommand cmd = new SqlCommand("Update QuestionInfo set Ques='"+ques.Text+"' where Ref_Code="+Convert.ToInt32(id.Text),con);
+            SqlCommand cmd = new SqlCommand("Update QuestionInfo set Ques='"+ques.Text+"', Date_Time=GETDATE() where Ref_Code="+Convert.ToInt32(id.Text),con);
             cmd.ExecuteNonQuery();
             con.Close();
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
@@ -135,5 +136,32 @@ namespace VSQN
                 ShowMessage("Your Question have been deleted.", MessageType.Error);
             }
         }
+
+        protected void Result_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dtrslt = (DataTable)ViewState["dirState"];
+            if (dtrslt.Rows.Count > 0)
+            {
+                if (Convert.ToString(ViewState["sortdr"]) == "Asc")
+                {
+                    dtrslt.DefaultView.Sort = e.SortExpression + " Desc";
+                    ViewState["sortdr"] = "Desc";
+               
+                }
+                else
+                {
+                    dtrslt.DefaultView.Sort = e.SortExpression + " Asc";
+                    ViewState["sortdr"] = "Asc";
+             
+                }
+
+                Result.DataSource = dtrslt;
+                Result.DataBind();
+               
+            }
+
+        }
+
+      
     }
 }

@@ -147,7 +147,7 @@ namespace VSQN
         //Button for Add Question
         protected void btnCreate_Click(object sender, EventArgs e)
         {
-            int TypeOfInputID = Int32.Parse(TypeOfInput.SelectedValue.ToString());
+            int typeOfInputId = Int32.Parse(TypeOfInput.SelectedValue.ToString());
             //checking if else
             if (ModuleMenu.SelectedIndex == 0)
             {
@@ -159,7 +159,7 @@ namespace VSQN
                 ShowMessage("Please Enter Your Question.", MessageType.Error);
             }
 
-            else if (TypeOfInputID == 0)
+            else if (typeOfInputId == 0)
             {
                 ShowMessage("Please Choose Your Type Of Input.", MessageType.Error);
             }
@@ -167,19 +167,122 @@ namespace VSQN
             else
             {
                 con = new SqlConnection(cs);
-                con.Open();
+                string query = "AddQuestionProcedure";
+                int refCode;
+                int moduleId = Int32.Parse(ModuleMenu.SelectedValue.ToString());
 
-                int ModuleID = Int32.Parse(ModuleMenu.SelectedValue.ToString());
-                command = new SqlCommand("insert into QuestionInfo (Ques, Module_FK, In_Type_FK) VALUES(@ques,@Module,@TOI)", con);
-                command.Parameters.AddWithValue("@ques", ques.Text);
-                command.Parameters.AddWithValue("@Module", ModuleID);
-                command.Parameters.AddWithValue("@TOI", TypeOfInputID);
-                int m = command.ExecuteNonQuery();
+                using (con = new SqlConnection(cs))
+                {
+                    using (command = new SqlCommand(query, con))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ques", ques.Text);
+                        command.Parameters.AddWithValue("@Module", moduleId);
+                        command.Parameters.AddWithValue("@TOI", typeOfInputId);
+                        con.Open();
+                        refCode = Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
 
-                ShowMessage("The Question have been saved!", MessageType.Success);
-                //Response.Write("<script>alert('Data Inserted !!')</script>");
+                if (typeOfInputId == 1)
+                {
+                    string queryTB = "AddQuestionAnswerForText";
+                    int typeOfField = Int32.Parse(TBT.SelectedValue.ToString());
+
+                    using (con = new SqlConnection(cs))
+                    {
+                        using (command = new SqlCommand(queryTB, con))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                            command.Parameters.AddWithValue("@answer", TBAnswer.Text);
+                            command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                            con.Open();
+                            int m = command.ExecuteNonQuery();
+                        }
+                    }
+
+                }
+
+                else if (typeOfInputId == 2)
+                {
+                    string queryMM = "AddQuestionAnswerForText";
+                    int typeOfField = Int32.Parse(MMT.SelectedValue.ToString());
+
+                    using (con = new SqlConnection(cs))
+                    {
+                        using (command = new SqlCommand(queryMM, con))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                            command.Parameters.AddWithValue("@answer", MMAnswer.Text);
+                            command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                            con.Open();
+                            int m = command.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                else if (typeOfInputId == 3)
+                {
+                    List<string> radioAnswerOption = new List<string>();
+
+                    foreach (RepeaterItem item in RepeaterRBBox.Items)
+                    {
+                        radioAnswerOption.Add(((TextBox) item.FindControl(("RBanswer"))).Text);
+                    }
+
+                    string queryCB = "AddQuestionAnswerOption";
+
+                    for (int i = 0; i < radioAnswerOption.Count(); i++)
+                    {
+                        using (con = new SqlConnection(cs))
+                        {
+                            using (command = new SqlCommand(queryCB, con))
+                            {
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.AddWithValue("@Ref_Code", refCode);
+                                command.Parameters.AddWithValue("@Answer_Option", radioAnswerOption[i]);
+                                con.Open();
+                                int m = command.ExecuteNonQuery();
+                            }
+                        }
+                    }
+
+
+                }
+
+                else if (typeOfInputId == 4)
+                {
+                    List<string> checkBoxAnswerOption = new List<string>();
+
+                    foreach (RepeaterItem item in RepeaterCBBox.Items)
+                    {
+                        checkBoxAnswerOption.Add(((TextBox) item.FindControl(("CBanswer"))).Text);
+                    }
+
+                    string queryCB = "AddQuestionAnswerOption";
+
+                    for (int i = 0; i < checkBoxAnswerOption.Count(); i++)
+                    {
+                        using (con = new SqlConnection(cs))
+                        {
+                            using (command = new SqlCommand(queryCB, con))
+                            {
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.AddWithValue("@Ref_Code", refCode);
+                                command.Parameters.AddWithValue("@Answer_Option", checkBoxAnswerOption[i]);
+                                con.Open();
+                                int m = command.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+
 
                 con.Close();
+                ShowMessage("The Question have been saved!", MessageType.Success);
+                //Response.Write("<script>alert('Data Inserted !!')</script>");
                 clearAll();
             }
 

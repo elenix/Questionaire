@@ -1,9 +1,9 @@
 ﻿/* DEFAULTS
 ----------------------------------------------------------*/
 
-body   
+.mainbody   
 {
-    background-color: #31B0D5;
+    background-color: #31B0D5 !important;
     font-size: .80em;
     font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
     margin: 0px;
@@ -229,63 +229,6 @@ legend
     padding: 2px 4px 8px 4px;
 }
 
-/* MISC  
-----------------------------------------------------------*/
-
-.clear
-{
-    clear: both;
-}
-
-.title
-{
-    display: block;
-    float: left;
-    text-align: left;
-    width: auto;
-}
-
-.loginDisplay
-{
-    font-size: 1.1em;
-    display: block;
-    text-align: right;
-    padding: 10px;
-    color: White;
-}
-
-.loginDisplay a:link
-{
-    color: white;
-}
-
-.loginDisplay a:visited
-{
-    color: white;
-}
-
-.loginDisplay a:hover
-{
-    color: white;
-}
-
-.failureNotification
-{
-    font-size: 1.2em;
-    color: Red;
-}
-
-.bold
-{
-    font-weight: bold;
-}
-
-.submitButton
-{
-    text-align: right;
-    padding-right: 10px;
-}
-
 /*margin label-----------------------------------------*/
 
 .col-form-label
@@ -332,4 +275,12 @@ legend
     
     -webkit-transition  : width 0.2s linear !important;
     transition  : width 0.2s linear !important;
+}
+
+#AutoGenerate {
+    
+    width: 260px; 
+    background-color: #FFFF00; 
+    font-family: Courier; 
+    text-align: center
 }

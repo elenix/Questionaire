@@ -67,6 +67,15 @@ namespace VSQN {
         protected global::System.Web.UI.WebControls.View ViewTB;
         
         /// <summary>
+        /// TBT control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList TBT;
+        
+        /// <summary>
         /// TBAnswer control.
         /// </summary>
         /// <remarks>
@@ -83,6 +92,15 @@ namespace VSQN {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View ViewMM;
+        
+        /// <summary>
+        /// MMT control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList MMT;
         
         /// <summary>
         /// MMAnswer control.

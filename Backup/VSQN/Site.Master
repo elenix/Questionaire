@@ -1,0 +1,47 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="VSQN.SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title></title>
+    <link href="icon/maxresdefault.png" rel="Shortcut Icon" type="image/x-icon" />
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <link href="Styles/Alert.css" rel="stylesheet" type="text/css" />
+    <link href="Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="Scripts/bootstrap.js" type="text/javascript"></script>
+    <script src="Scripts/Alert.js" type="text/javascript"></script>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+    <div class="container">
+        <div class="header">
+            <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false"
+                    IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem Text="QUESTION SETUP" NavigateUrl="~/QuesSetup.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="QUESTION BANK" NavigateUrl="~/ViewQuestion.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="USER SETUP" NavigateUrl="~/Default.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="USER LOGIN" NavigateUrl="~/Default.aspx"></asp:MenuItem>
+                        <asp:MenuItem Text="MAIN" NavigateUrl="~/Default.aspx"></asp:MenuItem>
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div class="messagealert" id="alert_container">
+        </div>
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="footer">
+        <h2>ALL RIGHT RESERVE <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span></h2>
+    </div>
+    </form>
+</body>
+</html>

@@ -20,9 +20,7 @@
                             padding-right: 0px; width: 200px">
                             REFERENCE CODE :</label>
                         <div class="col-md-3">
-                            <input class="form-control" type="text" value="AUTO-GENERATE(UNIQUE)" id="example-text-input"
-                                disabled="disabled" style="width: 260px; background-color: #FFFF00; font-family: Courier;
-                                text-align: center" />
+                            <input class="form-control" type="text" value="AUTO-GENERATE(UNIQUE)" id="AutoGenerate" disabled="disabled" />
                         </div>
                     </div>
                 </div>
@@ -61,10 +59,14 @@
                             <label for="FT" class="col-md-2 col-form-label">
                                 FIELD TYPE:</label>
                             <div class="col-md-3">
-                                <select class="form-control" id="FT">
+                                <asp:DropDownList ID="TBT" runat="server" CssClass="form-control">
+                                    <asp:ListItem Value="1">Text</asp:ListItem>
+                                    <asp:ListItem Value="2">Numeric</asp:ListItem>
+                                </asp:DropDownList>
+                                <%--<select class="form-control" id="FT">
                                     <option>Text</option>
                                     <option>Numeric</option>
-                                </select>
+                                </select>--%>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -82,10 +84,14 @@
                             <label for="FT2" class="col-md-2 col-form-label">
                                 FIELD TYPE:</label>
                             <div class="col-md-3">
-                                <select class="form-control" id="FT2">
+                                <asp:DropDownList ID="MMT" runat="server" CssClass="form-control">
+                                    <asp:ListItem Value="1">Text</asp:ListItem>
+                                    <asp:ListItem Value="2">Numeric</asp:ListItem>
+                                </asp:DropDownList>
+                              <%--  <select class="form-control" id="FT2">
                                     <option>Text</option>
                                     <option>Numeric</option>
-                                </select>
+                                </select>--%>
                             </div>
                         </div>
                         <div class="form-group row">

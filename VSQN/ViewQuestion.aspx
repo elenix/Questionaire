@@ -28,9 +28,9 @@
                             <%--put table here--%>
                             <asp:GridView ID="Result" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False"
                                 PageSize="10" OnRowCancelingEdit="Result_RowCancelingEdit" OnRowEditing="Result_RowEditing" OnPageIndexChanging="Result_PageIndexChanging" emptydatatext="No Data Available. Please choose other Module" 
-                                OnRowUpdating="Result_RowUpdating" OnRowDeleting="Result_RowDeleting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
+                                OnRowUpdating="Result_RowUpdating" OnRowDeleting="Result_RowDeleting" OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
                                 <Columns>
-                                    <asp:TemplateField HeaderText="Reference Code" HeaderStyle-Width="15%">
+                                    <asp:TemplateField HeaderText="Reference Code" HeaderStyle-Width="15%" SortExpression="Ref_Code"> 
                                         <ItemTemplate>
                                             <asp:Label ID="lblReferenceCode" runat="server" Text='<%#Eval("Ref_Code") %>'></asp:Label>
                                         </ItemTemplate>
@@ -43,7 +43,7 @@
                                             <asp:TextBox ID="txtQuestion" runat="server" Text='<%#Eval("Ques") %>' Width="100%"></asp:TextBox>
                                         </EditItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Date/Time" HeaderStyle-Width="10%">
+                                    <asp:TemplateField HeaderText="Date/Time" HeaderStyle-Width="10%" SortExpression="Date_Time">
                                         <ItemTemplate>
                                             <asp:Label ID="lblTime" runat="server" Text='<%#Eval("Date_Time", "{0:M-dd-yyyy}") %>'></asp:Label>
                                         </ItemTemplate>
@@ -59,6 +59,11 @@
                                         </EditItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
+                                <FooterStyle BackColor="#CCCCCC" />  
+                                <SortedAscendingCellStyle BackColor="#F1F1F1" />  
+                                <SortedAscendingHeaderStyle BackColor="#808080" />  
+                                <SortedDescendingCellStyle BackColor="#CAC9C9" />  
+                                <SortedDescendingHeaderStyle BackColor="#383838" />  
                             </asp:GridView>
                         
                             </ContentTemplate>
@@ -77,3 +82,4 @@
         </Triggers>
     </asp:UpdatePanel>--%>
 </asp:Content>
+ 
