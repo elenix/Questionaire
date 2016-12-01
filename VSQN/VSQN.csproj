@@ -62,7 +62,10 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EditQuestion.aspx" />
     <Content Include="icon\add.png" />
+    <Content Include="icon\favicon.jpg" />
+    <Content Include="icon\favicon.png" />
     <Content Include="icon\maxresdefault.png" />
     <Content Include="icon\remove.png" />
     <Content Include="icon\view_sort_ascending.png" />
@@ -101,6 +104,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditQuestion.aspx.cs">
+      <DependentUpon>EditQuestion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditQuestion.aspx.designer.cs">
+      <DependentUpon>EditQuestion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ViewQuestion.aspx.cs">
       <DependentUpon>ViewQuestion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

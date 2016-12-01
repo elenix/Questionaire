@@ -45,7 +45,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Date/Time" HeaderStyle-Width="10%" SortExpression="Date_Time">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblTime" runat="server" Text='<%#Eval("Date_Time", "{0:M-dd-yyyy}") %>'></asp:Label>
+                                            <asp:Label ID="lblTime" runat="server" Text='<%#Eval("Date_Time"/*, "{0:M-dd-yyyy}"*/) %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">

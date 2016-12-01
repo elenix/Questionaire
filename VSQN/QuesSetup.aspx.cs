@@ -32,16 +32,16 @@ namespace VSQN
             {
                 loadModalMenuDropdown();
 
-                //if (!this.IsPostBack)
-                //{
-                    for (int i = 0; i < 1; i++) // LOAD ONE TEXTBOX FOR EXAMPLE
+                if (this.IsPostBack)
+                {
+                    for (int i = 0; i < 1; i++) // LOAD ONE TEXTBOX FOR EXAMPLE FOR CHECK BOX AND RADIO BUTTON
                     {
                         RBTable.Rows.Add(RBTable.NewRow());
                         CBTable.Rows.Add(CBTable.NewRow());
                     }
 
                     Bind();
-                //}
+                }
 
             }
         }

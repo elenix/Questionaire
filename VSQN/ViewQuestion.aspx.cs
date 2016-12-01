@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web.Configuration;
 
 namespace VSQN
 {
@@ -85,8 +86,10 @@ namespace VSQN
         protected void Result_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
         {
             //NewEditIndex property used to determine the index of the row being edited.  
-            Result.EditIndex = e.NewEditIndex;
-            ShowData();
+            Session["Row_Ref_Code"] = ((Label)Result.Rows[e.NewEditIndex].FindControl("lblReferenceCode")).Text;
+            //Result.EditIndex = e.NewEditIndex;
+            //ShowData();
+            Response.Redirect("EditQuestion.aspx");
         }
 
         protected void Result_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
@@ -112,7 +115,7 @@ namespace VSQN
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
             Result.EditIndex = -1;
             ShowData();
-            ShowMessage("Your question update have been canceled.", MessageType.Warning);
+            ShowMessage("You have cancelled your question update.", MessageType.Warning);
         }
 
         protected void Result_RowDeleting(object sender, GridViewDeleteEventArgs e)

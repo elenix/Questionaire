@@ -62,11 +62,7 @@
                                 <asp:DropDownList ID="TBT" runat="server" CssClass="form-control">
                                     <asp:ListItem Value="1">Text</asp:ListItem>
                                     <asp:ListItem Value="2">Numeric</asp:ListItem>
-                                </asp:DropDownList>
-                                <%--<select class="form-control" id="FT">
-                                    <option>Text</option>
-                                    <option>Numeric</option>
-                                </select>--%>
+                                </asp:DropDownList> 
                             </div>
                         </div>
                         <div class="form-group row">
@@ -102,8 +98,7 @@
                                 <asp:TextBox ID="MMAnswer" runat="server" class="form-control" type="text" TextMode="MultiLine" placeholder="Write your default answer here.."
                                     Height="100px"></asp:TextBox>
                             </div>
-                        </div>
-                        
+                        </div>    
                     </asp:View>
                     <%--FOR RADIO BUTTON--%>
                     <asp:View ID="ViewRB" runat="server">

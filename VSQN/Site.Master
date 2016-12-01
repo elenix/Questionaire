@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head runat="server">
     <title></title>
-    <link href="icon/maxresdefault.png" rel="Shortcut Icon" type="image/x-icon" />
+    <link href="icon/favicon.png" rel="Shortcut Icon" type="image/x-icon" />
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
     <link href="Styles/Alert.css" rel="stylesheet" type="text/css" />
     <link href="Content/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -35,7 +35,6 @@
         </div>
         
         <div class="main">
-            
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
         </div>
         <div class="clear">
