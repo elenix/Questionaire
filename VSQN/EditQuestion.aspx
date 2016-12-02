@@ -97,7 +97,7 @@
                             <label class="col-md-2 col-form-label">
                                 ANSWER:</label>
                             <div class="col-md-8">
-                                <asp:Repeater ID="RepeaterRBBox" runat="server">
+                                <asp:Repeater ID="RepeaterRBBox" runat="server" OnItemCommand="RepeaterRBBox_ItemCommand">
                                     <ItemTemplate>
                                         <div class="form-inline">
                                             <div class="form-group">
@@ -114,7 +114,7 @@
                                 </asp:Repeater>
                                 <div style="margin-left: 17px; margin-top:10px">
                                     <asp:Button ID="btnAddRBClick" runat="server" Text="ADD MORE QUESTION" CommandName="Add"
-                                        CssClass="btn btn-success thisbtnanim"/></div>
+                                        CssClass="btn btn-success thisbtnanim" OnClick="btnAddRB_Click"/></div>
                             </div>
                         </div>
                     </asp:View>
@@ -124,7 +124,7 @@
                             <label class="col-md-2 col-form-label">
                                 ANSWER:</label>
                             <div class="col-md-8">
-                                <asp:Repeater ID="RepeaterCBBox" runat="server">
+                                <asp:Repeater ID="RepeaterCBBox" runat="server" OnItemCommand="RepeaterCBBox_ItemCommand">
                                     <ItemTemplate>
                                         <div class="form-inline">
                                             <div class="form-group">
@@ -140,7 +140,7 @@
                                 </asp:Repeater>
                                 <div style="margin-left: 17px; margin-top:10px">
                                     <asp:Button ID="btnAddCBClick" runat="server" Text="ADD MORE QUESTION" CommandName="Add"
-                                        CssClass="btn btn-success thisbtnanim" /></div>
+                                        CssClass="btn btn-success thisbtnanim" OnClick="btnAddCB_Click"/></div>
                             </div>
                         </div>
                     </asp:View>

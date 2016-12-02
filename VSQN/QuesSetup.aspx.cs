@@ -21,6 +21,7 @@ namespace VSQN
         SqlCommand command;
         string queryText = "AddQuestionAnswerForText";
         string queryOption = "AddQuestionAnswerOption";
+        List<string> AnswerOption = new List<string>();
 
 
         public enum MessageType { Success, Error, Info, Warning };
@@ -33,18 +34,6 @@ namespace VSQN
             if (!IsPostBack)
             {
                 loadModalMenuDropdown();
-
-                if (this.IsPostBack)
-                {
-                    for (int i = 0; i < 1; i++) // LOAD ONE TEXTBOX FOR EXAMPLE FOR CHECK BOX AND RADIO BUTTON
-                    {
-                        RBTable.Rows.Add(RBTable.NewRow());
-                        CBTable.Rows.Add(CBTable.NewRow());
-                    }
-
-                    Bind();
-                }
-
             }
         }
 
@@ -228,16 +217,14 @@ namespace VSQN
 
                 else if (typeOfInputId == 3)
                 {
-                    List<string> radioAnswerOption = new List<string>();
-
                     //read all the value inside each radio button answer boxes
                     foreach (RepeaterItem item in RepeaterRBBox.Items)
                     {
-                        radioAnswerOption.Add(((TextBox) item.FindControl(("RBanswer"))).Text);
+                        AnswerOption.Add(((TextBox) item.FindControl(("RBanswer"))).Text);
                     }
 
                     //Store the answer for radio button into Question_Answer_OptionType table
-                    for (int i = 0; i < radioAnswerOption.Count(); i++)
+                    for (int i = 0; i < AnswerOption.Count(); i++)
                     {
                         using (con = new SqlConnection(cs))
                         {
@@ -245,7 +232,7 @@ namespace VSQN
                             {
                                 command.CommandType = CommandType.StoredProcedure;
                                 command.Parameters.AddWithValue("@Ref_Code", refCode);
-                                command.Parameters.AddWithValue("@Answer_Option", radioAnswerOption[i]);
+                                command.Parameters.AddWithValue("@Answer_Option", AnswerOption[i]);
                                 con.Open();
                                 int m = command.ExecuteNonQuery();
                             }
@@ -255,16 +242,14 @@ namespace VSQN
 
                 else if (typeOfInputId == 4)
                 {
-                    List<string> checkBoxAnswerOption = new List<string>();
-
                     //read all the value inside each check box answer boxes
                     foreach (RepeaterItem item in RepeaterCBBox.Items)
                     {
-                        checkBoxAnswerOption.Add(((TextBox) item.FindControl(("CBanswer"))).Text);
+                        AnswerOption.Add(((TextBox) item.FindControl(("CBanswer"))).Text);
                     }
 
                     //Store the answer for check box into Question_Answer_OptionType table
-                    for (int i = 0; i < checkBoxAnswerOption.Count(); i++)
+                    for (int i = 0; i < AnswerOption.Count(); i++)
                     {
                         using (con = new SqlConnection(cs))
                         {
@@ -272,7 +257,7 @@ namespace VSQN
                             {
                                 command.CommandType = CommandType.StoredProcedure;
                                 command.Parameters.AddWithValue("@Ref_Code", refCode);
-                                command.Parameters.AddWithValue("@Answer_Option", checkBoxAnswerOption[i]);
+                                command.Parameters.AddWithValue("@Answer_Option", AnswerOption[i]);
                                 con.Open();
                                 int m = command.ExecuteNonQuery();
                             }

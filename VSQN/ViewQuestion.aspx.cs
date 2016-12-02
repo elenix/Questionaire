@@ -75,7 +75,7 @@ namespace VSQN
             ViewState["dirState"] = dt;
             ViewState["sortdr"] = "Asc";
 
-            //con.Close();
+            con.Close();
         }
 
         protected void ShowMessage(string Message, MessageType type)
