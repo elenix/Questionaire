@@ -56,7 +56,7 @@
                     <%--FOR TEXT BOX VIEW--%>
                     <asp:View ID="ViewTB" runat="server">
                         <div class="form-group row">
-                            <label for="FT" class="col-md-2 col-form-label">
+                            <label for="TBT" class="col-md-2 col-form-label">
                                 FIELD TYPE:</label>
                             <div class="col-md-3">
                                 <asp:DropDownList ID="TBT" runat="server" CssClass="form-control">
@@ -77,17 +77,13 @@
                     <%--FOR MEMO VIEW--%>
                     <asp:View ID="ViewMM" runat="server">
                         <div class="form-group row">
-                            <label for="FT2" class="col-md-2 col-form-label">
+                            <label for="MMT" class="col-md-2 col-form-label">
                                 FIELD TYPE:</label>
                             <div class="col-md-3">
                                 <asp:DropDownList ID="MMT" runat="server" CssClass="form-control">
                                     <asp:ListItem Value="1">Text</asp:ListItem>
                                     <asp:ListItem Value="2">Numeric</asp:ListItem>
                                 </asp:DropDownList>
-                              <%--  <select class="form-control" id="FT2">
-                                    <option>Text</option>
-                                    <option>Numeric</option>
-                                </select>--%>
                             </div>
                         </div>
                         <div class="form-group row">

@@ -17,8 +17,12 @@ namespace VSQN
         SqlDataAdapter adapt;
         DataTable dt;
         SqlCommand command;
-        int Type_Of_Field = 0;
-        int Module_Choose = 0;
+        int _typeOfField = 0;
+        int _moduleChoose = 0;
+        string _fieldTypeEdit = null;
+        string _textAnswer = null;
+
+        public enum MessageType { Success, Error, Info, Warning };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -31,9 +35,63 @@ namespace VSQN
 
                 ExtractData();
                 loadModalMenuDropdown();
-                TypeOfField();
+                AnswerField();
 
             }
+        }
+
+        protected void ExtractData()
+        {
+            con = new SqlConnection(cs);
+            string query = "ExtractQuestionData";
+            string TextData = "Select * from Question_Answer_TextType where Ref_FK = @Ref_Cod ";
+
+            //Extract Data from QuestionInfo Table
+            using (con = new SqlConnection(cs))
+            {
+                using (command = new SqlCommand(query, con))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Ref_Cod", AutoGenerate.Text);
+                    con.Open();
+                    DataTable data = new DataTable();
+                    int m = command.ExecuteNonQuery();
+                    SqlDataReader dr = command.ExecuteReader();
+                    data.Load(dr);
+
+                    foreach (DataRow row in data.Rows)
+                    {
+                        EditQues.Text = row["Ques"].ToString();
+                        _typeOfField = Int32.Parse(row["In_Type_FK"].ToString());
+                        _moduleChoose = Int32.Parse(row["Module_FK"].ToString());
+                    }
+                }
+            }
+
+            //Extract Data from Question_Answer_TextType Table
+            using (con = new SqlConnection(cs))
+            {
+                using (command = new SqlCommand(TextData, con))
+                {
+                    command.Parameters.AddWithValue("@Ref_Cod", AutoGenerate.Text);
+                    con.Open();
+                    DataTable data = new DataTable();
+                    int m = command.ExecuteNonQuery();
+                    SqlDataReader dr = command.ExecuteReader();
+                    data.Load(dr);
+
+                    foreach (DataRow row in data.Rows)
+                    {
+                        _textAnswer = row["Ans_Default"].ToString();
+                        _fieldTypeEdit = row["Field_Type"].ToString();
+                    }
+                }
+            }
+        }
+
+        protected void ShowMessage(string Message, MessageType type)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
         }
 
         protected void loadModalMenuDropdown()
@@ -49,60 +107,44 @@ namespace VSQN
             ModuleMenu.DataValueField = "PK";
             ModuleMenu.DataBind();
             ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
-            ModuleMenu.SelectedIndex = Module_Choose;
+            ModuleMenu.SelectedIndex = _moduleChoose;
         }
 
-        protected void button_back(object sender, EventArgs e)
+        protected void AnswerField()
         {
+            //For Question with Text Box Answer Data
+            if (_typeOfField == 1)
+            {
+                TypeOfInputEdit.SelectedIndex = _typeOfField;
+                TypeOfInputView.ActiveViewIndex = _typeOfField;
+                TBAnswerEditBox.Text = _textAnswer;
+                TBTedit.SelectedValue = _fieldTypeEdit;
+            }
+
+            else if (_typeOfField == 2)
+            {
+                //For Question with Memo Answer Data
+                TypeOfInputEdit.SelectedIndex = _typeOfField;
+                TypeOfInputView.ActiveViewIndex = _typeOfField;
+                MMAnswerEditBox.Text = _textAnswer;
+                MMTedit.SelectedValue = _fieldTypeEdit;
+            }
+            else if (_typeOfField == 3)
+            {
+                TypeOfInputEdit.SelectedIndex = _typeOfField;
+                TypeOfInputView.ActiveViewIndex = _typeOfField;
+            }
+            else if (_typeOfField == 4)
+            {
+                TypeOfInputEdit.SelectedIndex = _typeOfField;
+                TypeOfInputView.ActiveViewIndex = _typeOfField;
+            }
+        }
+
+        protected void button_cancel(object sender, EventArgs e)
+        {
+            ShowMessage("You have cancelled your question update.", MessageType.Warning);
             Response.Redirect("ViewQuestion.aspx");
         }
-
-        protected void ExtractData()
-        {
-            con = new SqlConnection(cs);
-            string query = "ExtractQuestionData";
-
-            using (con = new SqlConnection(cs))
-            {
-                using (command = new SqlCommand(query, con))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@Ref_Cod", AutoGenerate.Text); 
-                    con.Open();
-                    DataTable data = new DataTable();
-                    int m = command.ExecuteNonQuery();
-                    SqlDataReader dr = command.ExecuteReader();
-                    data.Load(dr);
-
-                    foreach (DataRow row in data.Rows)
-                    {
-                        EditQues.Text = row["Ques"].ToString();
-                        Type_Of_Field = Int32.Parse(row["In_Type_FK"].ToString());
-                        Module_Choose = Int32.Parse(row["Module_FK"].ToString());
-                    }
-                }
-            }
-        }
-
-        protected void TypeOfField()
-        {
-            if (Type_Of_Field == 1)
-            {
-                TypeOfInput.Text = "Text Box";
-            }
-            else if (Type_Of_Field == 2)
-            {
-                TypeOfInput.Text = "Memo";
-            }
-            else if (Type_Of_Field == 3)
-            {
-                TypeOfInput.Text = "Radio Button";
-            }
-            else if (Type_Of_Field == 4)
-            {
-                TypeOfInput.Text = "Check Box";
-            }
-        }
-
     }
 }

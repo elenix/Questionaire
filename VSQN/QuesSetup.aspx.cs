@@ -19,6 +19,8 @@ namespace VSQN
         SqlDataAdapter adapt;
         DataTable dt;
         SqlCommand command;
+        string queryText = "AddQuestionAnswerForText";
+        string queryOption = "AddQuestionAnswerOption";
 
 
         public enum MessageType { Success, Error, Info, Warning };
@@ -171,6 +173,7 @@ namespace VSQN
                 int refCode;
                 int moduleId = Int32.Parse(ModuleMenu.SelectedValue.ToString());
 
+                //Store the main question into QuestionInfo table
                 using (con = new SqlConnection(cs))
                 {
                     using (command = new SqlCommand(query, con))
@@ -186,12 +189,12 @@ namespace VSQN
 
                 if (typeOfInputId == 1)
                 {
-                    string queryTB = "AddQuestionAnswerForText";
                     int typeOfField = Int32.Parse(TBT.SelectedValue.ToString());
 
+                    //Store the answer for textbox into Question_Answer_TextType table
                     using (con = new SqlConnection(cs))
                     {
-                        using (command = new SqlCommand(queryTB, con))
+                        using (command = new SqlCommand(queryText, con))
                         {
                             command.CommandType = CommandType.StoredProcedure;
                             command.Parameters.AddWithValue("@Ref_Cod", refCode);
@@ -206,12 +209,12 @@ namespace VSQN
 
                 else if (typeOfInputId == 2)
                 {
-                    string queryMM = "AddQuestionAnswerForText";
+                    //Store the answer for memo into Question_Answer_TextType table
                     int typeOfField = Int32.Parse(MMT.SelectedValue.ToString());
 
                     using (con = new SqlConnection(cs))
                     {
-                        using (command = new SqlCommand(queryMM, con))
+                        using (command = new SqlCommand(queryText, con))
                         {
                             command.CommandType = CommandType.StoredProcedure;
                             command.Parameters.AddWithValue("@Ref_Cod", refCode);
@@ -227,18 +230,18 @@ namespace VSQN
                 {
                     List<string> radioAnswerOption = new List<string>();
 
+                    //read all the value inside each radio button answer boxes
                     foreach (RepeaterItem item in RepeaterRBBox.Items)
                     {
                         radioAnswerOption.Add(((TextBox) item.FindControl(("RBanswer"))).Text);
                     }
 
-                    string queryCB = "AddQuestionAnswerOption";
-
+                    //Store the answer for radio button into Question_Answer_OptionType table
                     for (int i = 0; i < radioAnswerOption.Count(); i++)
                     {
                         using (con = new SqlConnection(cs))
                         {
-                            using (command = new SqlCommand(queryCB, con))
+                            using (command = new SqlCommand(queryOption, con))
                             {
                                 command.CommandType = CommandType.StoredProcedure;
                                 command.Parameters.AddWithValue("@Ref_Code", refCode);
@@ -248,26 +251,24 @@ namespace VSQN
                             }
                         }
                     }
-
-
                 }
 
                 else if (typeOfInputId == 4)
                 {
                     List<string> checkBoxAnswerOption = new List<string>();
 
+                    //read all the value inside each check box answer boxes
                     foreach (RepeaterItem item in RepeaterCBBox.Items)
                     {
                         checkBoxAnswerOption.Add(((TextBox) item.FindControl(("CBanswer"))).Text);
                     }
 
-                    string queryCB = "AddQuestionAnswerOption";
-
+                    //Store the answer for check box into Question_Answer_OptionType table
                     for (int i = 0; i < checkBoxAnswerOption.Count(); i++)
                     {
                         using (con = new SqlConnection(cs))
                         {
-                            using (command = new SqlCommand(queryCB, con))
+                            using (command = new SqlCommand(queryOption, con))
                             {
                                 command.CommandType = CommandType.StoredProcedure;
                                 command.Parameters.AddWithValue("@Ref_Code", refCode);
@@ -278,8 +279,6 @@ namespace VSQN
                         }
                     }
                 }
-
-
                 con.Close();
                 ShowMessage("The Question have been saved!", MessageType.Success);
                 //Response.Write("<script>alert('Data Inserted !!')</script>");
