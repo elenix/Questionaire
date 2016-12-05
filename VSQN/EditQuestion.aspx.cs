@@ -24,6 +24,9 @@ namespace VSQN
         string _fieldTypeEdit = null;
         string _textAnswer = null;
         List<string> _optionAnswer = new List<string>();
+        List<string> AnswerOptionUpdate = new List<string>();
+        string queryDelete = "DeleteQuestionAnswerOption";
+        string queryOption = "AddQuestionAnswerOption";
 
         protected enum MessageType { Success, Error, Info, Warning };
 
@@ -195,7 +198,7 @@ namespace VSQN
         {
             foreach (RepeaterItem item in RepeaterRBBox.Items)
             {
-                TextBox txtDescription = (TextBox)item.FindControl("RBanswer");
+                TextBox txtDescription = (TextBox)item.FindControl("RBanswerUpdate");
                 DataRow row = RBTable.NewRow();
                 row["RB_BOX"] = txtDescription.Text;
                 RBTable.Rows.Add(row);
@@ -222,7 +225,7 @@ namespace VSQN
         {
             foreach (RepeaterItem item in RepeaterCBBox.Items)
             {
-                TextBox txtDescription = (TextBox)item.FindControl("CBanswer");
+                TextBox txtDescription = (TextBox)item.FindControl("CBanswerUpdate");
                 DataRow row = CBTable.NewRow();
                 row["CB_BOX"] = txtDescription.Text;
                 CBTable.Rows.Add(row);
@@ -244,10 +247,168 @@ namespace VSQN
             Bind();
         }
 
+        //Button cancel
         protected void button_cancel(object sender, EventArgs e)
         {
             ShowMessage("You have cancelled your question update.", MessageType.Warning);
             Response.Redirect("ViewQuestion.aspx");
+        }
+
+        //Button update question
+        protected void button_update(object sender, EventArgs e)
+        {
+            string queryQuest = "Update QuestionInfo set Module_FK = @Module, Ques = @ques, Date_Time = GETDATE() where Ref_Code = @refcode ";
+            string queryTextType = "Update Question_Answer_TextType set Ans_Default = @answer, Field_Type = @FT where Ref_FK = @refkode ";
+            int moduleId = Int32.Parse(ModuleMenu.SelectedValue.ToString());
+            int refcode = Int32.Parse(AutoGenerate.Text.ToString());
+            //checking if else
+            if (ModuleMenu.SelectedIndex == 0)
+            {
+                ShowMessage("Please Choose Your Module.", MessageType.Error);
+            }
+
+            else if (String.IsNullOrWhiteSpace(EditQues.Text))
+            {
+                ShowMessage("Please Enter Your Question.", MessageType.Error);
+            }
+
+            else
+            {
+                //Store the main question into QuestionInfo table
+                using (con = new SqlConnection(cs))
+                {
+                    using (command = new SqlCommand(queryQuest, con))
+                    {
+                        command.Parameters.AddWithValue("@refcode", refcode);
+                        command.Parameters.AddWithValue("@ques", EditQues.Text);
+                        command.Parameters.AddWithValue("@Module", moduleId);
+                        con.Open();
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                con.Close();
+
+                if (TypeOfInputEdit.SelectedIndex == 1)
+                {
+                    //Update the answer for textbox into Question_Answer_TextType table
+                    int typeOfField = Int32.Parse(TBTedit.SelectedValue.ToString());
+                    
+                    using (con = new SqlConnection(cs))
+                    {
+                        using (command = new SqlCommand(queryTextType, con))
+                        {
+                            command.Parameters.AddWithValue("@refkode", refcode);
+                            command.Parameters.AddWithValue("@answer", TBAnswerEditBox.Text);
+                            command.Parameters.AddWithValue("@FT", typeOfField);
+                            con.Open();
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                else if (TypeOfInputEdit.SelectedIndex == 2)
+                {
+                    //Store the answer for memo into Question_Answer_TextType table
+                    int typeOfField = Int32.Parse(MMTedit.SelectedValue.ToString());
+
+                    using (con = new SqlConnection(cs))
+                    {
+                        using (command = new SqlCommand(queryTextType, con))
+                        {
+                            command.Parameters.AddWithValue("@refkode", refcode);
+                            command.Parameters.AddWithValue("@answer", MMAnswerEditBox.Text);
+                            command.Parameters.AddWithValue("@FT", typeOfField);
+                            con.Open();
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                else if (TypeOfInputEdit.SelectedIndex == 3)
+                {
+                    //read all the value inside each radio button answer boxes
+                    foreach (RepeaterItem item in RepeaterRBBox.Items)
+                    {
+                        AnswerOptionUpdate.Add(((TextBox)item.FindControl(("RBanswerUpdate"))).Text);
+                    }
+
+                    using (con = new SqlConnection(cs))
+                    {
+                        //Delete answer inside table
+                        using (command = new SqlCommand(queryDelete, con))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Ref_Code", refcode);
+                            con.Open();
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                    con.Close();
+
+                    using (con = new SqlConnection(cs))
+                    {
+                        con.Open();
+                        //insert new answer for rb button
+                        for (int i = 0; i < AnswerOptionUpdate.Count(); i++)
+                        {
+                            using (command = new SqlCommand(queryOption, con))
+                            {
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.AddWithValue("@Ref_Code", refcode);
+                                command.Parameters.AddWithValue("@Answer_Option", AnswerOptionUpdate[i]);
+                                command.ExecuteNonQuery();
+                            }
+                        }
+
+                    }
+                }
+
+                else if (TypeOfInputEdit.SelectedIndex == 4)
+                {
+                    //read all the value inside each check box answer boxes
+                    foreach (RepeaterItem item in RepeaterCBBox.Items)
+                    {
+                        AnswerOptionUpdate.Add(((TextBox) item.FindControl(("CBanswerUpdate"))).Text);
+                    }
+
+                    using (con = new SqlConnection(cs))
+                    {
+                        //Delete answer inside table
+                        using (command = new SqlCommand(queryDelete, con))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Ref_Code", refcode);
+                            con.Open();
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    con.Close();
+
+                    using (con = new SqlConnection(cs))
+                    {
+                        con.Open();
+                        //insert new answer for rb button
+                        for (int i = 0; i < AnswerOptionUpdate.Count(); i++)
+                        {
+                            using (command = new SqlCommand(queryOption, con))
+                            {
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.AddWithValue("@Ref_Code", refcode);
+                                command.Parameters.AddWithValue("@Answer_Option", AnswerOptionUpdate[i]);
+                                
+                                command.ExecuteNonQuery();
+                            }
+                        }
+
+                    }
+                }
+
+                con.Close();
+                ShowMessage("Your question have been updated.", MessageType.Info);
+                Response.Redirect("ViewQuestion.aspx");
+            }
         }
     }
 }

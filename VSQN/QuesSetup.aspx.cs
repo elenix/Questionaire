@@ -22,6 +22,7 @@ namespace VSQN
         string queryText = "AddQuestionAnswerForText";
         string queryOption = "AddQuestionAnswerOption";
         List<string> AnswerOption = new List<string>();
+        
 
 
         public enum MessageType { Success, Error, Info, Warning };
@@ -37,7 +38,7 @@ namespace VSQN
             }
         }
 
-        protected void loadModalMenuDropdown()
+        private void loadModalMenuDropdown()
         {
             con = new SqlConnection(cs);
             string com = "Select * from Module";
@@ -52,13 +53,13 @@ namespace VSQN
             ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
         }
 
-        protected void ShowMessage(string Message, MessageType type)
+        private void ShowMessage(string Message, MessageType type)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
 
         }
 
-        protected void clearAll()
+        private void clearAll()
         {
             ques.Text = string.Empty;
             ModuleMenu.SelectedIndex = 0;
@@ -72,7 +73,7 @@ namespace VSQN
         }
 
         //Bind for both Radio Button and Check Box table
-        protected void Bind()
+        private void Bind()
         {
             RepeaterRBBox.DataSource = RBTable;
             RepeaterCBBox.DataSource = CBTable;
@@ -82,7 +83,7 @@ namespace VSQN
         }
 
         //Repeater for Radio Button Answer Box
-        protected void PopulateDataTableRB()
+        private void PopulateDataTableRB()
         {
             foreach (RepeaterItem item in RepeaterRBBox.Items)
             {
@@ -109,7 +110,7 @@ namespace VSQN
         }
 
         //Repeater for Check Box Answer Box
-        protected void PopulateDataTableCB()
+        private void PopulateDataTableCB()
         {
             foreach (RepeaterItem item in RepeaterCBBox.Items)
             {
@@ -190,7 +191,7 @@ namespace VSQN
                             command.Parameters.AddWithValue("@answer", TBAnswer.Text);
                             command.Parameters.AddWithValue("@FieldNum", typeOfField);
                             con.Open();
-                            int m = command.ExecuteNonQuery();
+                            command.ExecuteNonQuery();
                         }
                     }
 
@@ -210,7 +211,7 @@ namespace VSQN
                             command.Parameters.AddWithValue("@answer", MMAnswer.Text);
                             command.Parameters.AddWithValue("@FieldNum", typeOfField);
                             con.Open();
-                            int m = command.ExecuteNonQuery();
+                            command.ExecuteNonQuery();
                         }
                     }
                 }
@@ -228,13 +229,13 @@ namespace VSQN
                     {
                         using (con = new SqlConnection(cs))
                         {
+                            con.Open();
                             using (command = new SqlCommand(queryOption, con))
                             {
                                 command.CommandType = CommandType.StoredProcedure;
                                 command.Parameters.AddWithValue("@Ref_Code", refCode);
                                 command.Parameters.AddWithValue("@Answer_Option", AnswerOption[i]);
-                                con.Open();
-                                int m = command.ExecuteNonQuery();
+                                command.ExecuteNonQuery();
                             }
                         }
                     }
@@ -251,6 +252,7 @@ namespace VSQN
                     //Store the answer for check box into Question_Answer_OptionType table
                     for (int i = 0; i < AnswerOption.Count(); i++)
                     {
+                        con.Open();
                         using (con = new SqlConnection(cs))
                         {
                             using (command = new SqlCommand(queryOption, con))
@@ -258,8 +260,7 @@ namespace VSQN
                                 command.CommandType = CommandType.StoredProcedure;
                                 command.Parameters.AddWithValue("@Ref_Code", refCode);
                                 command.Parameters.AddWithValue("@Answer_Option", AnswerOption[i]);
-                                con.Open();
-                                int m = command.ExecuteNonQuery();
+                                command.ExecuteNonQuery();
                             }
                         }
                     }

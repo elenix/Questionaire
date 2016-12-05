@@ -104,7 +104,7 @@
                                                 <label class="form-check-label">
                                                     <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1"
                                                         value="option1">
-                                                    <asp:TextBox ID="RBanswer" Text='<%# Eval("RB_BOX").ToString() %>' runat="server"
+                                                    <asp:TextBox ID="RBanswerUpdate" Text='<%# Eval("RB_BOX").ToString() %>' runat="server"
                                                         CssClass="form-control textbox-anim"></asp:TextBox></label>
                                                 <asp:Button ID="btn_Remove" runat="server" Text="REMOVE" CommandName="Remove" CssClass="btn btn-danger btnQS"
                                                     OnClientClick="return confirm('Do you want to delete this row?');" />
@@ -130,7 +130,7 @@
                                             <div class="form-group">
                                                 <label class="form-check-label">
                                                     <input type="checkbox" class="form-check-input">
-                                                    <asp:TextBox ID="CBanswer" Text='<%# Eval("CB_BOX").ToString() %>' runat="server"
+                                                    <asp:TextBox ID="CBanswerUpdate" Text='<%# Eval("CB_BOX").ToString() %>' runat="server"
                                                         CssClass="form-control textbox-anim"></asp:TextBox></label>
                                                 <asp:Button ID="btn_Remove" runat="server" Text="REMOVE" CommandName="Remove" CssClass="btn btn-danger btnQS"
                                                     OnClientClick="return confirm('Do you want to delete this row?');" />
@@ -153,7 +153,7 @@
                 <div class="col-md-6">
                 </div>
                 <div class="col-md-3">
-                    <asp:Button ID="btnUpdate" runat="server" Text="UPDATE QUESTION" CssClass="btn btn-info form-inline"
+                    <asp:Button ID="btnUpdate" runat="server" Text="UPDATE QUESTION" CssClass="btn btn-info form-inline" OnClick="button_update"
                         Style="margin-top: 10px;" />
                 </div>
             </div>
