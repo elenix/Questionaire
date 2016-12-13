@@ -1,38 +1,13 @@
 ﻿/* DEFAULTS
 ----------------------------------------------------------*/
 
-.mainbody   
-{
-    background-color: #31B0D5 !important;
-    font-size: .80em;
-    font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+#mainbody {
+    /*background-color:lightsteelblue !important;*/
+    font-family: Lemon/Milk;
     margin: 0px;
     padding: 0px;
-    color: #31B0D5;
+    color: #000;
 }
-
-a:link, a:visited
-{
-    color: #034af3;
-}
-
-a:hover
-{
-    color: #1d60ff;
-    text-decoration: none;
-}
-
-a:active
-{
-    color: #034af3;
-}
-
-p
-{
-    margin-bottom: 10px;
-    line-height: 1.6em;
-}
-
 
 /* HEADINGS   
 ----------------------------------------------------------*/
@@ -75,6 +50,17 @@ h5, h6
     font-size: 1em;
 }
 
+hr {
+
+    margin: 10px 15px 10px 15px !important;
+    clear:both;
+    display:block;
+    width: 96%;               
+    background-color:#000;
+    height: 2px !important;
+}
+
+
 /* this rule styles <h1> and <h2> tags that are the 
 first child of the left and right table columns */
 .rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
@@ -97,7 +83,6 @@ th
     text-align:center;
 }
     
-
 .header
 {
     position: relative;
@@ -120,8 +105,6 @@ th
 
 .main
 {
-    padding: 0px 12px;
-    margin: 12px 8px 8px 8px;
     min-height: 420px;
 }
 
@@ -148,59 +131,145 @@ th
 
 div.hideSkiplink
 {
-    background-color:#3B5998;
+    background-color: mediumblue;
+    /*background-color:#3B5998;*/
     width:100%;
+    height: 44px;
 }
 
-div.menu
+div.menutop
 {
-    padding: 4px 0px 4px 8px;
+    background-color:mediumblue;
+    margin-bottom: 0px;
+    text-align: right;
+    float: right !important;
+  
 }
 
-div.menu ul
+div.menutop ul
 {
     list-style: none;
     margin: 0px;
     padding: 0px;
     width: auto;
+      
 }
 
-/*div.menu ul li a:visited,*/
-div.menu ul li a
-{
-    /*background-color: #1f73c6;*/
-    border: 2px #ffffff solid;
+div.menutop ul li a
+{ 
+    border: #fff solid;
+    text-align: center;
     font-family: Lemon/Milk;
     font-weight: bolder;
-    margin-right:3px;
-    color: #ffffff;
+    font-size: 15px;
+    color: #fff;
     display: block;
     line-height: 1.35em;
+    margin: 5px;
     padding: 4px 20px;
     text-decoration: none;
     white-space: nowrap;
+    float: right; 
+}
+
+div.menutop ul li a:hover
+{
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+}
+
+#sidemenuheader {
+
+    margin-top: 20px;
+    margin-bottom: 5px;
+    background-color: black;
+    color: #eeeeee;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+div.menu
+{
+    width: 100%;    
 }
 
 div.menu ul li a:hover
 {
-    background-color: #ffffff;
-    color: #0d0d0d;
+    background-color: #666666;
+    color: #fff;
     text-decoration: none;
 }
 
-div.menu ul li a:active
-{
-    background-color: #ffffff;
-    color: #0d0d0d;
+.main_menu
+    {
+        margin-bottom: 5px !important;
+        width: 272.5px;
+        text-align: center;
+        font-family: Lemon/Milk;
+        font-weight: bolder;
+        font-size: 17px;
+        background-color:#EEEEEE;
+        color: #000000;
+        display: block;
+        line-height: 1.35em;
+        padding: 20px 20px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .selected
+    {
+        background-color:#666666;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btnsetup {
+    
+    border: grey solid;
+    text-align: center;
+    font-family: Lemon/Milk;
+    font-weight: bolder;
+    font-size: 15px;
+    background-color: transparent;
+    color: #000;
+    display: block;
+    line-height: 1.35em;
+    margin: 2px;
+    padding: 10px;
+    width: 100%;
     text-decoration: none;
+    white-space: nowrap;
+    float: right; 
+}
+    .btnsetup:hover {
+
+        background-color: grey;
+        color: white;
+    }
+    .btnsetup.active {
+        
+        background-color: grey;
+        color: white;
+    }
+
+.setuppage {
+    
+    border: grey solid !important;
+    background-color: #ffffff !important;
+    padding: 10px !important;
+    height: 200px;
+    width: 545px !important;
+  
 }
 
-/*.menu-active
-{
-    background-color: #ffffff;
-    color: #0d0d0d;
-    text-decoration: none;
-}*/
+.form-check-label {
+
+    margin-top: 10px;
+}
+
 
 /* FORM ELEMENTS   
 ----------------------------------------------------------*/
@@ -229,13 +298,20 @@ legend
     padding: 2px 4px 8px 4px;
 }
 
+.nav-tabs a, .nav-tabs a:hover, .nav-tabs a:focus
+{
+            outline: 0;
+}
+
 /*margin label-----------------------------------------*/
 
 .col-form-label
 {
-    margin-left:50px;
+    margin-left:20px;
     font-size:17px;
     font-family:Lemon/Milk;
+    padding-right: 0px;
+    width: 200px
 }
 
 .input
@@ -247,7 +323,6 @@ legend
 {
     width:100px;
     height:auto;
-
     -webkit-transition  : width 0.2s linear;
     transition  : width 0.2s linear;
 }
@@ -271,16 +346,14 @@ legend
 
 .textbox-anim:focus
 {
-    width:360px !important;
+    width:340px !important;
     
     -webkit-transition  : width 0.2s linear !important;
     transition  : width 0.2s linear !important;
 }
 
-#AutoGenerate {
-    
-    width: 260px; 
-    background-color: #FFFF00; 
+.autogeneratelabel {
+
+    font-size: 20px;
     font-family: Courier; 
-    text-align: center
 }

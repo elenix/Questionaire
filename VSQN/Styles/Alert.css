@@ -1,6 +1,7 @@
 ﻿.messagealert
 {
             width: 89%;
+            float: top;
             position: fixed;
             margin-top: 10px;
             z-index: 100000;

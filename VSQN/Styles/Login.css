@@ -1,0 +1,41 @@
+﻿/*-----Header style----------------------------------*/
+
+div.hideSkiplink
+{
+    background-color: mediumblue;
+    /*background-color:#3B5998;*/
+    width:100%;
+    height: 70px;
+}
+
+.container {
+
+    margin: 20px 20px 20px 20px;
+}
+
+h1,h2,h3 {
+
+    font-family: Tahoma, Geneva, sans-serif !important;
+    font-weight: bold;
+}
+
+div.vertical-line{
+  width: 3px; /* Line width */
+  background-color: grey; /* Line color */
+  height: 100%; /* Override in-line if you want specific height. */
+  float: left; /* Causes the line to float to left of content. 
+    You can instead use position:absolute or display:inline-block
+    if this fits better with your design */
+}
+
+.page-line {
+
+    background-color: black !important;
+    height: 2px !important;
+    margin-top: 5px;
+}
+
+#HyperLink1 {
+
+    margin-left: 10px;
+}

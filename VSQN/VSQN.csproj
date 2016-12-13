@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=16.1.1.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.16.1.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -62,7 +66,10 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EditQuestion.aspx" />
+    <Content Include="icon\Background white.jpg" />
+    <Content Include="icon\Background.jpg" />
+    <Content Include="Styles\Login.css" />
+    <Content Include="View\Admin\EditQuestion.aspx" />
     <Content Include="icon\add.png" />
     <Content Include="icon\favicon.jpg" />
     <Content Include="icon\favicon.png" />
@@ -72,14 +79,9 @@
     <Content Include="icon\view_sort_descending.png" />
     <Content Include="Scripts\Alert.js" />
     <Content Include="Styles\Alert.css" />
-    <Content Include="ViewQuestion.aspx" />
-    <Content Include="QuesSetup.aspx" />
-    <Content Include="Account\ChangePassword.aspx" />
-    <Content Include="Account\ChangePasswordSuccess.aspx" />
-    <Content Include="Account\Login.aspx" />
-    <Content Include="Account\Register.aspx" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="View\Admin\UserSetup.aspx" />
+    <Content Include="View\Admin\ViewQuestion.aspx" />
+    <Content Include="View\Admin\QuesSetup.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.js" />
@@ -88,11 +90,9 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Styles\Site.css" />
-    <Content Include="Default.aspx" />
+    <Content Include="View\Admin\Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.4.1.js" />
-    <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="View\Login\Login.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -104,66 +104,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditQuestion.aspx.cs">
-      <DependentUpon>EditQuestion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EditQuestion.aspx.designer.cs">
-      <DependentUpon>EditQuestion.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ViewQuestion.aspx.cs">
-      <DependentUpon>ViewQuestion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ViewQuestion.aspx.designer.cs">
-      <DependentUpon>ViewQuestion.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="QuesSetup.aspx.cs">
-      <DependentUpon>QuesSetup.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="QuesSetup.aspx.designer.cs">
-      <DependentUpon>QuesSetup.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\ChangePassword.aspx.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\ChangePassword.aspx.designer.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\ChangePasswordSuccess.aspx.cs">
-      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\ChangePasswordSuccess.aspx.designer.cs">
-      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Register.aspx.designer.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -171,18 +111,68 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="View\Admin\EditQuestion.aspx.cs">
+      <DependentUpon>EditQuestion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\EditQuestion.aspx.designer.cs">
+      <DependentUpon>EditQuestion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\UserSetup.aspx.cs">
+      <DependentUpon>UserSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\UserSetup.aspx.designer.cs">
+      <DependentUpon>UserSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\ViewQuestion.aspx.cs">
+      <DependentUpon>ViewQuestion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\ViewQuestion.aspx.designer.cs">
+      <DependentUpon>ViewQuestion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\QuesSetup.aspx.cs">
+      <DependentUpon>QuesSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\QuesSetup.aspx.designer.cs">
+      <DependentUpon>QuesSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Admin\Admin.Master.cs">
+      <DependentUpon>Admin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\Admin.Master.designer.cs">
+      <DependentUpon>Admin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="View\Login\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Login\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Account\Web.config" />
-    <Content Include="Site.Master" />
+    <Content Include="View\Admin\Admin.Master" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Content\bootstrap-theme.css.map" />
-    <None Include="Content\bootstrap-theme.min.css.map" />
     <None Include="Content\bootstrap.css.map" />
     <None Include="Content\bootstrap.min.css.map" />
     <None Include="fonts\glyphicons-halflings-regular.eot" />
@@ -191,6 +181,8 @@
     <None Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="Site.Master" />
+    <Content Include="Web.sitemap" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
