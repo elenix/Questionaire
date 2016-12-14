@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="icon\Background white.jpg" />
     <Content Include="icon\Background.jpg" />
+    <Content Include="icon\quanta.jpg" />
     <Content Include="Styles\Login.css" />
     <Content Include="View\Admin\EditQuestion.aspx" />
     <Content Include="icon\add.png" />

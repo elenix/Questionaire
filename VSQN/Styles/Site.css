@@ -83,24 +83,10 @@ th
     text-align:center;
 }
     
-.header
-{
-    position: relative;
-    margin: 0px;
-    padding: 0px;
-    background: #4b6c9e;
-    width: 100%;
-}
+div.header {
 
-.header h1
-{
-    font-weight: 700;
-    margin: 0px;
-    padding: 0px 0px 0px 20px;
-    color: #f9f9f9;
-    border: none;
-    line-height: 2em;
-    font-size: 2em;
+    margin-left: 46px;
+    margin-right: 46px;
 }
 
 .main
