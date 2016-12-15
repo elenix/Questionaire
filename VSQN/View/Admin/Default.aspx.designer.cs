@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VSQN {
+namespace VSQN.View.Admin {
     
     
     public partial class _Default {

@@ -17,6 +17,7 @@ namespace VSQN.View.Login
         private SqlDataAdapter adapt;
         private DataTable dt;
         private SqlCommand command;
+        string _usertype;
 
         public enum MessageType { Success, Error, Info, Warning };
 
@@ -32,6 +33,7 @@ namespace VSQN.View.Login
         {
             con = new SqlConnection(cs);
             string query = "select * from UserAuth where email = @email and password = @pass";
+            
             using (con = new SqlConnection(cs))
             {
                 using (command = new SqlCommand(query, con))
@@ -42,17 +44,31 @@ namespace VSQN.View.Login
                     dt = new DataTable();
                     adapt.Fill(dt);
                     con.Open();
-                    int i = command.ExecuteNonQuery();
+                    int i = command.ExecuteNonQuery(); 
                     con.Close();
+
                     if (dt.Rows.Count > 0)
                     {
                         foreach (DataRow row in dt.Rows)
                         { 
                             Session["username"] = row["Company"].ToString();
+                            _usertype = row["user_role"].ToString();
                         }
-                        Response.Redirect("~/View/Admin/QuesSetup.aspx");
+
+                        switch (_usertype)
+                        {
+                            case "A":
+                                Response.Redirect("~/View/Admin/QuesSetup.aspx");
+                                break;
+
+                            case "U":
+                                Response.Redirect("~/View/User/user.aspx");
+                                break;
+                        }
+
                         Session.RemoveAll();
                     }
+   
                     else
                     {
                         ShowMessage("You have entered wrong email or password. Please try again", MessageType.Error);

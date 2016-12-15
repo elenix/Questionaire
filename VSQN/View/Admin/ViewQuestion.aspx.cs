@@ -1,42 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Configuration;
-using System.Web.Configuration;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-namespace VSQN
+namespace VSQN.View.Admin
 {
     public partial class ViewQuestion : System.Web.UI.Page
     {
-        string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
-        SqlConnection con;
-        SqlDataAdapter adapt;
-        SqlCommand command;
-        DataTable dt;
+        private readonly string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        private SqlConnection con;
+        private SqlDataAdapter adapt;
+        private SqlCommand command;
+        private DataTable dt;
+        private string _message;
 
-        public enum MessageType { Success, Error, Info, Warning };
+        protected enum MessageType { Success, Error, Info, Warning };
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 LoadModalMenuDropdown();
+
+                if (Session["update_message"] != null)
+                {
+                    _message = Session["update_message"].ToString();
+                    ShowMessage(_message, MessageType.Info);
+                    ModuleMenu.SelectedIndex = Convert.ToInt32(Session["selected_module"]);
+                }
+                else if (Session["create_message"] != null)
+                {
+                    _message = Session["create_message"].ToString();
+                    ShowMessage(_message, MessageType.Success);
+                    ModuleMenu.SelectedIndex = Convert.ToInt32(Session["selected_module"]);
+                }
+                else if (Session["cancel_edit"] != null)
+                {
+                    _message = Session["cancel_edit"].ToString();
+                    ShowMessage(_message, MessageType.Warning);
+                    ModuleMenu.SelectedIndex = Convert.ToInt32(Session["selected_module"]);
+                }
+             
                 ShowData();
+                Session.Contents.RemoveAll();
             }
 
         }
 
-        protected void LoadModalMenuDropdown()
+        private void LoadModalMenuDropdown()
         {
             con = new SqlConnection(cs);
             string com = "Select * from Module";
             adapt = new SqlDataAdapter(com, con);
-            DataTable dt = new DataTable();
+            dt = new DataTable();
             adapt.Fill(dt);
             ModuleMenu.DataSource = dt;
             ModuleMenu.DataBind();
@@ -58,7 +76,7 @@ namespace VSQN
         }
 
         //ShowData method for Displaying Data in Gridview  
-        protected void ShowData()
+        private void ShowData()
         {
             dt = new DataTable();
             con = new SqlConnection(cs);
@@ -90,32 +108,6 @@ namespace VSQN
             //Result.EditIndex = e.NewEditIndex;
             //ShowData();
             Response.Redirect("EditQuestion.aspx");
-        }
-
-        protected void Result_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
-        {
-            //Finding the controls from Gridview for the row which is going to update  
-            Label id = Result.Rows[e.RowIndex].FindControl("lblReferenceCode") as Label;
-            TextBox ques = Result.Rows[e.RowIndex].FindControl("txtQuestion") as TextBox;
-            con = new SqlConnection(cs);
-            con.Open();
-            //updating the record  
-            SqlCommand cmd = new SqlCommand("Update QuestionInfo set Ques='"+ques.Text+"', Date_Time=GETDATE() where Ref_Code="+Convert.ToInt32(id.Text),con);
-            cmd.ExecuteNonQuery();
-            con.Close();
-            //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
-            Result.EditIndex = -1;
-            //Call ShowData method for displaying updated data  
-            ShowData();
-            ShowMessage("Your question have been updated.", MessageType.Info);
-        }
-
-        protected void Result_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
-        {
-            //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
-            Result.EditIndex = -1;
-            ShowData();
-            ShowMessage("You have cancelled your question update.", MessageType.Warning);
         }
 
         protected void Result_RowDeleting(object sender, GridViewDeleteEventArgs e)

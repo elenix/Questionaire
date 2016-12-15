@@ -64,16 +64,21 @@
                                         <br />
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox">
-                                            Leave
+                                            Statutory Report
+                                        </label>
+                                        <br />
+                                         <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox">
+                                            Attendance
                                         </label>
                                         <br />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-check">
-                                        <label class="form-check-label">
+                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox">
-                                            Attendance
+                                            Leave
                                         </label>
                                         <br />
                                         <label class="form-check-label">
@@ -83,12 +88,17 @@
                                         <br />
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox">
-                                            Import
+                                            Financial 
+                                        </label>
+                                        <br /> 
+                                         <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox">
+                                            Data Import
                                         </label>
                                         <br />
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox">
-                                            Statutory
+                                            Training
                                         </label>
                                         <br />
                                     </div>
@@ -97,18 +107,32 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox">
-                                            FSI
+                                            Perfomance
                                         </label>
                                         <br />
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox">
-                                            Inventory
+                                            Staff Inventory
+                                        </label>
+                                        <br />
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox">
+                                            Transport 
+                                        </label>
+                                        <br />
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox">
+                                            Manpower
+                                        </label>
+                                        <br />
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox">
+                                            Recruitment
                                         </label>
                                         <br />
                                     </div>
                                 </div>
                             </div>
-
                         </asp:View>
                         <asp:View ID="View2" runat="server">
                         </asp:View>

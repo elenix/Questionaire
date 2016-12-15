@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Question Setup" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true"
-    CodeBehind="QuesSetup.aspx.cs" Inherits="VSQN.QuesSetup" %>
+    CodeBehind="QuesSetup.aspx.cs" Inherits="VSQN.View.Admin.QuesSetup" %>
 
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 </asp:Content>

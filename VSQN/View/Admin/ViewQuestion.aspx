@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="View Question" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true"
-    CodeBehind="ViewQuestion.aspx.cs" Inherits="VSQN.ViewQuestion" %>
+    CodeBehind="ViewQuestion.aspx.cs" Inherits="VSQN.View.Admin.ViewQuestion" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -24,8 +24,8 @@
                         <ContentTemplate>
                             <%--put table here--%>
                             <asp:GridView ID="Result" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False"
-                                PageSize="10" OnRowCancelingEdit="Result_RowCancelingEdit" OnRowEditing="Result_RowEditing" OnPageIndexChanging="Result_PageIndexChanging" emptydatatext="No Data Available. Please choose other Module" 
-                                OnRowUpdating="Result_RowUpdating" OnRowDeleting="Result_RowDeleting" OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
+                                PageSize="10" OnRowEditing="Result_RowEditing" OnPageIndexChanging="Result_PageIndexChanging" emptydatatext="No Data Available. Please choose other Module" 
+                                 OnRowDeleting="Result_RowDeleting" OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
                                 <Columns>
                                     <asp:TemplateField HeaderText="Reference Code" HeaderStyle-Width="13%" SortExpression="Ref_Code"> 
                                         <ItemTemplate>
@@ -50,10 +50,6 @@
                                             <asp:Button ID="btn_Edit" runat="server" Text="EDIT" CommandName="Edit" CssClass="btn btn-success" />
                                             <asp:Button ID="btn_Delete" runat="server" Text="DELETE" CommandName="Delete" CssClass="btn btn-danger" OnClientClick="return confirm('Do you want to delete this row?');" />
                                         </ItemTemplate>
-                                        <EditItemTemplate>
-                                            <asp:Button ID="btn_Update" runat="server" Text="UPDATE" CommandName="Update" CssClass="btn btn-info" />
-                                            <asp:Button ID="btn_Cancel" runat="server" Text="CANCEL" CommandName="Cancel" CssClass="btn btn-warning" />
-                                        </EditItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
                                 <FooterStyle BackColor="#CCCCCC" />  

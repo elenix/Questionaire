@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Configuration;
+using System.Linq;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-namespace VSQN
+namespace VSQN.View.Admin
 {
     public partial class EditQuestion : System.Web.UI.Page
     {
@@ -19,15 +18,15 @@ namespace VSQN
         SqlCommand command;
         DataTable RBTable = new DataTable();
         DataTable CBTable = new DataTable();
-        int _typeOfInput = 0;
+        int _typeOfInput  = 0;
         int _moduleChoose = 0;
         string _fieldTypeEdit = null;
-        string _textAnswer = null;
-        List<string> _optionAnswer = new List<string>();
+        string _textAnswer    = null;
+        List<string> _optionAnswer      = new List<string>();
         List<string> AnswerOptionUpdate = new List<string>();
         string queryDelete = "DeleteQuestionAnswerOption";
         string queryOption = "AddQuestionAnswerOption";
-        string queryText = "AddQuestionAnswerForText";
+        string queryText   = "AddQuestionAnswerForText";
 
         protected enum MessageType { Success, Error, Info, Warning };
 
@@ -50,7 +49,7 @@ namespace VSQN
             }
         }
 
-        protected void ExtractData()
+        private void ExtractData()
         {
             con = new SqlConnection(cs);
             string query = "ExtractQuestionData";
@@ -126,7 +125,7 @@ namespace VSQN
             ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
         }
 
-        protected void LoadModalMenuDropdown()
+        private void LoadModalMenuDropdown()
         {
             con = new SqlConnection(cs);
             string com = "Select * from Module";
@@ -142,7 +141,7 @@ namespace VSQN
             ModuleMenu.SelectedIndex = _moduleChoose;
         }
 
-        protected void AnswerField()
+        private void AnswerField()
         {
             //For Question with Text Box Answer Data
             if (_typeOfInput == 1)
@@ -251,7 +250,8 @@ namespace VSQN
         //Button cancel
         protected void button_cancel(object sender, EventArgs e)
         {
-            ShowMessage("You have cancelled your question update.", MessageType.Warning);
+            Session["cancel_edit"] = "You have cancelled your question update.";
+            Session["selected_module"] = ModuleMenu.SelectedValue;
             Response.Redirect("ViewQuestion.aspx");
         }
 
@@ -401,7 +401,8 @@ namespace VSQN
                 }
 
                 con.Close();
-                ShowMessage("Your question have been updated.", MessageType.Info);
+                Session["update_message"] = "Your question have been updated.";
+                Session["selected_module"] = ModuleMenu.SelectedValue; 
                 Response.Redirect("ViewQuestion.aspx");
             }
         }
@@ -530,7 +531,8 @@ namespace VSQN
                     }
                 }
                 con.Close();
-                ShowMessage("New Question have been created!", MessageType.Success);
+                Session["create_message"] = "New Question have been created!";
+                Session["selected_module"] = ModuleMenu.SelectedValue;
                 Response.Redirect("ViewQuestion.aspx");
             }
         }

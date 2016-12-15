@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Edit Question" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="EditQuestion.aspx.cs" Inherits="VSQN.EditQuestion" %>
+﻿<%@ Page Title="Edit Question" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="EditQuestion.aspx.cs" Inherits="VSQN.View.Admin.EditQuestion" %>
 <asp:Content ID="HeadContent1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="HeadContent2" ContentPlaceHolderID="MainContent" runat="server">

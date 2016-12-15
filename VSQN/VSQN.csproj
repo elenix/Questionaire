@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="icon\Background white.jpg" />
     <Content Include="icon\Background.jpg" />
+    <Content Include="icon\ca.png" />
     <Content Include="icon\quanta.jpg" />
     <Content Include="Styles\Login.css" />
     <Content Include="View\Admin\EditQuestion.aspx" />
@@ -94,6 +95,7 @@
     <Content Include="View\Admin\Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="View\Login\Login.aspx" />
+    <Content Include="View\User\user.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -164,6 +166,13 @@
     </Compile>
     <Compile Include="View\Login\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\user.aspx.cs">
+      <DependentUpon>user.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\user.aspx.designer.cs">
+      <DependentUpon>user.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
