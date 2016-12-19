@@ -60,15 +60,6 @@ hr {
     height: 2px !important;
 }
 
-
-/* this rule styles <h1> and <h2> tags that are the 
-first child of the left and right table columns */
-.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
-{
-    margin-top: 0px;
-}
-
-
 /* PRIMARY LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 
@@ -254,6 +245,11 @@ div.menu ul li a:hover
 .form-check-label {
 
     margin-top: 5px;
+}
+
+.form-check-label-big {
+
+    margin: 0px;
 }
 
 
