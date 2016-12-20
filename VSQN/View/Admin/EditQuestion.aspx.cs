@@ -165,10 +165,11 @@ namespace VSQN.View.Admin
                 TypeOfInputEdit.SelectedIndex = _typeOfInput;
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
 
-                for (int i = 0; i < _optionAnswer.Count; i++) // LOAD ALL ANSWER INTO TEXT BOX FOR RADIO BUTTON
+                foreach (string ans in _optionAnswer)
                 {
-                    RBTable.Rows.Add(_optionAnswer[i]);
+                    RBTable.Rows.Add(ans); // LOAD ALL ANSWER INTO TEXT BOX FOR RADIO BUTTON
                 }
+
                 Bind();
 
             }
@@ -177,10 +178,11 @@ namespace VSQN.View.Admin
                 TypeOfInputEdit.SelectedIndex = _typeOfInput;
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
 
-                for (int i = 0; i < _optionAnswer.Count; i++) // LOAD ALL ANSWER INTO TEXT BOX FOR CHECK BOX
+                foreach (string ans in _optionAnswer)
                 {
-                    CBTable.Rows.Add(_optionAnswer[i]);
+                    CBTable.Rows.Add(ans); // LOAD ALL ANSWER INTO TEXT BOX FOR CHECK BOX
                 }
+
                 Bind();
             }
         }
@@ -193,8 +195,9 @@ namespace VSQN.View.Admin
             RepeaterCBBox.DataBind();
         }
 
-        //Repeater for Radio Button Answer Box
-        private void PopulateDataTableRB()
+        #region Repeater for Radio Button Answer Box
+
+        private void PopulateDataTableRb()
         {
             foreach (RepeaterItem item in RepeaterRBBox.Items)
             {
@@ -207,21 +210,23 @@ namespace VSQN.View.Admin
 
         protected void RepeaterRBBox_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            PopulateDataTableRB();
+            PopulateDataTableRb();
             RBTable.Rows[e.Item.ItemIndex].Delete();
             Bind();
         }
 
         protected void btnAddRB_Click(object sender, EventArgs e)
         {
-            PopulateDataTableRB();
+            PopulateDataTableRb();
             RBTable.Rows.Add(RBTable.NewRow());
 
             Bind();
         }
+        #endregion
 
-        //Repeater for Check Box Answer Box
-        private void PopulateDataTableCB()
+        #region Repeater for Check Box Answer Box
+
+        private void PopulateDataTableCb()
         {
             foreach (RepeaterItem item in RepeaterCBBox.Items)
             {
@@ -234,18 +239,20 @@ namespace VSQN.View.Admin
 
         protected void RepeaterCBBox_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            PopulateDataTableCB();
+            PopulateDataTableCb();
             CBTable.Rows[e.Item.ItemIndex].Delete();
             Bind();
         }
 
         protected void btnAddCB_Click(object sender, EventArgs e)
         {
-            PopulateDataTableCB();
+            PopulateDataTableCb();
             CBTable.Rows.Add(CBTable.NewRow());
 
             Bind();
         }
+
+        #endregion
 
         //Button cancel
         protected void button_cancel(object sender, EventArgs e)

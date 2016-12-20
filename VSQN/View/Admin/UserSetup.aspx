@@ -48,236 +48,22 @@
                             <asp:MultiView ID="MultiView1" runat="server" ActiveViewIndex="0">
                                 <asp:View ID="View1" runat="server">
                                     <div class="row" style="margin: 0px;">
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkAdmin" runat="server" />
-                                                    Admin
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkEmployee" runat="server" />
-                                                    Employee
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkPayroll" runat="server" />
-                                                    Payroll
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkStatutory" runat="server" />
-                                                    Statutory Report
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkAttendance" runat="server" />
-                                                    Attendance
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkLeave" runat="server" />
-                                                    Leave
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkBenefit" runat="server" />
-                                                    Benefit
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkFinancial" runat="server" />
-                                                    Financial 
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkData" runat="server" />
-                                                    Data Import
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkTraining" runat="server" />
-                                                    Training
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkPerfomance" runat="server" />
-                                                    Perfomance
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkStaff" runat="server" />
-                                                    Staff Inventory
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkTransport" runat="server" />
-                                                    Transport 
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkManpower" runat="server" />
-                                                    Manpower
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkRecruitment" runat="server" />
-                                                    Recruitment
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
+                                        <asp:Panel runat="server" ID="panelHRMS"></asp:Panel>
                                     </div>
                                 </asp:View>
                                 <asp:View ID="View2" runat="server">
                                     <div class="row" style="margin: 0px;">
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeLeave" runat="server" />
-                                                    eLeave
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeOvertime" runat="server" />
-                                                    eOvertime
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeAttendance" runat="server" />
-                                                    eAttendance
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeClaim" runat="server" />
-                                                    eClaim
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeStaff" runat="server" />
-                                                    eStaff 
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeCanteen" runat="server" />
-                                                    eCanteen
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkePayslip" runat="server" />
-                                                    ePayslip 
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkePCB" runat="server" />
-                                                    ePCB
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeEA" runat="server" />
-                                                    eEA 
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label">
-                                                    <asp:CheckBox ID="chkeKIOSK" runat="server" />
-                                                    eKIOSK
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
+                                        <asp:Panel runat="server" ID="panelESS"></asp:Panel>
                                     </div>
                                 </asp:View>
                                 <asp:View ID="View3" runat="server">
                                     <div class="row" style="margin: 0px;">
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkBusiness" runat="server" />
-                                                    Business Scorecard
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkPerformanceScore" runat="server" />
-                                                    Performance Scorecard
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkTNA" runat="server" />
-                                                    TNA
-                                                </label>
-                                                <br />
-                                                 <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkPerformanceDash" runat="server" />
-                                                    Performance Dashboard
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkTrainingManage" runat="server" />
-                                                    Training Management 
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkRecruitmentSelection" runat="server" />
-                                                    Recruitment & Selection
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkRecruitmentPor" runat="server" />
-                                                    Recruitment Portal 
-                                                </label>
-                                                <br />
-                                               <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkTrainingPor" runat="server" />
-                                                    Training Portal
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkEmployeeRelation" runat="server" />
-                                                    Employee Relation 
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkOrganization" runat="server" />
-                                                    Organization Chart
-                                                </label>
-                                                <br />
-                                                <label class="form-check-label-big">
-                                                    <asp:CheckBox ID="chkTalent" runat="server" />
-                                                    Talent Management
-                                                </label>
-                                                <br />
-                                            </div>
-                                        </div>
+                                        <asp:Panel runat="server" ID="panelHRSS"></asp:Panel>
                                     </div>
                                 </asp:View>
                                 <asp:View ID="View4" runat="server">
                                     <div class="row" style="margin: 0px;">
-                                        <div class="col-md-4">
-                                        </div>
+                                        <asp:Panel runat="server" ID="panelSAAS"></asp:Panel>
                                     </div>
                                 </asp:View>
                             </asp:MultiView>
@@ -291,7 +77,7 @@
                     <asp:AsyncPostBackTrigger ControlID="ButtonSAAS" />
                 </Triggers>
             </asp:UpdatePanel>
-            <asp:Button ID="btnsave" runat="server" Text="SAVE"  CssClass="btn btn-success col-md-offset-10" Width="81px" OnClick="btn_save" />
+            <asp:Button ID="btnsave" runat="server" Text="SAVE" CssClass="btn btn-success col-md-offset-10" Width="81px" OnClick="btn_save" />
         </div>
     </div>
 </asp:Content>
