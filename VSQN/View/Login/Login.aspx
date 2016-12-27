@@ -19,13 +19,13 @@
             <div class="hideSkiplink">
             </div>
         </div>
-        
+
         <div class="container">
             <div class="messagealert" id="alert_container">
-        </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
-                    <%--visual solution logo--%> 
+                    <%--visual solution logo--%>
                     <asp:Image ID="Image1" runat="server" ImageUrl="~/icon/ca.png" Width="100%" />
                 </div>
                 <div class="col-md-6">
@@ -35,42 +35,27 @@
                                 <h2>Log In</h2>
                                 <hr class="page-line" />
                                 <div class="form-group">
-                                    <label for="InputEmail">Email address</label>
+                                    <label>Email address</label>
                                     <asp:TextBox ID="InputEmail" runat="server" placeholder="Enter Email" CssClass="form-control"></asp:TextBox>
                                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="userpassword">Password</label>
+                                    <label>Password</label>
                                     <asp:TextBox ID="userpassword" runat="server" placeholder="Enter Your Password" CssClass="form-control" TextMode="Password"></asp:TextBox>
                                 </div>
                                 <asp:Button ID="btnlogin" runat="server" Text="Login" CssClass="btn btn-success" OnClick="Login_Success" />
-                                <asp:Button ID="btnregister" runat="server" Text="Register" CssClass="btn btn-warning" OnClick="Register_Click" />
+                                <asp:LinkButton ID="LinkForgotPass" runat="server" OnClick="Forgot_Click">Forgot Your Password?</asp:LinkButton>
                             </asp:View>
                             <asp:View ID="RegisterView" runat="server">
-                                <h2>Register</h2>
+                                <h4>The Reset Code will be send to your Email</h4>
                                 <hr class="page-line" />
                                 <div class="form-group">
-                                    <label for="userName">User Name</label>
-                                    <asp:TextBox ID="userName" runat="server" placeholder="Enter user name" CssClass="form-control"></asp:TextBox>
+                                    <label>Email address</label>
+                                    <asp:TextBox ID="newEmail" runat="server" placeholder="Enter The Email" CssClass="form-control"></asp:TextBox>
                                 </div>
-                                <div class="form-group">
-                                    <label for="companyId">Company</label>
-                                    <asp:TextBox ID="companyId" runat="server" placeholder="Enter company name" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="newEmail">Email address</label>
-                                    <asp:TextBox ID="newEmail" runat="server" placeholder="Enter Email" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="newPassword">Password</label>
-                                    <asp:TextBox ID="newPassword" runat="server" placeholder="Enter Your Password" CssClass="form-control" TextMode="Password" Width="300px"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="confirmPassword">Confirm Password</label>
-                                    <asp:TextBox ID="confirmPassword" runat="server" placeholder="Enter Again Your Password" CssClass="form-control" TextMode="Password" Width="300px"></asp:TextBox>
-                                </div>
-                                <asp:Button ID="btnnewregister" runat="server" Text="Register" CssClass="btn btn-warning" OnClick="Register_New" />
-                                <asp:LinkButton ID="HyperLink1" runat="server" OnClick="Login_Click">Already have an account?</asp:LinkButton>
+
+                                <asp:Button ID="btnSend" runat="server" Text="Send" CssClass="btn btn-info" OnClick="Forgot_Click" />
+                                <asp:Button ID="btbBack" runat="server" Text="Back" CssClass="btn btn-error" OnClick="Login_Click" />
                             </asp:View>
                         </asp:MultiView>
                     </div>

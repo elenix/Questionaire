@@ -3,14 +3,14 @@ using System.IO;
 using System.Text;
 using System.Security.Cryptography;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web;
 
 namespace VSQN.View.Login
 {
-    public partial class Login : System.Web.UI.Page
+    public partial class Login : Page
     {
         private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
         private SqlConnection _con;
@@ -26,6 +26,7 @@ namespace VSQN.View.Login
             if (!IsPostBack)
             {
                 MultiView.ActiveViewIndex = 0;
+                Session.RemoveAll();
             }
         }
 
@@ -44,7 +45,7 @@ namespace VSQN.View.Login
                     _dt = new DataTable();
                     _adapt.Fill(_dt);
                     _con.Open();
-                    int i = _command.ExecuteNonQuery(); 
+                    _command.ExecuteNonQuery();
                     _con.Close();
 
                     if (_dt.Rows.Count > 0)
@@ -52,6 +53,7 @@ namespace VSQN.View.Login
                         foreach (DataRow row in _dt.Rows)
                         { 
                             Session["username"] = row["Company"].ToString();
+                            Session["user_role"] = row["user_role"].ToString();
                             _usertype = row["user_role"].ToString();
                         }
 
@@ -82,59 +84,20 @@ namespace VSQN.View.Login
             MultiView.ActiveViewIndex = 0;
         }
 
-        protected void Register_Click(object sender, EventArgs e)
+        protected void Forgot_Click(object sender, EventArgs e)
         {
             MultiView.ActiveViewIndex = 1;
         }
 
-        private void ShowMessage(string Message, MessageType type)
+        private void ShowMessage(string message, MessageType type)
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
+            ScriptManager.RegisterStartupScript(this, type: GetType(), key: Guid.NewGuid().ToString(), script: "ShowMessage('" + message + "','" + type + "');", addScriptTags: true);
 
         }
 
         protected void Register_New(object sender, EventArgs e)
         {
-            _con = new SqlConnection(_cs);
-            string query = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
-
-            if (String.IsNullOrWhiteSpace(userName.Text))
-            {
-                ShowMessage("Please enter <b>Username</b> before proceed to next", MessageType.Error);
-            }
-            else if (String.IsNullOrWhiteSpace(companyId.Text))
-            {
-                ShowMessage("Please enter <b>Company Name</b> before proceed to next", MessageType.Error);
-            }
-            else if (String.IsNullOrWhiteSpace(newEmail.Text))
-            {
-                ShowMessage("Please enter <b>Company Email</b> before proceed to next", MessageType.Error);
-            }
-            else if (String.IsNullOrWhiteSpace(newPassword.Text))
-            {
-                ShowMessage("Please enter your <b>Password</b> before proceed to next", MessageType.Error);
-            }
-            else if (newPassword.Text != confirmPassword.Text)
-            {
-                ShowMessage("Your <b>Comfirm Password</b> did not match!", MessageType.Error);
-            }
-            else
-            {
-                using (_con = new SqlConnection(_cs))
-                {
-                    using (_command = new SqlCommand(query, _con))
-                    {
-                        _command.Parameters.AddWithValue("@Username", userName.Text);
-                        _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                        _command.Parameters.AddWithValue("@Password", Encrypt(newPassword.Text));
-                        _command.Parameters.AddWithValue("@company", companyId.Text);
-                        _con.Open();
-                        _command.ExecuteNonQuery();
-                        ShowMessage("You have succesfully registered! Now please Login", MessageType.Success);
-                        MultiView.ActiveViewIndex = 0;
-                    }
-                }
-            }
+           
         }
 
         private static string Encrypt(string clearText)

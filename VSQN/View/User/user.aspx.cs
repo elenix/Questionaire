@@ -11,7 +11,13 @@ namespace VSQN.View.User
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["username"] != null)
+            {
+                string username = Session["username"].ToString();
+                //panelWelcome.Controls.Add(new LiteralControl("<h2>WELCOME"+username+ "</h2>"));
+                welcomemsg.Text = "Welcome, " + (char.ToUpper(username[0]) + username.Substring(1)); ;
 
+            }
         }
     }
 }

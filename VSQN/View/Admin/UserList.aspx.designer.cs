@@ -10,7 +10,7 @@
 namespace VSQN.View.Admin {
     
     
-    public partial class ViewQuestion {
+    public partial class UserList {
         
         /// <summary>
         /// ScriptManager1 control.
@@ -22,24 +22,6 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// SystemList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList SystemList;
-        
-        /// <summary>
-        /// ModuleMenu control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ModuleMenu;
-        
-        /// <summary>
         /// UpdateViewQuestion control.
         /// </summary>
         /// <remarks>
@@ -49,12 +31,12 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.UpdatePanel UpdateViewQuestion;
         
         /// <summary>
-        /// Result control.
+        /// ResultUserList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView Result;
+        protected global::System.Web.UI.WebControls.GridView ResultUserList;
     }
 }

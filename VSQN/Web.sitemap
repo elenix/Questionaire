@@ -4,5 +4,6 @@
         <siteMapNode url="View/Admin/QuesSetup.aspx" title="QUESTION SETUP"  description="Question Setup" />
         <siteMapNode url="View/Admin/ViewQuestion.aspx" title="QUESTION BANK"  description="Question bank" />
         <siteMapNode url="View/Admin/UserSetup.aspx" title="USER SETUP"  description="User Setup" />
+        <siteMapNode url="View/Admin/UserList.aspx" title="USER LIST"  description="User List" />
     </siteMapNode>
 </siteMap>

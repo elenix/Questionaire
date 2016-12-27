@@ -13,31 +13,49 @@ namespace VSQN.View.Admin {
     public partial class UserSetup {
         
         /// <summary>
-        /// Username control.
+        /// userName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Username;
+        protected global::System.Web.UI.WebControls.TextBox userName;
         
         /// <summary>
-        /// CompanyName control.
+        /// companyId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox CompanyName;
+        protected global::System.Web.UI.WebControls.TextBox companyId;
         
         /// <summary>
-        /// Email control.
+        /// newEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Email;
+        protected global::System.Web.UI.WebControls.TextBox newEmail;
+        
+        /// <summary>
+        /// newPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox newPassword;
+        
+        /// <summary>
+        /// confirmPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox confirmPassword;
         
         /// <summary>
         /// AjaxScriptManager control.

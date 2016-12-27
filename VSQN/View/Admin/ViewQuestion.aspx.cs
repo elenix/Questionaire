@@ -7,61 +7,132 @@ using System.Web.UI.WebControls;
 
 namespace VSQN.View.Admin
 {
-    public partial class ViewQuestion : System.Web.UI.Page
+    public partial class ViewQuestion : Page
     {
-        private readonly string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
-        private SqlConnection con;
-        private SqlDataAdapter adapt;
-        private SqlCommand command;
-        private DataTable dt;
+        private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        private SqlConnection _con;
+        private SqlDataAdapter _adapt;
+        private SqlCommand _command;
+        private DataTable _dt;
         private string _message;
 
-        protected enum MessageType { Success, Error, Info, Warning };
+        protected enum MessageType { Success, Error, Info, Warning }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["user_role"] != null)
             {
-                LoadModalMenuDropdown();
+                if (!IsPostBack)
+                {
+                    LoadSystemListDropwdown();
 
-                if (Session["update_message"] != null)
-                {
-                    _message = Session["update_message"].ToString();
-                    ShowMessage(_message, MessageType.Info);
-                    ModuleMenu.SelectedIndex = Convert.ToInt32(Session["selected_module"]);
+                    if (Session["update_message"] != null)
+                    {
+                        _message = Session["update_message"].ToString();
+                        ShowMessage(_message, MessageType.Info);
+                        Session["update_message"] = null;
+                    }
+                    else if (Session["create_message"] != null)
+                    {
+                        _message = Session["create_message"].ToString();
+                        ShowMessage(_message, MessageType.Success);
+                        Session["create_message"] = null;
+                    }
+                    else if (Session["cancel_edit"] != null)
+                    {
+                        _message = Session["cancel_edit"].ToString();
+                        ShowMessage(_message, MessageType.Warning);
+                        Session["cancel_edit"] = null;
+                    }
+
+                    ShowData();
                 }
-                else if (Session["create_message"] != null)
-                {
-                    _message = Session["create_message"].ToString();
-                    ShowMessage(_message, MessageType.Success);
-                    ModuleMenu.SelectedIndex = Convert.ToInt32(Session["selected_module"]);
-                }
-                else if (Session["cancel_edit"] != null)
-                {
-                    _message = Session["cancel_edit"].ToString();
-                    ShowMessage(_message, MessageType.Warning);
-                    ModuleMenu.SelectedIndex = Convert.ToInt32(Session["selected_module"]);
-                }
-             
-                ShowData();
-                Session.Contents.RemoveAll();
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
             }
 
         }
 
-        private void LoadModalMenuDropdown()
+        private void LoadSystemListDropwdown()
         {
-            con = new SqlConnection(cs);
-            string com = "Select * from Module";
-            adapt = new SqlDataAdapter(com, con);
-            dt = new DataTable();
-            adapt.Fill(dt);
-            ModuleMenu.DataSource = dt;
-            ModuleMenu.DataBind();
-            ModuleMenu.DataTextField = "Name";
-            ModuleMenu.DataValueField = "PK";
-            ModuleMenu.DataBind();
-            ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
+            _con = new SqlConnection(_cs);
+            const string com = "Select * from System_List";
+            _adapt = new SqlDataAdapter(com, _con);
+            _dt = new DataTable();
+            _adapt.Fill(_dt);
+            SystemList.DataSource = _dt;
+            SystemList.DataBind();
+            SystemList.DataTextField = "Name";
+            SystemList.DataValueField = "ID";
+            SystemList.DataBind();
+            SystemList.Items.Insert(0, new ListItem("--Select--", "0"));
+            SystemList.SelectedIndex = Convert.ToInt32(Session["selected_system"]);
+
+            if(SystemList.SelectedIndex == 1)
+            {
+                LoadModalMenuDropdown("HRMS_module");
+            }
+
+            else if (SystemList.SelectedIndex == 2)
+            {
+                LoadModalMenuDropdown("ESS_module");
+            }
+
+            Session["selected_system"] = null;
+        }
+
+        protected void SystemList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (SystemList.SelectedIndex == 1)
+            {
+                LoadModalMenuDropdown("HRMS_module");
+            }
+            else if (SystemList.SelectedIndex == 2)
+            {
+                LoadModalMenuDropdown("ESS_module");    
+            }
+
+            ShowData();
+        }
+
+        private void LoadModalMenuDropdown(string module)
+        {
+            string ModuleQuery = "";
+
+            if (module == "HRMS_module")
+            {
+                ModuleQuery = "Select * from HRMS_module ";
+            }
+            else if (module == "ESS_module")
+            {
+                ModuleQuery = "Select * from ESS_module ";
+            }
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(ModuleQuery, _con))
+                {
+                    _con.Open();
+                    _adapt = new SqlDataAdapter(_command);
+                    _dt = new DataTable();
+                    _adapt.Fill(_dt);
+                    ModuleMenu.DataSource = _dt;
+                    ModuleMenu.DataBind();
+                    ModuleMenu.DataTextField = "Name";
+                    ModuleMenu.DataValueField = "PK";
+                    ModuleMenu.DataBind();
+                    ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
+                    if(Session["selected_module"] != null)
+                    {
+                        ModuleMenu.SelectedIndex = Convert.ToInt32(Session["selected_module"]);
+                    }                   
+                    _con.Close();
+                }
+            }
+
+            Session["selected_module"] = null;
         }
 
         protected void ModelMenu_SelectedIndexChanged(object sender, EventArgs e)
@@ -78,57 +149,57 @@ namespace VSQN.View.Admin
         //ShowData method for Displaying Data in Gridview  
         private void ShowData()
         {
-            dt = new DataTable();
-            con = new SqlConnection(cs);
-            con.Open();
-            string pstringQuery = "Select Ref_Code, Ques, Date_Time from QuestionInfo where Module_FK = @ModuleID;";
-            command = new SqlCommand(pstringQuery, con);
-            command.Parameters.AddWithValue("@ModuleID", ModuleMenu.SelectedValue);
-            command.ExecuteNonQuery();
-            SqlDataReader dr = command.ExecuteReader();
-            dt.Load(dr);
+            _dt = new DataTable();
+            _con = new SqlConnection(_cs);
+            _con.Open();
+            string pstringQuery = "Select Ref_Code, Ques, Date_Time from QuestionBank where System_FK = @SystemID AND Module_FK = @ModuleID;";
+            _command = new SqlCommand(pstringQuery, _con);
+            _command.Parameters.AddWithValue("@SystemID", SystemList.SelectedValue);
+            _command.Parameters.AddWithValue("@ModuleID", ModuleMenu.SelectedValue);
+            _command.ExecuteNonQuery();
+            SqlDataReader dr = _command.ExecuteReader();
+            _dt.Load(dr);
 
-            Result.DataSource = dt;
+            Result.DataSource = _dt;
             Result.DataBind();
-            ViewState["dirState"] = dt;
+            ViewState["dirState"] = _dt;
             ViewState["sortdr"] = "Asc";
 
-            con.Close();
+            _con.Close();
         }
 
-        protected void ShowMessage(string Message, MessageType type)
+        protected void ShowMessage(string message, MessageType type)
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
         }
 
-        protected void Result_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
+        protected void Result_RowEditing(object sender, GridViewEditEventArgs e)
         {
             //NewEditIndex property used to determine the index of the row being edited.  
             Session["Row_Ref_Code"] = ((Label)Result.Rows[e.NewEditIndex].FindControl("lblReferenceCode")).Text;
-            //Result.EditIndex = e.NewEditIndex;
-            //ShowData();
             Response.Redirect("EditQuestion.aspx");
         }
 
         protected void Result_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            int ID = 0;
+            Label refNum = Result.Rows[e.RowIndex].FindControl("lblReferenceCode") as Label;
 
-            Label ref_num = Result.Rows[e.RowIndex].FindControl("lblReferenceCode") as Label;
-
-            ID = Convert.ToInt32(ref_num.Text);
-
-            if (ID != 0)
+            if (refNum != null)
             {
-                con = new SqlConnection(cs);
+                var id = Convert.ToInt32(refNum.Text);
 
-                con.Open();
-                command = new SqlCommand("Delete from QuestionInfo Where Ref_Code='" + ID + "'", con);
-                command.ExecuteNonQuery();
+                if (id != 0)
+                {
+                    _con = new SqlConnection(_cs);
+
+                    _con.Open();
+                    _command = new SqlCommand("Delete from QuestionBank Where Ref_Code='" + id + "'", _con);
+                    _command.ExecuteNonQuery();
                 
-                con.Close();
-                ShowData();
-                ShowMessage("Your Question have been deleted.", MessageType.Error);
+                    _con.Close();
+                    ShowData();
+                    ShowMessage("Your Question have been deleted.", MessageType.Error);
+                }
             }
         }
 
@@ -141,13 +212,11 @@ namespace VSQN.View.Admin
                 {
                     dtrslt.DefaultView.Sort = e.SortExpression + " Desc";
                     ViewState["sortdr"] = "Desc";
-               
                 }
                 else
                 {
                     dtrslt.DefaultView.Sort = e.SortExpression + " Asc";
-                    ViewState["sortdr"] = "Asc";
-             
+                    ViewState["sortdr"] = "Asc";             
                 }
 
                 Result.DataSource = dtrslt;

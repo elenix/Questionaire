@@ -1,4 +1,5 @@
-﻿<%@ Page Title="User Setup" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="UserSetup.aspx.cs" Inherits="VSQN.View.Admin.UserSetup" %>
+﻿<%@ Page Title="User Setup" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true" 
+    CodeBehind="UserSetup.aspx.cs" Inherits="VSQN.View.Admin.UserSetup" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -10,24 +11,38 @@
                 <hr />
             </div>
             <div class="form-group row" style="margin-top: 30px;">
-                <label for="Username" class="col-md-2 col-form-label" style="padding-right: 0px;">
-                    Name :</label>
+                <label class="col-md-2 col-form-label" style="padding-right: 0;">
+                    User Name :</label>
                 <div class="col-md-9">
-                    <asp:TextBox ID="Username" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="userName" runat="server" placeholder="Customer Name" CssClass="form-control"></asp:TextBox>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="CompanyName" class="col-md-2 col-form-label" style="padding-right: 0px;">
+                <label class="col-md-2 col-form-label" style="padding-right: 0;">
                     Company :</label>
                 <div class="col-md-9">
-                    <asp:TextBox ID="CompanyName" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="companyId" runat="server" placeholder="Customer's Company Name" CssClass="form-control"></asp:TextBox>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="Email" class="col-md-2 col-form-label" style="padding-right: 0px;">
+                <label class="col-md-2 col-form-label" style="padding-right: 0;">
                     Email :</label>
                 <div class="col-md-9">
-                    <asp:TextBox ID="Email" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="newEmail" runat="server" placeholder="ex: company@com.my" CssClass="form-control"></asp:TextBox>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" style="padding-right: 0;">
+                    Password :</label>
+                <div class="col-md-9">
+                    <asp:TextBox ID="newPassword" runat="server" placeholder="Enter The Password" CssClass="form-control" TextMode="Password" Width="300px"></asp:TextBox>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" style="padding-right: 0;">
+                    Confirm Password :</label>
+                <div class="col-md-9">
+                    <asp:TextBox ID="confirmPassword" runat="server" placeholder="Enter Again The Password" CssClass="form-control" TextMode="Password" Width="300px"></asp:TextBox>
                 </div>
             </div>
             <asp:ScriptManager ID="AjaxScriptManager" runat="server"></asp:ScriptManager>
@@ -47,22 +62,22 @@
                         <div class="setuppage col-lg-9">
                             <asp:MultiView ID="MultiView1" runat="server" ActiveViewIndex="0">
                                 <asp:View ID="View1" runat="server">
-                                    <div class="row" style="margin: 0px;">
+                                    <div class="row" style="margin: 0;">
                                         <asp:Panel runat="server" ID="panelHRMS"></asp:Panel>
                                     </div>
                                 </asp:View>
                                 <asp:View ID="View2" runat="server">
-                                    <div class="row" style="margin: 0px;">
+                                    <div class="row" style="margin: 0;">
                                         <asp:Panel runat="server" ID="panelESS"></asp:Panel>
                                     </div>
                                 </asp:View>
                                 <asp:View ID="View3" runat="server">
-                                    <div class="row" style="margin: 0px;">
+                                    <div class="row" style="margin: 0;">
                                         <asp:Panel runat="server" ID="panelHRSS"></asp:Panel>
                                     </div>
                                 </asp:View>
                                 <asp:View ID="View4" runat="server">
-                                    <div class="row" style="margin: 0px;">
+                                    <div class="row" style="margin: 0;">
                                         <asp:Panel runat="server" ID="panelSAAS"></asp:Panel>
                                     </div>
                                 </asp:View>
@@ -77,7 +92,7 @@
                     <asp:AsyncPostBackTrigger ControlID="ButtonSAAS" />
                 </Triggers>
             </asp:UpdatePanel>
-            <asp:Button ID="btnsave" runat="server" Text="SAVE" CssClass="btn btn-success col-md-offset-10" Width="81px" OnClick="btn_save" />
+            <asp:Button ID="btnsave" runat="server" Text="CREATE" CssClass="btn btn-success col-md-offset-10" Width="81px" OnClick="btn_create" />
         </div>
     </div>
 </asp:Content>

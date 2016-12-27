@@ -13,6 +13,15 @@ namespace VSQN.View.Admin {
     public partial class QuesSetup {
         
         /// <summary>
+        /// SystemList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList SystemList;
+        
+        /// <summary>
         /// ModuleMenu control.
         /// </summary>
         /// <remarks>

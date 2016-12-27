@@ -15,21 +15,24 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-         <div class="header">
+        <div>
+            <div class="header">
                 <div class="clear hideSkiplink">
-                    <asp:Menu ID="HeaderMenu" runat="server" CssClass="menutop" EnableViewState="false"
-                        IncludeStyleBlock="false" Orientation="Horizontal">
-                        <Items>
-                            <asp:MenuItem Text="LOG OUT" NavigateUrl="~/View/Login/Login.aspx"></asp:MenuItem>
-                        </Items>
-                    </asp:Menu>
+                    <div class="form-inline">
+                        <asp:Label ID="welcomemsg" runat="server" ForeColor="White"></asp:Label>
+                        <asp:Menu ID="HeaderMenu" runat="server" CssClass="menutop" EnableViewState="false"
+                            IncludeStyleBlock="false" Orientation="Horizontal">
+                            <Items>
+                                <asp:MenuItem Text="LOG OUT" NavigateUrl="~/View/Login/Login.aspx"></asp:MenuItem>
+                            </Items>
+                        </asp:Menu>
+                    </div>
                 </div>
             </div>
-        <div class="container">
-    <h1>this is user view</h1>
+            <div class="container">
+                <h1>this is user view</h1>
             </div>
-    </div>
+        </div>
     </form>
 </body>
 </html>

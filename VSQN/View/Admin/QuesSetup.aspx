@@ -8,7 +8,16 @@
 <div class="jumbotron" style="margin-top: 20px;">
             <div class="form-group">
                 <div class="form-group row">
-                        <label for="Module" class="col-md-3 col-form-label">
+                        <label class="col-md-3 col-form-label">
+                            SYSTEM :</label>
+                        <div class="col-md-4">
+                            <asp:DropDownList ID="SystemList" runat="server" AutoPostBack="true" CssClass="form-control"
+                                ControlStyle-Width="100%" OnSelectedIndexChanged="SystemList_SelectedIndexChanged">
+                            </asp:DropDownList>
+                        </div>
+                    </div>
+                <div class="form-group row">
+                        <label class="col-md-3 col-form-label">
                             MODULE :</label>
                         <div class="col-md-4">
                             <asp:DropDownList ID="ModuleMenu" runat="server" AutoPostBack="true" CssClass="form-control"
@@ -17,14 +26,14 @@
                         </div>
                     </div>
                 <div class="form-group row">
-                        <label for="AutoGenerate" class="col-md-3 col-form-label" style="padding-right: 0px;">
+                        <label class="col-md-3 col-form-label" style="padding-right: 0;">
                             REFERENCE CODE :</label>
                         <div class="col-md-4">
                             <asp:TextBox ID="AutoGenerate" runat="server" CssClass="form-control autogeneratelabel" Enabled="False" placeholder="AUTO-GENERATE(UNIQUE)" BackColor="yellow"></asp:TextBox>
                         </div>
                     </div>
                 <div class="form-group row">
-                    <label for="example-text-input" class="col-md-3 col-form-label">
+                    <label class="col-md-3 col-form-label">
                         QUESTION :<br />
                         <small>(Content)</small></label>
                     <div class="col-md-8">
@@ -33,7 +42,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" style="padding-right: 0px">
+                    <label class="col-md-3 col-form-label" style="padding-right: 0">
                         TYPE OF INPUT :</label>
                     <div class="col-md-4">
                         <asp:DropDownList ID="TypeOfInput" OnSelectedIndexChanged="TypeOfInput_SelectedIndexChanged"
@@ -55,7 +64,7 @@
                     <%--FOR TEXT BOX VIEW--%>
                     <asp:View ID="ViewTB" runat="server">
                         <div class="form-group row">
-                            <label for="TBT" class="col-md-3 col-form-label">
+                            <label class="col-md-3 col-form-label">
                                 FIELD TYPE:</label>
                             <div class="col-md-4">
                                 <asp:DropDownList ID="TBT" runat="server" CssClass="form-control">
@@ -65,7 +74,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="TBAnswer" class="col-md-3 col-form-label">
+                            <label class="col-md-3 col-form-label">
                              ANSWER :<br />
                             </label>
                             <div class="col-md-8">
@@ -76,7 +85,7 @@
                     <%--FOR MEMO VIEW--%>
                     <asp:View ID="ViewMM" runat="server">
                         <div class="form-group row">
-                            <label for="MMT" class="col-md-3 col-form-label">
+                            <label class="col-md-3 col-form-label">
                                 FIELD TYPE:</label>
                             <div class="col-md-4">
                                 <asp:DropDownList ID="MMT" runat="server" CssClass="form-control">
@@ -86,7 +95,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="MMAnswer" class="col-md-3 col-form-label">
+                            <label class="col-md-3 col-form-label">
                                 ANSWER :<br />
                             </label>
                             <div class="col-md-8">

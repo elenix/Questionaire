@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace VSQN.View.Admin
@@ -8,7 +10,24 @@ namespace VSQN.View.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["user_role"] != null)
+            {
+                if (!IsPostBack)
+                {
+                    if (Session["username"] != null)
+                    {
+                        string username = HttpContext.Current.Session["username"].ToString();
+                        welcomemsg.Text = "Welcome, " + (char.ToUpper(username[0]) + username.Substring(1));
+                        ;
+                    }
+                }
+            }
+            else
+            {
+               Response.Redirect("~/View/Login/Login.aspx");
+            }
             
+                       
         }
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)

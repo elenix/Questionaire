@@ -76,13 +76,13 @@ namespace VSQN.View.Login {
         protected global::System.Web.UI.WebControls.Button btnlogin;
         
         /// <summary>
-        /// btnregister control.
+        /// LinkForgotPass control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnregister;
+        protected global::System.Web.UI.WebControls.LinkButton LinkForgotPass;
         
         /// <summary>
         /// RegisterView control.
@@ -94,24 +94,6 @@ namespace VSQN.View.Login {
         protected global::System.Web.UI.WebControls.View RegisterView;
         
         /// <summary>
-        /// userName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox userName;
-        
-        /// <summary>
-        /// companyId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox companyId;
-        
-        /// <summary>
         /// newEmail control.
         /// </summary>
         /// <remarks>
@@ -121,39 +103,21 @@ namespace VSQN.View.Login {
         protected global::System.Web.UI.WebControls.TextBox newEmail;
         
         /// <summary>
-        /// newPassword control.
+        /// btnSend control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox newPassword;
+        protected global::System.Web.UI.WebControls.Button btnSend;
         
         /// <summary>
-        /// confirmPassword control.
+        /// btbBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox confirmPassword;
-        
-        /// <summary>
-        /// btnnewregister control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnnewregister;
-        
-        /// <summary>
-        /// HyperLink1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton HyperLink1;
+        protected global::System.Web.UI.WebControls.Button btbBack;
     }
 }

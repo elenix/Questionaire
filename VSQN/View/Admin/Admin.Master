@@ -17,7 +17,9 @@
 <body id="mainbody">
     <form runat="server">
         <div class="header">
-                <div class="clear hideSkiplink">
+            <div class="clear hideSkiplink">
+                <div class="form-inline">
+                    <asp:Label ID="welcomemsg" runat="server" ForeColor="White"></asp:Label>
                     <asp:Menu ID="HeaderMenu" runat="server" CssClass="menutop" EnableViewState="false"
                         IncludeStyleBlock="false" Orientation="Horizontal">
                         <Items>
@@ -26,8 +28,9 @@
                     </asp:Menu>
                 </div>
             </div>
+        </div>
         <div class="container">
-            
+
             <div class="main">
                 <div class="messagealert" id="alert_container">
                 </div>
@@ -51,9 +54,9 @@
         <div class="clear">
         </div>
         <div class="footer">
-            <hr style="background-color: grey;"/>
+            <hr style="background-color: grey;" />
             <h3>&copy; All Right Reserved</h3>
         </div>
-    </form>
+    </form> 
 </body>
 </html>

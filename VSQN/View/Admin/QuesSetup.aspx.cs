@@ -9,56 +9,105 @@ using System.Web.UI.WebControls;
 
 namespace VSQN.View.Admin
 {
-    public partial class QuesSetup : System.Web.UI.Page
+    public partial class QuesSetup : Page
     {
-        string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
-        DataTable RBTable = new DataTable();
-        DataTable CBTable = new DataTable();
-        SqlConnection con;
-        SqlDataAdapter adapt;
-        DataTable dt;
-        SqlCommand command;
-        string queryText = "AddQuestionAnswerForText";
-        string queryOption = "AddQuestionAnswerOption";
-        List<string> AnswerOption = new List<string>();
-        
+        private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        private readonly DataTable _rbTable = new DataTable();
+        private readonly DataTable _cbTable = new DataTable();
+        private SqlConnection _con;
+        private SqlDataAdapter _adapt;
+        private DataTable _dt;
+        private SqlCommand _command; 
+        readonly List<string> _answerOption = new List<string>();
 
 
-        public enum MessageType { Success, Error, Info, Warning };
+        private enum MessageType { Success, Error };
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            RBTable.Columns.Add("RB_BOX");
-            CBTable.Columns.Add("CB_BOX");
-
-            if (!IsPostBack)
+            if (Session["user_role"] != null)
             {
-                loadModalMenuDropdown();
+                _rbTable.Columns.Add("RB_BOX");
+                _cbTable.Columns.Add("CB_BOX");
+
+                if (!IsPostBack)
+                {
+                    LoadSystemListDropwdown();
+                }
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
             }
         }
 
-        private void loadModalMenuDropdown()
+        private void LoadSystemListDropwdown()
         {
-            con = new SqlConnection(cs);
-            string com = "Select * from Module";
-            adapt = new SqlDataAdapter(com, con);
-            dt = new DataTable();
-            adapt.Fill(dt);
-            ModuleMenu.DataSource = dt;
-            ModuleMenu.DataBind();
-            ModuleMenu.DataTextField = "Name";
-            ModuleMenu.DataValueField = "PK";
-            ModuleMenu.DataBind();
-            ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
+            _con = new SqlConnection(_cs);
+            const string com = "Select * from System_List";
+            _adapt = new SqlDataAdapter(com, _con);
+            _dt = new DataTable();
+            _adapt.Fill(_dt);
+            SystemList.DataSource = _dt;
+            SystemList.DataBind();
+            SystemList.DataTextField = "Name";
+            SystemList.DataValueField = "ID";
+            SystemList.DataBind();
+            SystemList.Items.Insert(0, new ListItem("--Select--", "0"));
         }
 
-        public void ShowMessage(string Message, MessageType type)
+        protected void SystemList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
+            if(SystemList.SelectedIndex == 1)
+            {
+                LoadModalMenuDropdown("HRMS_module");
+            }
+            else if (SystemList.SelectedIndex == 2)
+            {
+                LoadModalMenuDropdown("ESS_module");
+            }   
+        }
+
+        private void LoadModalMenuDropdown(string module)
+        {
+            string ModuleQuery = "";
+
+            if(module == "HRMS_module")
+            {
+                ModuleQuery = "Select * from HRMS_module ";
+            }
+            else if(module == "ESS_module")
+            {
+                ModuleQuery = "Select * from ESS_module ";
+            }
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(ModuleQuery, _con))
+                {
+                    _con.Open();
+                    _adapt = new SqlDataAdapter(_command);
+                    _dt = new DataTable();
+                    _adapt.Fill(_dt);
+                    ModuleMenu.DataSource = _dt;
+                    ModuleMenu.DataBind();
+                    ModuleMenu.DataTextField = "Name";
+                    ModuleMenu.DataValueField = "PK";
+                    ModuleMenu.DataBind();
+                    ModuleMenu.Items.Insert(0, new ListItem("--Select--", "0"));
+                    _con.Close();
+                }
+            }
+                    
+        }
+
+        private void ShowMessage(string message, MessageType type)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
 
         }
 
-        private void clearAll()
+        private void ClearAll()
         {
             ques.Text = string.Empty;
             ModuleMenu.SelectedIndex = 0;
@@ -74,73 +123,86 @@ namespace VSQN.View.Admin
         //Bind for both Radio Button and Check Box table
         private void Bind()
         {
-            RepeaterRBBox.DataSource = RBTable;
-            RepeaterCBBox.DataSource = CBTable;
+            RepeaterRBBox.DataSource = _rbTable;
+            RepeaterCBBox.DataSource = _cbTable;
             RepeaterRBBox.DataBind();
             RepeaterCBBox.DataBind();
 
         }
 
+        #region RepeaterRadioButtonBox
+
         //Repeater for Radio Button Answer Box
-        private void PopulateDataTableRB()
+        private void PopulateDataTableRb()
         {
             foreach (RepeaterItem item in RepeaterRBBox.Items)
             {
-                TextBox txtDescription = (TextBox)item.FindControl("RBanswer");
-                DataRow row = RBTable.NewRow();
+                var txtDescription = (TextBox)item.FindControl("RBanswer");
+                var row = _rbTable.NewRow();
                 row["RB_BOX"] = txtDescription.Text;
-                RBTable.Rows.Add(row);
+                _rbTable.Rows.Add(row);
             }
         }
 
         protected void RepeaterRBBox_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            PopulateDataTableRB();
-            RBTable.Rows[e.Item.ItemIndex].Delete();
+            PopulateDataTableRb();
+            _rbTable.Rows[e.Item.ItemIndex].Delete();
             Bind();
         }
 
         protected void btnAddRB_Click(object sender, EventArgs e)
         {
-            PopulateDataTableRB();
-            RBTable.Rows.Add(RBTable.NewRow());
+            PopulateDataTableRb();
+            _rbTable.Rows.Add(_rbTable.NewRow());
 
             Bind();
         }
 
+        #endregion
+
+        #region RepeaterCheckBoxAnswerBox
+
         //Repeater for Check Box Answer Box
-        private void PopulateDataTableCB()
+        private void PopulateDataTableCb()
         {
             foreach (RepeaterItem item in RepeaterCBBox.Items)
             {
-                TextBox txtDescription = (TextBox)item.FindControl("CBanswer");
-                DataRow row = CBTable.NewRow();
+                var txtDescription = (TextBox)item.FindControl("CBanswer");
+                var row = _cbTable.NewRow();
                 row["CB_BOX"] = txtDescription.Text;
-                CBTable.Rows.Add(row);
+                _cbTable.Rows.Add(row);
             }
         }
 
         protected void RepeaterCBBox_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            PopulateDataTableCB();
-            CBTable.Rows[e.Item.ItemIndex].Delete();
+            PopulateDataTableCb();
+            _cbTable.Rows[e.Item.ItemIndex].Delete();
             Bind();
         }
 
         protected void btnAddCB_Click(object sender, EventArgs e)
         {
-            PopulateDataTableCB();
-            CBTable.Rows.Add(CBTable.NewRow());
+            PopulateDataTableCb();
+            _cbTable.Rows.Add(_cbTable.NewRow());
 
             Bind();
         }
 
+        #endregion
+
         //Button for Add Question
         protected void btnCreate_Click(object sender, EventArgs e)
         {
-            int typeOfInputId = Int32.Parse(TypeOfInput.SelectedValue.ToString());
+            var typeOfInputId = int.Parse(TypeOfInput.SelectedValue);
             //checking if else
-            if (ModuleMenu.SelectedIndex == 0)
+            if (SystemList.SelectedIndex == 0)
+            {
+                ShowMessage("Please Choose Your System.", MessageType.Error);
+            }
+
+            else if (ModuleMenu.SelectedIndex == 0)
             {
                 ShowMessage("Please Choose Your Module.", MessageType.Error);
             }
@@ -157,118 +219,123 @@ namespace VSQN.View.Admin
 
             else
             {
-                con = new SqlConnection(cs);
-                string query = "AddQuestionProcedure";
+                _con = new SqlConnection(_cs);
+                const string query = "AddQuestionProcedure";
+                const string queryText = "AddQuestionAnswerForText";
+                const string queryOption = "AddQuestionAnswerOption";
                 int refCode;
-                int moduleId = Int32.Parse(ModuleMenu.SelectedValue.ToString());
+                var moduleId = int.Parse(ModuleMenu.SelectedValue);
+                var systemId = int.Parse(SystemList.SelectedValue);
 
                 //Store the main question into QuestionInfo table
-                using (con = new SqlConnection(cs))
+                using (_con = new SqlConnection(_cs))
                 {
-                    using (command = new SqlCommand(query, con))
+                    using (_command = new SqlCommand(query, _con))
                     {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@ques", ques.Text);
-                        command.Parameters.AddWithValue("@Module", moduleId);
-                        command.Parameters.AddWithValue("@TOI", typeOfInputId);
-                        con.Open();
-                        refCode = Convert.ToInt32(command.ExecuteScalar());
+                        _command.CommandType = CommandType.StoredProcedure;
+                        _command.Parameters.AddWithValue("@System", systemId);
+                        _command.Parameters.AddWithValue("@Module", moduleId);
+                        _command.Parameters.AddWithValue("@ques", ques.Text);
+                        _command.Parameters.AddWithValue("@TOI", typeOfInputId);
+                        _con.Open();
+                        refCode = Convert.ToInt32(_command.ExecuteScalar());
                     }
                 }
 
-                if (typeOfInputId == 1)
+                switch (typeOfInputId)
                 {
-                    int typeOfField = Int32.Parse(TBT.SelectedValue.ToString());
-
-                    //Store the answer for textbox into Question_Answer_TextType table
-                    using (con = new SqlConnection(cs))
+                    case 1:
                     {
-                        using (command = new SqlCommand(queryText, con))
+                        var typeOfField = int.Parse(TBT.SelectedValue);
+
+                        //Store the answer for textbox into Question_Answer_TextType table
+                        using (_con = new SqlConnection(_cs))
                         {
-                            command.CommandType = CommandType.StoredProcedure;
-                            command.Parameters.AddWithValue("@Ref_Cod", refCode);
-                            command.Parameters.AddWithValue("@answer", TBAnswer.Text);
-                            command.Parameters.AddWithValue("@FieldNum", typeOfField);
-                            con.Open();
-                            command.ExecuteNonQuery();
-                        }
-                    }
-
-                }
-
-                else if (typeOfInputId == 2)
-                {
-                    //Store the answer for memo into Question_Answer_TextType table
-                    int typeOfField = Int32.Parse(MMT.SelectedValue.ToString());
-
-                    using (con = new SqlConnection(cs))
-                    {
-                        using (command = new SqlCommand(queryText, con))
-                        {
-                            command.CommandType = CommandType.StoredProcedure;
-                            command.Parameters.AddWithValue("@Ref_Cod", refCode);
-                            command.Parameters.AddWithValue("@answer", MMAnswer.Text);
-                            command.Parameters.AddWithValue("@FieldNum", typeOfField);
-                            con.Open();
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                }
-
-                else if (typeOfInputId == 3)
-                {
-                    //read all the value inside each radio button answer boxes
-                    foreach (RepeaterItem item in RepeaterRBBox.Items)
-                    {
-                        AnswerOption.Add(((TextBox) item.FindControl(("RBanswer"))).Text);
-                    }
-
-                    //Store the answer for radio button into Question_Answer_OptionType table
-                    for (int i = 0; i < AnswerOption.Count(); i++)
-                    {
-                        using (con = new SqlConnection(cs))
-                        {
-                            con.Open();
-                            using (command = new SqlCommand(queryOption, con))
+                            using (_command = new SqlCommand(queryText, _con))
                             {
-                                command.CommandType = CommandType.StoredProcedure;
-                                command.Parameters.AddWithValue("@Ref_Code", refCode);
-                                command.Parameters.AddWithValue("@Answer_Option", AnswerOption[i]);
-                                command.ExecuteNonQuery();
+                                _command.CommandType = CommandType.StoredProcedure;
+                                _command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                                _command.Parameters.AddWithValue("@answer", TBAnswer.Text);
+                                _command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                                _con.Open();
+                                _command.ExecuteNonQuery();
                             }
                         }
                     }
-                }
+                        break;
 
-                else if (typeOfInputId == 4)
-                {
-                    //read all the value inside each check box answer boxes
-                    foreach (RepeaterItem item in RepeaterCBBox.Items)
+                    case 2:
                     {
-                        AnswerOption.Add(((TextBox) item.FindControl(("CBanswer"))).Text);
-                    }
+                        //Store the answer for memo into Question_Answer_TextType table
+                        var typeOfField = int.Parse(MMT.SelectedValue);
 
-                    //Store the answer for check box into Question_Answer_OptionType table
-                    for (int i = 0; i < AnswerOption.Count(); i++)
-                    {
-                        
-                        using (con = new SqlConnection(cs))
+                        using (_con = new SqlConnection(_cs))
                         {
-                            con.Open();
-                            using (command = new SqlCommand(queryOption, con))
+                            using (_command = new SqlCommand(queryText, _con))
                             {
-                                command.CommandType = CommandType.StoredProcedure;
-                                command.Parameters.AddWithValue("@Ref_Code", refCode);
-                                command.Parameters.AddWithValue("@Answer_Option", AnswerOption[i]);
-                                command.ExecuteNonQuery();
+                                _command.CommandType = CommandType.StoredProcedure;
+                                _command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                                _command.Parameters.AddWithValue("@answer", MMAnswer.Text);
+                                _command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                                _con.Open();
+                                _command.ExecuteNonQuery();
                             }
                         }
                     }
+                        break;
+
+                    case 3:
+                        //read all the value inside each radio button answer boxes
+                        foreach (RepeaterItem item in RepeaterRBBox.Items)
+                        {
+                            _answerOption.Add(((TextBox) item.FindControl(("RBanswer"))).Text);
+                        }
+
+                        //Store the answer for radio button into Question_Answer_OptionType table
+                        for (var i = 0; i < _answerOption.Count(); i++)
+                        {
+                            using (_con = new SqlConnection(_cs))
+                            {
+                                _con.Open();
+                                using (_command = new SqlCommand(queryOption, _con))
+                                {
+                                    _command.CommandType = CommandType.StoredProcedure;
+                                    _command.Parameters.AddWithValue("@Ref_Code", refCode);
+                                    _command.Parameters.AddWithValue("@Answer_Option", _answerOption[i]);
+                                    _command.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        break;
+
+                    case 4:
+                        //read all the value inside each check box answer boxes
+                        foreach (RepeaterItem item in RepeaterCBBox.Items)
+                        {
+                            _answerOption.Add(((TextBox) item.FindControl(("CBanswer"))).Text);
+                        }
+
+                        //Store the answer for check box into Question_Answer_OptionType table
+                        for (var i = 0; i < _answerOption.Count(); i++)
+                        {
+                            using (_con = new SqlConnection(_cs))
+                            {
+                                _con.Open();
+                                using (_command = new SqlCommand(queryOption, _con))
+                                {
+                                    _command.CommandType = CommandType.StoredProcedure;
+                                    _command.Parameters.AddWithValue("@Ref_Code", refCode);
+                                    _command.Parameters.AddWithValue("@Answer_Option", _answerOption[i]);
+                                    _command.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        break;
                 }
-                con.Close();
+                _con.Close();
                 ShowMessage("The Question have been saved!", MessageType.Success);
                 //Response.Write("<script>alert('Data Inserted !!')</script>");
-                clearAll();
+                ClearAll();
             }
 
             
