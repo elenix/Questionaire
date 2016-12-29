@@ -7,19 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VSQN.View.Admin {
+namespace VSQN.View.User {
     
     
-    public partial class SiteMaster {
+    public partial class User {
         
         /// <summary>
-        /// HeadContent control.
+        /// head control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        
+        /// <summary>
+        /// form1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
         /// welcomemsg control.
@@ -40,30 +49,30 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.Menu HeaderMenu;
         
         /// <summary>
-        /// AdminDataSource control.
+        /// SiteMapDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SiteMapDataSource AdminDataSource;
+        protected global::System.Web.UI.WebControls.SiteMapDataSource SiteMapDataSource;
         
         /// <summary>
-        /// AdminNavigationMenu control.
+        /// UserNavigationMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Menu AdminNavigationMenu;
+        protected global::System.Web.UI.WebControls.Menu UserNavigationMenu;
         
         /// <summary>
-        /// MainContent control.
+        /// UserContentPlaceHolder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder UserContentPlaceHolder;
     }
 }

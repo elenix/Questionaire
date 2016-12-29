@@ -1,13 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VSQN.App_Code;
 
-namespace VSQN.View.Admin
+namespace VSQN.View.User
 {
-    public partial class SiteMaster : System.Web.UI.MasterPage
+    public partial class User : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,11 +23,10 @@ namespace VSQN.View.Admin
                     }
                 }
             }
-
             else
             {
-               Response.Redirect("~/View/Login/Login.aspx");
-            }               
+                Response.Redirect("~/View/Login/Login.aspx");
+            }
         }
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
@@ -46,7 +46,7 @@ namespace VSQN.View.Admin
                 }
             }
         }
-
-        
     }
+
+
 }

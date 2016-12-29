@@ -16,7 +16,7 @@ namespace VSQN.View.Admin
         private SqlDataAdapter _adapt;
         private SqlCommand _command;
         private DataTable _dt;
-        //private string _message;
+        private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
 
@@ -26,6 +26,19 @@ namespace VSQN.View.Admin
             {
                 if (!IsPostBack)
                 {
+                    if (Session["update_message"] != null)
+                    {
+                        _message = Session["update_message"].ToString();
+                        ShowMessage(_message, MessageType.Info);
+                        Session["update_message"] = null;
+                    }
+                    else if (Session["cancel_edit"] != null)
+                    {
+                        _message = Session["cancel_edit"].ToString();
+                        ShowMessage(_message, MessageType.Warning);
+                        Session["cancel_edit"] = null;
+                    }
+
                     ShowData();
                 }
             }
@@ -68,7 +81,8 @@ namespace VSQN.View.Admin
 
         protected void ResultUserList_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            Response.Redirect("~/View/Login/Login.aspx");
+            Session["userEmail"] = ((Label)ResultUserList.Rows[e.NewEditIndex].FindControl("lblemail")).Text;
+            Response.Redirect("~/View/Admin/UserEdit.aspx");
         }
 
         protected void ResultUserList_RowDeleting(object sender, GridViewDeleteEventArgs e)

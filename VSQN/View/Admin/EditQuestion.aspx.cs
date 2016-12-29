@@ -333,6 +333,7 @@ namespace VSQN.View.Admin
         {
             string queryQuest = "Update QuestionBank set System_FK = @System, Module_FK = @Module, Ques = @ques, Date_Time = GETDATE() where Ref_Code = @refcode ";
             string queryTextType = "Update Question_Answer_TextType set Ans_Default = @answer, Field_Type = @FT where Ref_FK = @refkode ";
+            int systemId = Int32.Parse(SystemList.SelectedValue);
             int moduleId = Int32.Parse(ModuleMenu.SelectedValue);
             int refcode = Int32.Parse(AutoGenerateEdit.Text);
             //checking if else
@@ -353,7 +354,7 @@ namespace VSQN.View.Admin
                 {
                     using (_command = new SqlCommand(queryQuest, _con))
                     {
-                        _command.Parameters.AddWithValue("@System", moduleId);
+                        _command.Parameters.AddWithValue("@System", systemId);
                         _command.Parameters.AddWithValue("@Module", moduleId);
                         _command.Parameters.AddWithValue("@refcode", refcode);
                         _command.Parameters.AddWithValue("@ques", EditQues.Text);

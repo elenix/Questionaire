@@ -1,7 +1,8 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.Master.cs" Inherits="VSQN.View.Admin.SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="User.master.cs" Inherits="VSQN.View.User.User" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
     <link href="~/icon/favicon.png" rel="Shortcut Icon" type="image/x-icon" />
@@ -11,11 +12,11 @@
     <script type="text/javascript" src="../../Scripts/Alert.js"></script>
     <script type="text/javascript" src="../../Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></script>
-    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body id="mainbody">
-    <form runat="server">
+<body id="UserBody">
+    <form id="form1" runat="server">
         <div class="header">
             <div class="clear hideSkiplink">
                 <div class="form-inline">
@@ -30,24 +31,22 @@
             </div>
         </div>
         <div class="container">
-
             <div class="main">
                 <div class="messagealert" id="alert_container">
                 </div>
                 <div class="row">
                     <div class="col-md-3" style="padding-right: 5px">
                         <h1 id="sidemenuheader">MENU</h1>
-                        <asp:SiteMapDataSource ID="AdminDataSource" runat="server" ShowStartingNode="false" />
-                        <asp:Menu ID="AdminNavigationMenu" runat="server" CssClass="menu" DataSourceID="AdminDataSource" Orientation="Vertical" OnMenuItemDataBound="OnMenuItemDataBound">
+                        <asp:SiteMapDataSource ID="SiteMapDataSource" runat="server" ShowStartingNode="false"/>
+                        <asp:Menu ID="UserNavigationMenu" runat="server" CssClass="menu" Orientation="Vertical" DataSourceID="SiteMapDataSource" OnMenuItemDataBound="OnMenuItemDataBound">
                             <LevelMenuItemStyles>
                                 <asp:MenuItemStyle CssClass="main_menu" />
                             </LevelMenuItemStyles>
                         </asp:Menu>
-
                     </div>
                     <div class="col-md-9" style="padding-left: 5px">
-                        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-                    </div>
+                    <asp:ContentPlaceHolder ID="UserContentPlaceHolder" runat="server"/>
+                        </div>
                 </div>
             </div>
         </div>
@@ -57,6 +56,6 @@
             <hr style="background-color: grey;" />
             <h3>&copy; All Right Reserved</h3>
         </div>
-    </form> 
+    </form>
 </body>
 </html>

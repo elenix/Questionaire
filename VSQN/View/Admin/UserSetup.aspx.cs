@@ -77,6 +77,8 @@ namespace VSQN.View.Admin
         {
             var t = 1;
 
+            // Extract user info from HRMS_Module based on User_email.
+
             // ReSharper disable once UnusedVariable
             foreach (var t1 in _hrmSmodule)
             {
@@ -96,6 +98,7 @@ namespace VSQN.View.Admin
                 panelHRMS.Controls.Add(new LiteralControl("  "));
                 panelHRMS.Controls.Add(labelTemp);
                 panelHRMS.Controls.Add(new LiteralControl("</label>"));
+
                 t++;
 
                 panelHRMS.Controls.Add(new LiteralControl("</div>"));
@@ -182,7 +185,6 @@ namespace VSQN.View.Admin
 
         protected void btn_create(object sender, EventArgs e)
         {
-            _con = new SqlConnection(_cs);
             string query = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
             string HRMSquery = "insert into HRMS_User_Info (User_Email,Module_number) values (@Email, @module) ";
             string ESSquery = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";

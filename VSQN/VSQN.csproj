@@ -81,6 +81,7 @@
     <Content Include="icon\view_sort_descending.png" />
     <Content Include="Scripts\Alert.js" />
     <Content Include="Styles\Alert.css" />
+    <Content Include="View\Admin\UserEdit.aspx" />
     <Content Include="View\Admin\UserList.aspx" />
     <Content Include="View\Admin\UserSetup.aspx" />
     <Content Include="View\Admin\ViewQuestion.aspx" />
@@ -96,7 +97,7 @@
     <Content Include="View\Admin\Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="View\Login\Login.aspx" />
-    <Content Include="View\User\user.aspx" />
+    <Content Include="View\User\UserMain.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -108,12 +109,20 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\NavigationManager.cs" />
     <Compile Include="View\Admin\EditQuestion.aspx.cs">
       <DependentUpon>EditQuestion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Admin\EditQuestion.aspx.designer.cs">
       <DependentUpon>EditQuestion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\UserEdit.aspx.cs">
+      <DependentUpon>UserEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\UserEdit.aspx.designer.cs">
+      <DependentUpon>UserEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Admin\UserList.aspx.cs">
       <DependentUpon>UserList.aspx</DependentUpon>
@@ -168,12 +177,19 @@
     <Compile Include="View\Login\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="View\User\user.aspx.cs">
-      <DependentUpon>user.aspx</DependentUpon>
+    <Compile Include="View\User\User.Master.cs">
+      <DependentUpon>User.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\User\user.aspx.designer.cs">
-      <DependentUpon>user.aspx</DependentUpon>
+    <Compile Include="View\User\User.Master.designer.cs">
+      <DependentUpon>User.Master</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\UserMain.aspx.cs">
+      <DependentUpon>UserMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\UserMain.aspx.designer.cs">
+      <DependentUpon>UserMain.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -191,8 +207,11 @@
     <None Include="fonts\glyphicons-halflings-regular.ttf" />
     <None Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Navigation\Admin.sitemap" />
+    <Content Include="Navigation\User.sitemap" />
     <None Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Web.sitemap" />
+    <Content Include="View\User\User.Master" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
