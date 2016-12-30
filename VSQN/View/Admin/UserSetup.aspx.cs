@@ -183,6 +183,32 @@ namespace VSQN.View.Admin
 
         }
 
+        protected void btn_UncheckAll(object sender, EventArgs e)
+        {
+            foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = false;
+            }
+
+            foreach (var child in panelESS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = false;
+            }
+        }
+
+        protected void btn_CheckAll(object sender, EventArgs e)
+        {
+            foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = true;
+            }
+
+            foreach (var child in panelESS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = true;
+            }
+        }
+
         protected void btn_create(object sender, EventArgs e)
         {
             string query = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";

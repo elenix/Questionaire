@@ -1,4 +1,4 @@
-﻿<%@ Page Title="User Setup" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true" 
+﻿<%@ Page Title="User Setup" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true"
     CodeBehind="UserSetup.aspx.cs" Inherits="VSQN.View.Admin.UserSetup" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -92,7 +92,11 @@
                     <asp:AsyncPostBackTrigger ControlID="ButtonSAAS" />
                 </Triggers>
             </asp:UpdatePanel>
-            <asp:Button ID="btnsave" runat="server" Text="CREATE" CssClass="btn btn-success col-md-offset-10" Width="81px" OnClick="btn_create" />
+            <div class="form-inline col-md-offset-6">
+                <asp:Button ID="btnUncheck" runat="server" Text="UNCHECK ALL" CssClass="btn btn-warning" OnClick="btn_UncheckAll" />
+                <asp:Button ID="btnCheck" runat="server" Text="CHECK ALL" CssClass="btn btn-info" OnClick="btn_CheckAll" />
+                <asp:Button ID="btnsave" runat="server" Text="CREATE" CssClass="btn btn-success" Width="95px" OnClick="btn_create" />
+            </div>
         </div>
     </div>
 </asp:Content>

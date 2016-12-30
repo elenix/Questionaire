@@ -43,7 +43,7 @@ namespace VSQN.View.Admin
         public void ExtractData()
         {
             const string query = "Select * from UserAuth where email = @userEmail";
-            var email = Session["userEmail"];
+            var email = Session["Edit_UserEmail"];
 
             //Extract Data from UserAuth Table
             using(_con = new SqlConnection(cs))
@@ -282,6 +282,7 @@ namespace VSQN.View.Admin
         protected void button_decrypt(object sender, EventArgs e)
         {
             newPassword.Text = Decrypt(newPassword.Text);
+            btnDecrypt.Enabled = false;
         }
 
         private void ShowMessage(string message, MessageType type)

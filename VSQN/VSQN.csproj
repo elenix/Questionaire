@@ -69,8 +69,10 @@
     <Content Include="icon\Background white.jpg" />
     <Content Include="icon\Background.jpg" />
     <Content Include="icon\ca.png" />
+    <Content Include="icon\eye.png" />
     <Content Include="icon\quanta.jpg" />
     <Content Include="Styles\Login.css" />
+    <Content Include="Styles\UserSite.css" />
     <Content Include="View\Admin\EditQuestion.aspx" />
     <Content Include="icon\add.png" />
     <Content Include="icon\favicon.jpg" />
@@ -93,11 +95,15 @@
     <Content Include="Scripts\jquery-1.9.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Styles\Site.css" />
+    <Content Include="Styles\AdminSite.css" />
     <Content Include="View\Admin\Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="View\Login\Login.aspx" />
-    <Content Include="View\User\UserMain.aspx" />
+    <Content Include="View\User\UserHRSS.aspx" />
+    <Content Include="View\User\UserSAAS.aspx" />
+    <Content Include="View\User\UserESS.aspx" />
+    <Content Include="View\User\UserHRMS.aspx" />
+    <Content Include="View\User\UserSettings.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -177,6 +183,20 @@
     <Compile Include="View\Login\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="View\User\UserHRSS.aspx.cs">
+      <DependentUpon>UserHRSS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\UserHRSS.aspx.designer.cs">
+      <DependentUpon>UserHRSS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\UserSAAS.aspx.cs">
+      <DependentUpon>UserSAAS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\UserSAAS.aspx.designer.cs">
+      <DependentUpon>UserSAAS.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\User\User.Master.cs">
       <DependentUpon>User.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -184,12 +204,26 @@
     <Compile Include="View\User\User.Master.designer.cs">
       <DependentUpon>User.Master</DependentUpon>
     </Compile>
-    <Compile Include="View\User\UserMain.aspx.cs">
-      <DependentUpon>UserMain.aspx</DependentUpon>
+    <Compile Include="View\User\UserESS.aspx.cs">
+      <DependentUpon>UserESS.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\User\UserMain.aspx.designer.cs">
-      <DependentUpon>UserMain.aspx</DependentUpon>
+    <Compile Include="View\User\UserESS.aspx.designer.cs">
+      <DependentUpon>UserESS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\UserHRMS.aspx.cs">
+      <DependentUpon>UserHRMS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\UserHRMS.aspx.designer.cs">
+      <DependentUpon>UserHRMS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\UserSettings.aspx.cs">
+      <DependentUpon>UserSettings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\UserSettings.aspx.designer.cs">
+      <DependentUpon>UserSettings.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

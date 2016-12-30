@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace VSQN.View.User
 {
-    public partial class UserMain : System.Web.UI.Page
+    public partial class HRSS : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

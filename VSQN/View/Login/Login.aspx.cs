@@ -53,6 +53,7 @@ namespace VSQN.View.Login
                         foreach (DataRow row in _dt.Rows)
                         { 
                             Session["username"] = row["Company"].ToString();
+                            Session["user_email"] = row["email"].ToString();
                             Session["user_role"] = row["user_role"].ToString();
                             _usertype = row["user_role"].ToString();
                         }
@@ -64,7 +65,7 @@ namespace VSQN.View.Login
                                 break;
 
                             case "U":
-                                Response.Redirect("~/View/User/UserMain.aspx");
+                                Response.Redirect("~/View/User/UserHRMS.aspx");
                                 break;
                         }
 

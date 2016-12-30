@@ -10,51 +10,69 @@
 namespace VSQN.View.User {
     
     
-    public partial class User {
+    public partial class UserSettings {
         
         /// <summary>
-        /// head control.
+        /// ScriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// form1 control.
+        /// userName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.TextBox userName;
         
         /// <summary>
-        /// welcomemsg control.
+        /// userCompany control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label welcomemsg;
+        protected global::System.Web.UI.WebControls.TextBox userCompany;
         
         /// <summary>
-        /// HeaderMenu control.
+        /// userEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Menu HeaderMenu;
+        protected global::System.Web.UI.WebControls.TextBox userEmail;
         
         /// <summary>
-        /// UserContentPlaceHolder control.
+        /// userPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder UserContentPlaceHolder;
+        protected global::System.Web.UI.WebControls.TextBox userPassword;
+        
+        /// <summary>
+        /// btnDecrypt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDecrypt;
+        
+        /// <summary>
+        /// btnChange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnChange;
     }
 }

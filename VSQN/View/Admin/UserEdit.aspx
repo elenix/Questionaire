@@ -37,7 +37,7 @@
                     <asp:TextBox ID="newPassword" runat="server" placeholder="Enter The Password" CssClass="form-control" BackColor="Yellow" Enabled="false"></asp:TextBox>
                 </div>
                 <div class="col-md-3" style="padding-left:0px">
-                    <asp:Button ID="btnDecrypt" runat="server" Text="DECRYPT PASSWORD" CssClass="btn btn-info form-inline" OnClick="button_decrypt" />
+                    <asp:Button ID="btnDecrypt" runat="server" Text="DECRYPT PASSWORD" CssClass="btn btn-info form-inline" OnClick="button_decrypt" Enabled="true" />
                 </div>
             </div>
             <asp:ScriptManager ID="AjaxScriptManager" runat="server"/>

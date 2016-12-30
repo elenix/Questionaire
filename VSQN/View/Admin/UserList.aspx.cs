@@ -81,7 +81,7 @@ namespace VSQN.View.Admin
 
         protected void ResultUserList_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            Session["userEmail"] = ((Label)ResultUserList.Rows[e.NewEditIndex].FindControl("lblemail")).Text;
+            Session["Edit_UserEmail"] = ((Label)ResultUserList.Rows[e.NewEditIndex].FindControl("lblemail")).Text;
             Response.Redirect("~/View/Admin/UserEdit.aspx");
         }
 
