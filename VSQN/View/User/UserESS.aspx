@@ -14,20 +14,12 @@
                 <asp:UpdatePanel ID="UpdateViewQuestion" runat="server">
                     <ContentTemplate>
                         <%--put table here--%>
-                        <asp:GridView ID="ResultESSList" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False"
-                            PageSize="10" OnRowEditing="ResultUserList_RowAnswering" EmptyDataText="No Data Available. Please choose other Module" OnPageIndexChanging="Result_PageIndexChanging"
-                            OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
+                        <asp:GridView ID="ResultESSList" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDataBound="ResultUserList_RowDataBound"
+                            OnRowEditing="ResultUserList_RowAnswering" EmptyDataText="No Data Available. Please choose other Module"
+                            OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                             <Columns>
-                                <asp:TemplateField HeaderText="Ref" HeaderStyle-Width="10%" SortExpression="PK">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblRefrence" runat="server" Text='<%#Eval("PK") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ESS Module" HeaderStyle-Width="70%" SortExpression="Name">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblModule" runat="server" Text='<%#Eval("Name") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />
+                                <asp:BoundField DataField="Name" HeaderText="ESS Module" ItemStyle-Width="60%" />
                                 <asp:TemplateField HeaderText="Options" HeaderStyle-Width="30%">
                                     <ItemTemplate>
                                         <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="START" CommandName="Edit" CssClass="btn btn-success" />

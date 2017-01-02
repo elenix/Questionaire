@@ -40,6 +40,7 @@ namespace VSQN.View.Login
                 using (_command = new SqlCommand(query, _con))
                 {
                     _command.Parameters.AddWithValue("@email", InputEmail.Text);
+                    //_command.Parameters.AddWithValue("@pass", userpassword.Text);
                     _command.Parameters.AddWithValue("@pass", Encrypt(userpassword.Text));
                     _adapt = new SqlDataAdapter(_command);
                     _dt = new DataTable();

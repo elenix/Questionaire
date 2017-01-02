@@ -20,10 +20,6 @@ namespace VSQN.View.User
         DataTable _dt;
         SqlCommand _command;
         SqlDataReader dr;
-        readonly List<string> _hrmSmodule = new List<string>();
-        readonly List<string> _esSmodule = new List<string>();
-        List<int> _UserHrmSmodule = new List<int>();
-        List<int> _UserEsSmodule = new List<int>();
 
         private enum MessageType { Success, Error };
 
@@ -33,6 +29,12 @@ namespace VSQN.View.User
             {
                 ExtractData();
             }
+        }
+
+        private void ShowMessage(string message, MessageType type)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
+
         }
 
         public void ExtractData()
@@ -73,7 +75,52 @@ namespace VSQN.View.User
 
         protected void button_changePassword(object sender, EventArgs e)
         {
+            MultiViewPassword.ActiveViewIndex = 1;
+        }
 
+        protected void button_savePassword(object sender, EventArgs e)
+        {
+            string updateQuery = "update UserAuth set username = @Username, password = @Password where email = @email";
+
+            if ((String.IsNullOrWhiteSpace(userName.Text)))
+            {
+                ShowMessage("Please enter your <b>New Username</b>", MessageType.Error);
+            }
+
+            else if ((String.IsNullOrWhiteSpace(newPassword.Text)))
+            {
+                ShowMessage("Please enter your <b>New Password</b>", MessageType.Error);
+            }
+
+            else if (matchPassword.Text != newPassword.Text)
+            {
+                ShowMessage("Your re-enter password did not match!", MessageType.Error);
+            }
+
+            else
+            {
+                using (_con = new SqlConnection(cs))
+                {
+                    using (_command = new SqlCommand(updateQuery, _con))
+                    {
+                        _con.Open();
+                        _command.Parameters.AddWithValue("@Username", userName.Text);
+                        _command.Parameters.AddWithValue("@Password", Encrypt(newPassword.Text.Trim()));
+                        _command.Parameters.AddWithValue("@email", userEmail.Text);
+                        _command.ExecuteNonQuery();
+                        _command.Parameters.Clear();
+                        _con.Close();
+                    }
+                }
+
+                ShowMessage("Your <b>new username and password</b> have been saved!", MessageType.Success);
+                Response.Redirect("~/View/User/UserSettings.aspx");
+            }
+        }
+
+        protected void button_cancelPassword(object sender, EventArgs e)
+        {
+            MultiViewPassword.ActiveViewIndex = 0;
         }
 
         private static string Encrypt(string clearText)

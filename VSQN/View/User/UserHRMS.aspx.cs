@@ -17,7 +17,9 @@ namespace VSQN.View.User
         private SqlDataAdapter _adapt;
         private SqlCommand _command;
         private DataTable _dt;
-        private string _message;
+        List<int> _UserHrmSmodule = new List<int>();
+        List<string> _UserHrmSmoduleString = new List<string>();
+        //private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
 
@@ -25,9 +27,9 @@ namespace VSQN.View.User
         {
             if (!IsPostBack)
             {
+                LoadUserHRMSmodule();
                 ShowData();
             }
-
         }
 
         protected void ShowMessage(string message, MessageType type)
@@ -46,19 +48,62 @@ namespace VSQN.View.User
             _command.ExecuteNonQuery();
             SqlDataReader dr = _command.ExecuteReader();
             _dt.Load(dr);
-
+            _con.Close();
             ResultHRMSList.DataSource = _dt;
             ResultHRMSList.DataBind();
             ViewState["dirState"] = _dt;
-            ViewState["sortdr"] = "Asc";
-
-            _con.Close();
+            ViewState["sortdr"] = "Asc";   
         }
 
-        protected void Result_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void LoadUserHRMSmodule()
         {
-            ResultHRMSList.PageIndex = e.NewPageIndex;
-            ShowData();
+            const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail";
+            var userEmail = Session["user_email"];
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(userHrms, _con))
+                {
+                    _command.Parameters.AddWithValue("@userEmail", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _UserHrmSmodule.Add(reader.GetInt32(2));
+                    }
+                    _con.Close();
+                }
+            }
+
+            SortData();
+        }
+
+        public void SortData()
+        {
+            _UserHrmSmodule = _UserHrmSmodule.OrderBy(i => i).ToList();
+            _UserHrmSmoduleString  = _UserHrmSmodule.ConvertAll<string>(delegate (int i) { return i.ToString(); });
+        }
+
+        protected void ResultUserList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                foreach (GridViewRow grv in ResultHRMSList.Rows)
+                {
+                    e.Row.Visible = false;
+                }
+
+                foreach (string x in _UserHrmSmoduleString)
+                {
+                    if (e.Row.Cells[0].Text == x)
+                    {
+                        e.Row.Visible = true;
+                    }
+                }
+            }
+            
         }
 
         protected void ResultUserList_RowAnswering(object sender, GridViewEditEventArgs e)

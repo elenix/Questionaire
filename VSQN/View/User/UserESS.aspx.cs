@@ -17,7 +17,9 @@ namespace VSQN.View.User
         private SqlDataAdapter _adapt;
         private SqlCommand _command;
         private DataTable _dt;
-        private string _message;
+        List<int> _UserEsSmodule = new List<int>();
+        List<string> _UserEsSmoduleString = new List<string>();
+        //private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
 
@@ -25,6 +27,7 @@ namespace VSQN.View.User
         {
             if (!IsPostBack)
             {
+                LoadUserESSmodule();
                 ShowData();
             }
         }
@@ -54,10 +57,55 @@ namespace VSQN.View.User
             _con.Close();
         }
 
-        protected void Result_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void LoadUserESSmodule()
         {
-            ResultESSList.PageIndex = e.NewPageIndex;
-            ShowData();
+            const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail";
+            var userEmail = Session["user_email"];
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(userEss, _con))
+                {
+                    _command.Parameters.AddWithValue("@userEmail", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _UserEsSmodule.Add(reader.GetInt32(2));
+                    }
+                    _con.Close();
+                }
+            }
+
+            SortData();
+        }
+
+        public void SortData()
+        {
+            _UserEsSmodule = _UserEsSmodule.OrderBy(i => i).ToList();
+            _UserEsSmoduleString = _UserEsSmodule.ConvertAll<string>(delegate (int i) { return i.ToString(); });
+        }
+
+        protected void ResultUserList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                foreach (GridViewRow grv in ResultESSList.Rows)
+                {
+                    e.Row.Visible = false;
+                }
+
+                foreach (string x in _UserEsSmoduleString)
+                {
+                    if (e.Row.Cells[0].Text == x)
+                    {
+                        e.Row.Visible = true;
+                    }
+                }
+            }
+
         }
 
         protected void ResultUserList_RowAnswering(object sender, GridViewEditEventArgs e)
