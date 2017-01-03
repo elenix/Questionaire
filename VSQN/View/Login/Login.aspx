@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <%--visual solution logo--%>
-                    <asp:Image ID="Image1" runat="server" ImageUrl="~/icon/ca.png" Width="100%" />
+                    <asp:Image ID="Image1" runat="server" ImageUrl="~/icon/VSQ_logo.png" Width="100%" />
                 </div>
                 <div class="col-md-6">
                     <div class="jumbotron">

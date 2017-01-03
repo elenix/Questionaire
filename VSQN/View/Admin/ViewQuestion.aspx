@@ -33,12 +33,17 @@
                             PageSize="10" OnRowEditing="Result_RowEditing" OnPageIndexChanging="Result_PageIndexChanging" EmptyDataText="No Data Available. Please choose other Module"
                             OnRowDeleting="Result_RowDeleting" OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
                             <Columns>
-                                <asp:TemplateField HeaderText="Reference Code" HeaderStyle-Width="13%" SortExpression="Ref_Code">
+                                <asp:TemplateField HeaderText="Reference Code" HeaderStyle-Width="10%" SortExpression="Ref_Code">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReferenceCode" runat="server" Text='<%#Eval("Ref_Code") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Question" HeaderStyle-Width="52%">
+                                <asp:TemplateField HeaderText="Seq." HeaderStyle-Width="5%" SortExpression="Ref_Code">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblSequence" runat="server" Text='<%#Eval("Seq_Number") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Question" HeaderStyle-Width="50%">
                                     <ItemTemplate>
                                         <asp:Label ID="lblQuestion" runat="server" Text='<%#Eval("Ques") %>'></asp:Label>
                                     </ItemTemplate>
@@ -48,7 +53,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Date/Time" HeaderStyle-Width="13%" SortExpression="Date_Time">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblTime" runat="server" Text='<%#Eval("Date_Time"/*, "{0:M-dd-yyyy}"*/) %>'></asp:Label>
+                                        <asp:Label ID="lblTime" runat="server" Text='<%#Eval("Date_Time") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Options" HeaderStyle-Width="22%">

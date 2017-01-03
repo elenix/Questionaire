@@ -71,6 +71,7 @@
     <Content Include="icon\ca.png" />
     <Content Include="icon\eye.png" />
     <Content Include="icon\quanta.jpg" />
+    <Content Include="icon\VSQ_logo.png" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\UserSite.css" />
     <Content Include="View\Admin\EditQuestion.aspx" />
@@ -99,6 +100,8 @@
     <Content Include="View\Admin\Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="View\Login\Login.aspx" />
+    <Content Include="View\User\QuestionGenerator.aspx" />
+    <Content Include="View\User\QuestionList.aspx" />
     <Content Include="View\User\UserHRSS.aspx" />
     <Content Include="View\User\UserSAAS.aspx" />
     <Content Include="View\User\UserESS.aspx" />
@@ -182,6 +185,20 @@
     </Compile>
     <Compile Include="View\Login\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\QuestionGenerator.aspx.cs">
+      <DependentUpon>QuestionGenerator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\QuestionGenerator.aspx.designer.cs">
+      <DependentUpon>QuestionGenerator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\QuestionList.aspx.cs">
+      <DependentUpon>QuestionList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\QuestionList.aspx.designer.cs">
+      <DependentUpon>QuestionList.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\User\UserHRSS.aspx.cs">
       <DependentUpon>UserHRSS.aspx</DependentUpon>

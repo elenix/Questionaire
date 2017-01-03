@@ -32,6 +32,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-md-3 col-form-label" style="padding-right: 0;">
+                        SEQUENCE :</label>
+                    <div class="col-md-4">
+                        <asp:TextBox ID="SeqNum" runat="server" CssClass="form-control autogeneratelabel" Width="100px"></asp:TextBox>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-md-3 col-form-label">
                         QUESTION :<br />
                         <small>(Content)</small></label>

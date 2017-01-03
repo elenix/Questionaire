@@ -12,7 +12,7 @@
 /* HEADINGS   
 ----------------------------------------------------------*/
 
-h1, h2, h3, h4, h5, h6
+h1, h2, h3, h5, h6
 {
     font-size: 1.5em;
     color: #666666;
@@ -159,6 +159,8 @@ div.menutop ul li a:hover
     text-decoration: none;
 
 }
+
+.hiddencol { display: none; }
 
 
 

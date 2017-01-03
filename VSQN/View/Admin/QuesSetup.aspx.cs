@@ -111,8 +111,11 @@ namespace VSQN.View.Admin
         {
             ques.Text = string.Empty;
             ModuleMenu.SelectedIndex = 0;
+            SeqNum.Text = string.Empty;
             TypeOfInput.SelectedIndex = 0;
             TypeOfInputView.ActiveViewIndex = 0;
+            TBAnswer.Text = string.Empty;
+            MMAnswer.Text = string.Empty;
         }
 
         protected void TypeOfInput_SelectedIndexChanged(object sender, EventArgs e)
@@ -207,6 +210,11 @@ namespace VSQN.View.Admin
                 ShowMessage("Please Choose Your Module.", MessageType.Error);
             }
 
+            else if (String.IsNullOrWhiteSpace(SeqNum.Text))
+            {
+                ShowMessage("Please Enter The Sequence Number For The Question.", MessageType.Error);
+            }
+
             else if (String.IsNullOrWhiteSpace(ques.Text))
             {
                 ShowMessage("Please Enter Your Question.", MessageType.Error);
@@ -235,6 +243,7 @@ namespace VSQN.View.Admin
                         _command.CommandType = CommandType.StoredProcedure;
                         _command.Parameters.AddWithValue("@System", systemId);
                         _command.Parameters.AddWithValue("@Module", moduleId);
+                        _command.Parameters.AddWithValue("@Seq", SeqNum.Text);
                         _command.Parameters.AddWithValue("@ques", ques.Text);
                         _command.Parameters.AddWithValue("@TOI", typeOfInputId);
                         _con.Open();
@@ -245,50 +254,50 @@ namespace VSQN.View.Admin
                 switch (typeOfInputId)
                 {
                     case 1:
-                    {
-                        var typeOfField = int.Parse(TBT.SelectedValue);
-
-                        //Store the answer for textbox into Question_Answer_TextType table
-                        using (_con = new SqlConnection(_cs))
                         {
-                            using (_command = new SqlCommand(queryText, _con))
+                            var typeOfField = int.Parse(TBT.SelectedValue);
+
+                            //Store the answer for textbox into Question_Answer_TextType table
+                            using (_con = new SqlConnection(_cs))
                             {
-                                _command.CommandType = CommandType.StoredProcedure;
-                                _command.Parameters.AddWithValue("@Ref_Cod", refCode);
-                                _command.Parameters.AddWithValue("@answer", TBAnswer.Text);
-                                _command.Parameters.AddWithValue("@FieldNum", typeOfField);
-                                _con.Open();
-                                _command.ExecuteNonQuery();
+                                using (_command = new SqlCommand(queryText, _con))
+                                {
+                                    _command.CommandType = CommandType.StoredProcedure;
+                                    _command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                                    _command.Parameters.AddWithValue("@answer", TBAnswer.Text);
+                                    _command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                                    _con.Open();
+                                    _command.ExecuteNonQuery();
+                                }
                             }
                         }
-                    }
                         break;
 
                     case 2:
-                    {
-                        //Store the answer for memo into Question_Answer_TextType table
-                        var typeOfField = int.Parse(MMT.SelectedValue);
-
-                        using (_con = new SqlConnection(_cs))
                         {
-                            using (_command = new SqlCommand(queryText, _con))
+                            //Store the answer for memo into Question_Answer_TextType table
+                            var typeOfField = int.Parse(MMT.SelectedValue);
+
+                            using (_con = new SqlConnection(_cs))
                             {
-                                _command.CommandType = CommandType.StoredProcedure;
-                                _command.Parameters.AddWithValue("@Ref_Cod", refCode);
-                                _command.Parameters.AddWithValue("@answer", MMAnswer.Text);
-                                _command.Parameters.AddWithValue("@FieldNum", typeOfField);
-                                _con.Open();
-                                _command.ExecuteNonQuery();
+                                using (_command = new SqlCommand(queryText, _con))
+                                {
+                                    _command.CommandType = CommandType.StoredProcedure;
+                                    _command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                                    _command.Parameters.AddWithValue("@answer", MMAnswer.Text);
+                                    _command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                                    _con.Open();
+                                    _command.ExecuteNonQuery();
+                                }
                             }
                         }
-                    }
                         break;
 
                     case 3:
                         //read all the value inside each radio button answer boxes
                         foreach (RepeaterItem item in RepeaterRBBox.Items)
                         {
-                            _answerOption.Add(((TextBox) item.FindControl(("RBanswer"))).Text);
+                            _answerOption.Add(((TextBox)item.FindControl(("RBanswer"))).Text);
                         }
 
                         //Store the answer for radio button into Question_Answer_OptionType table
@@ -312,7 +321,7 @@ namespace VSQN.View.Admin
                         //read all the value inside each check box answer boxes
                         foreach (RepeaterItem item in RepeaterCBBox.Items)
                         {
-                            _answerOption.Add(((TextBox) item.FindControl(("CBanswer"))).Text);
+                            _answerOption.Add(((TextBox)item.FindControl(("CBanswer"))).Text);
                         }
 
                         //Store the answer for check box into Question_Answer_OptionType table

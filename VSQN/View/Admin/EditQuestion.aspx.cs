@@ -59,7 +59,6 @@ namespace VSQN.View.Admin
 
         private void ExtractData()
         {
-            _con = new SqlConnection(cs);
             string query = "ExtractQuestionData";
             string TextData = "Select * from Question_Answer_TextType where Ref_FK = @Ref_Cod ";
             string OptionData = "Select * from Question_Answer_OptionType where Ref_FK = @Ref_Cod ";
@@ -80,10 +79,11 @@ namespace VSQN.View.Admin
 
                     foreach (DataRow row in data.Rows)
                     {
-                        EditQues.Text = row["Ques"].ToString();
-                        _typeOfInput = Int32.Parse(row["In_Type_FK"].ToString());
-                        _moduleChoose = Int32.Parse(row["Module_FK"].ToString());
                         _systemChoose = Int32.Parse(row["System_FK"].ToString());
+                        _moduleChoose = Int32.Parse(row["Module_FK"].ToString());
+                        SeqNum.Text = row["Seq_Number"].ToString();
+                        EditQues.Text = row["Ques"].ToString();
+                        _typeOfInput = Int32.Parse(row["In_Type_FK"].ToString());   
                     }
                     _con.Close();
                 }
@@ -331,7 +331,7 @@ namespace VSQN.View.Admin
         //Button update question
         protected void button_update(object sender, EventArgs e)
         {
-            string queryQuest = "Update QuestionBank set System_FK = @System, Module_FK = @Module, Ques = @ques, Date_Time = GETDATE() where Ref_Code = @refcode ";
+            string queryQuest = "Update QuestionBank set System_FK = @System, Module_FK = @Module, Ques = @ques, Date_Time = GETDATE(), Seq_Number = @Seq where Ref_Code = @refcode ";
             string queryTextType = "Update Question_Answer_TextType set Ans_Default = @answer, Field_Type = @FT where Ref_FK = @refkode ";
             int systemId = Int32.Parse(SystemList.SelectedValue);
             int moduleId = Int32.Parse(ModuleMenu.SelectedValue);
@@ -356,6 +356,7 @@ namespace VSQN.View.Admin
                     {
                         _command.Parameters.AddWithValue("@System", systemId);
                         _command.Parameters.AddWithValue("@Module", moduleId);
+                        _command.Parameters.AddWithValue("@Seq", SeqNum.Text);
                         _command.Parameters.AddWithValue("@refcode", refcode);
                         _command.Parameters.AddWithValue("@ques", EditQues.Text);
                         _con.Open();
@@ -512,6 +513,7 @@ namespace VSQN.View.Admin
                         _command.CommandType = CommandType.StoredProcedure;
                         _command.Parameters.AddWithValue("@System", systemId);
                         _command.Parameters.AddWithValue("@Module", moduleId);
+                        _command.Parameters.AddWithValue("@Seq", SeqNum.Text);
                         _command.Parameters.AddWithValue("@ques", EditQues.Text);
                         _command.Parameters.AddWithValue("@TOI", typeOfInputId);
                         _con.Open();

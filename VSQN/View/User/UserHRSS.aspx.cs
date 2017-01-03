@@ -108,7 +108,10 @@ namespace VSQN.View.User
 
         protected void ResultUserList_RowAnswering(object sender, GridViewEditEventArgs e)
         {
+            Session["System"] = "3";
+            Session["Module"] = (ResultHRSSList.Rows[e.NewEditIndex].Cells[0]).Text;
 
+            Response.Redirect("~/View/User/QuestionList.aspx");
         }
 
         protected void Result_Sorting(object sender, GridViewSortEventArgs e)

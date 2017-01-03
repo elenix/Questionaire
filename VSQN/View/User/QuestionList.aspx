@@ -1,5 +1,4 @@
-﻿<%@ Page Title="SAAS page" Language="C#" MasterPageFile="~/View/User/User.Master" AutoEventWireup="true" CodeBehind="UserSAAS.aspx.cs" Inherits="VSQN.View.User.SAAS" %>
-
+﻿<%@ Page Title="Question List" Language="C#" MasterPageFile="~/View/User/User.Master" AutoEventWireup="true" CodeBehind="QuestionList.aspx.cs" Inherits="VSQN.View.User.QuestionList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="UserContentPlaceHolder" runat="server">
@@ -8,23 +7,24 @@
     <div class="jumbotron" style="margin-top: 20px;">
         <div class="form-group">
             <div class="form-group row">
-                <h2 style="padding-left: 15px;">Select The Module</h2>
+                <h2 style="padding-left: 15px;">Select The Question</h2>
                 <hr />
             </div>
             <div class="form-group row">
                 <asp:UpdatePanel ID="UpdateViewQuestion" runat="server">
                     <ContentTemplate>
                         <%--put table here--%>
-                        <asp:GridView ID="ResultSAASList" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDataBound="ResultUserList_RowDataBound"
-                            OnRowEditing="ResultUserList_RowAnswering" EmptyDataText="No Data Available. Please choose other Module"
+                        <asp:GridView ID="ResultQuestionList" runat="server" AllowSorting="True" AutoGenerateColumns="False"
+                            EmptyDataText="No Data Available. Please choose other Module" OnRowEditing="ResultUserList_RowAnswering"
                             OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                             <Columns>
-                                <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />
-                                <asp:BoundField DataField="Name" HeaderText="SAAS Module" ItemStyle-Width="60%" />
-                                <asp:BoundField HeaderText="Progress" ItemStyle-Width="10%" />
+                                <asp:BoundField DataField="Seq_Number" HeaderText="Seq." ItemStyle-Width="5%" />
+                                <asp:BoundField DataField="Ref_Code" HeaderText="Reference" ItemStyle-Width="10%" />
+                                <asp:BoundField DataField="Ques" HeaderText="Question" ItemStyle-Width="55%" />
+                                <asp:BoundField HeaderText="Status" ItemStyle-Width="10%" />
                                 <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">
                                     <ItemTemplate>
-                                        <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="START" CommandName="Edit" CssClass="btn btn-info" />
+                                        <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="ANSWER" CommandName="Edit" CssClass="btn btn-success" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -37,6 +37,9 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
+            <div>
+                <asp:Button runat="server" ID="btnBack" Text="BACK" CssClass="btn btn-danger" OnClick="Page_Back"/>
+            </div>
         </div>
-    </div>
+        </div>
 </asp:Content>

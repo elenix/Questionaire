@@ -7,64 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VSQN.View.Admin {
+namespace VSQN.View.User {
     
     
-    public partial class QuesSetup {
+    public partial class QuestionGenerator {
         
         /// <summary>
-        /// SystemList control.
+        /// ques_seq control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList SystemList;
+        protected global::System.Web.UI.WebControls.Label ques_seq;
         
         /// <summary>
-        /// ModuleMenu control.
+        /// QuestionGenerate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ModuleMenu;
-        
-        /// <summary>
-        /// AutoGenerate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox AutoGenerate;
-        
-        /// <summary>
-        /// SeqNum control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SeqNum;
-        
-        /// <summary>
-        /// ques control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ques;
-        
-        /// <summary>
-        /// TypeOfInput control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList TypeOfInput;
+        protected global::System.Web.UI.WebControls.Label QuestionGenerate;
         
         /// <summary>
         /// TypeOfInputView control.
@@ -94,22 +58,40 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.View ViewTB;
         
         /// <summary>
-        /// TBT control.
+        /// TBUserAnswerBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList TBT;
+        protected global::System.Web.UI.WebControls.TextBox TBUserAnswerBox;
         
         /// <summary>
-        /// TBAnswer control.
+        /// TBLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBAnswer;
+        protected global::System.Web.UI.WebControls.Label TBLabel;
+        
+        /// <summary>
+        /// TBbtnDefault control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TBbtnDefault;
+        
+        /// <summary>
+        /// TBbtnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TBbtnSave;
         
         /// <summary>
         /// ViewMM control.
@@ -121,22 +103,31 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.View ViewMM;
         
         /// <summary>
-        /// MMT control.
+        /// MMUserAnswerBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList MMT;
+        protected global::System.Web.UI.WebControls.TextBox MMUserAnswerBox;
         
         /// <summary>
-        /// MMAnswer control.
+        /// MMLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MMAnswer;
+        protected global::System.Web.UI.WebControls.Label MMLabel;
+        
+        /// <summary>
+        /// MMbtnDefault control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MMbtnDefault;
         
         /// <summary>
         /// ViewRB control.
@@ -148,22 +139,13 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.View ViewRB;
         
         /// <summary>
-        /// RepeaterRBBox control.
+        /// panelRB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater RepeaterRBBox;
-        
-        /// <summary>
-        /// btnAddRBClick control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddRBClick;
+        protected global::System.Web.UI.WebControls.Panel panelRB;
         
         /// <summary>
         /// ViewCB control.
@@ -175,30 +157,21 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.View ViewCB;
         
         /// <summary>
-        /// RepeaterCBBox control.
+        /// panelCB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater RepeaterCBBox;
+        protected global::System.Web.UI.WebControls.Panel panelCB;
         
         /// <summary>
-        /// btnAddCBClick control.
+        /// btnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddCBClick;
-        
-        /// <summary>
-        /// btnCreate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCreate;
+        protected global::System.Web.UI.WebControls.Button btnBack;
     }
 }

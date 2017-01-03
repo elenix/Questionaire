@@ -20,9 +20,10 @@
                             <Columns>
                                 <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />
                                 <asp:BoundField DataField="Name" HeaderText="ESS Module" ItemStyle-Width="60%" />
-                                <asp:TemplateField HeaderText="Options" HeaderStyle-Width="30%">
+                                <asp:BoundField HeaderText="Progress" ItemStyle-Width="10%" />
+                                <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">
                                     <ItemTemplate>
-                                        <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="START" CommandName="Edit" CssClass="btn btn-success" />
+                                        <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="START" CommandName="Edit" CssClass="btn btn-info" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

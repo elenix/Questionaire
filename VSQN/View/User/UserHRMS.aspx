@@ -16,14 +16,15 @@
                     <ContentTemplate>
                         <%--put table here--%>
                         <asp:GridView ID="ResultHRMSList" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDataBound="ResultUserList_RowDataBound"
-                            OnRowEditing="ResultUserList_RowAnswering" EmptyDataText="No Data Available. Please choose other Module"
+                            EmptyDataText="No Data Available. Please choose other Module" OnRowEditing="ResultUserList_RowAnswering"
                             OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                             <Columns>
                                 <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />
                                 <asp:BoundField DataField="Name" HeaderText="HRMS Module" ItemStyle-Width="60%" />
-                                <asp:TemplateField HeaderText="Options" HeaderStyle-Width="30%">
+                                <asp:BoundField HeaderText="Progress" ItemStyle-Width="10%" />
+                                <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">
                                     <ItemTemplate>
-                                        <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="START" CommandName="Edit" CssClass="btn btn-success" />
+                                        <asp:Button ID="btn_Start" runat="server" Width="100%" Text="START" CommandName="Edit" CssClass="btn btn-info" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
