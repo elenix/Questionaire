@@ -25,10 +25,17 @@ namespace VSQN.View.User
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["user_role"] != null)
             {
-                LoadUserSAASmodule();
-                ShowData();
+                if (!IsPostBack)
+                {
+                    LoadUserSAASmodule();
+                    ShowData();
+                }
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
             }
         }
 

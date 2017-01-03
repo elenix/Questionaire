@@ -24,9 +24,16 @@ namespace VSQN.View.User
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["user_role"] != null)
             {
-                ShowData();
+                if (!IsPostBack)
+                {
+                    ShowData();
+                }
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
             }
         }
 
@@ -42,7 +49,7 @@ namespace VSQN.View.User
 
             
 
-            string Query = "Select Ref_Code,Ques,Seq_Number from QuestionBank where System_FK = @system and Module_FK = @module";
+            string Query = "Select Ref_Code,Ques,Seq_Number from QuestionBank where System_FK = @system and Module_FK = @module ORDER BY Seq_Number ASC";
 
             using (_con = new SqlConnection(_cs))
             {

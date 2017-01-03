@@ -130,6 +130,15 @@ namespace VSQN.View.User {
         protected global::System.Web.UI.WebControls.Button MMbtnDefault;
         
         /// <summary>
+        /// MMbtnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MMbtnSave;
+        
+        /// <summary>
         /// ViewRB control.
         /// </summary>
         /// <remarks>
@@ -148,6 +157,15 @@ namespace VSQN.View.User {
         protected global::System.Web.UI.WebControls.Panel panelRB;
         
         /// <summary>
+        /// RBbtnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button RBbtnSave;
+        
+        /// <summary>
         /// ViewCB control.
         /// </summary>
         /// <remarks>
@@ -164,6 +182,15 @@ namespace VSQN.View.User {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panelCB;
+        
+        /// <summary>
+        /// CBbtnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CBbtnSave;
         
         /// <summary>
         /// btnBack control.

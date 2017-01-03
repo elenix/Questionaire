@@ -38,7 +38,7 @@
                                         <asp:Label ID="lblReferenceCode" runat="server" Text='<%#Eval("Ref_Code") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Seq." HeaderStyle-Width="5%" SortExpression="Ref_Code">
+                                <asp:TemplateField HeaderText="Seq." HeaderStyle-Width="5%" SortExpression="Seq_Number">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSequence" runat="server" Text='<%#Eval("Seq_Number") %>'></asp:Label>
                                     </ItemTemplate>

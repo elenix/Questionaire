@@ -25,9 +25,16 @@ namespace VSQN.View.User
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["user_role"] != null)
             {
-                ExtractData();
+                if (!IsPostBack)
+                {
+                    ExtractData();
+                }
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
             }
         }
 

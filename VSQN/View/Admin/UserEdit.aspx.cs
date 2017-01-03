@@ -71,8 +71,8 @@ namespace VSQN.View.Admin
 
         public void ExtractUserModule()
         {
-            const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail";
-            const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail";
+            const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
+            const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
 
             using (_con = new SqlConnection(cs))
             {
@@ -106,8 +106,6 @@ namespace VSQN.View.Admin
 
                 }
             }
-
-            SortData();
         }
 
         public void ExtractModule()
@@ -144,12 +142,6 @@ namespace VSQN.View.Admin
                 }
             }
    
-        }
-
-        public void SortData()
-        {
-            _UserHrmSmodule = _UserHrmSmodule.OrderBy(i => i).ToList();
-            _UserEsSmodule = _UserEsSmodule.OrderBy(i => i).ToList();
         }
 
         private void LoadHrmsPanel()

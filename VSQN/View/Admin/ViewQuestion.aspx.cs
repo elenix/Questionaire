@@ -152,7 +152,7 @@ namespace VSQN.View.Admin
             _dt = new DataTable();
             _con = new SqlConnection(_cs);
             _con.Open();
-            string pstringQuery = "Select Ref_Code, Ques, Date_Time, Seq_Number from QuestionBank where System_FK = @SystemID AND Module_FK = @ModuleID;";
+            string pstringQuery = "Select Ref_Code, Ques, Date_Time, Seq_Number from QuestionBank where System_FK = @SystemID AND Module_FK = @ModuleID ORDER BY Seq_Number ASC";
             _command = new SqlCommand(pstringQuery, _con);
             _command.Parameters.AddWithValue("@SystemID", SystemList.SelectedValue);
             _command.Parameters.AddWithValue("@ModuleID", ModuleMenu.SelectedValue);

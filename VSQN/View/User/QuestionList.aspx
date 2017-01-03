@@ -14,8 +14,8 @@
                 <asp:UpdatePanel ID="UpdateViewQuestion" runat="server">
                     <ContentTemplate>
                         <%--put table here--%>
-                        <asp:GridView ID="ResultQuestionList" runat="server" AllowSorting="True" AutoGenerateColumns="False"
-                            EmptyDataText="No Data Available. Please choose other Module" OnRowEditing="ResultUserList_RowAnswering"
+                        <asp:GridView ID="ResultQuestionList" runat="server" AllowSorting="false" AutoGenerateColumns="False"
+                            EmptyDataText="No Questions Available. Please choose other Module" OnRowEditing="ResultUserList_RowAnswering"
                             OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                             <Columns>
                                 <asp:BoundField DataField="Seq_Number" HeaderText="Seq." ItemStyle-Width="5%" />
@@ -37,9 +37,12 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
-            <div>
-                <asp:Button runat="server" ID="btnBack" Text="BACK" CssClass="btn btn-danger" OnClick="Page_Back"/>
+            <div class="form-group row">
+               <hr />
+            <div class="col-md-2 col-form-label">
+                <asp:Button runat="server" ID="btnBack" Text="BACK" CssClass="btn btn-danger" OnClick="Page_Back" Width="100%"/>
             </div>
+                </div>
         </div>
         </div>
 </asp:Content>

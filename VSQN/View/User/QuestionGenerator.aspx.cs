@@ -13,7 +13,6 @@ namespace VSQN.View.User
     {
         string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
         SqlConnection _con;
-        SqlDataAdapter _adapt;
         DataTable _dt;
         SqlCommand _command;
         DataTable RBTable = new DataTable();
@@ -21,18 +20,26 @@ namespace VSQN.View.User
         int _typeOfInput;
         string _fieldTypeEdit;
         string _textAnswer;
-        List<string> _optionAnswer = new List<string>();
-        List<string> AnswerOptionUpdate = new List<string>();
+        List<string> _optionAnswerText = new List<string>();
+        List<int> _optionAnswerID = new List<int>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            RBTable.Columns.Add("RB_BOX");
-            CBTable.Columns.Add("CB_BOX");
-
-            Load_Question();
-            if (!IsPostBack)
+            if (Session["user_role"] != null)
             {
-                AnswerField();
+                RBTable.Columns.Add("RB_BOX");
+                CBTable.Columns.Add("CB_BOX");
+
+                Load_Question();
+
+                if (!IsPostBack)
+                {
+                    AnswerField();
+                }
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
             }
         }
 
@@ -103,7 +110,8 @@ namespace VSQN.View.User
 
                         while (reader.Read())
                         {
-                            _optionAnswer.Add(reader.GetString(2));
+                            _optionAnswerID.Add(reader.GetInt32(0));
+                            _optionAnswerText.Add(reader.GetString(2));
                         }
                     }
                     _con.Close();
@@ -113,14 +121,20 @@ namespace VSQN.View.User
 
         private void AnswerField()
         {
+            //For NULL value
+            if(_typeOfInput == 0)
+            {
+                TypeOfInputView.ActiveViewIndex = _typeOfInput;
+            }
+
             //For Question with Text Box Answer Data
-            if (_typeOfInput == 1)
+            else if (_typeOfInput == 1)
             {
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
                 switch (_fieldTypeEdit)
                 {
                     case "1":
-                        TBLabel.Text = "<small>* Please enter in <u>Text Words</u> only *</small>";
+                        TBLabel.Text = "<small>* Please enter in <u>Text</u> only *</small>";
                         break;
 
                     default:
@@ -137,7 +151,7 @@ namespace VSQN.View.User
                 switch (_fieldTypeEdit)
                 {
                     case "1":
-                        MMLabel.Text = "<small>* Please enter in <u>Text Words</u> only *</small>";
+                        MMLabel.Text = "<small>* Please enter in <u>Text</u> only *</small>";
                         break;
 
                     default:
@@ -179,18 +193,17 @@ namespace VSQN.View.User
         {
             var t = 1;
 
-            // ReSharper disable once UnusedVariable
-            foreach (var t1 in _optionAnswer)
+            foreach (var t1 in _optionAnswerText)
             {
                 panelRB.Controls.Add(new LiteralControl(" <div class='form-inline'>"));
                 panelRB.Controls.Add(new LiteralControl("<div class='form-group'>"));
 
-                var RBTemp = new RadioButton { ID = "chkRB" + t };
+                var RBTemp = new RadioButton { ID = _optionAnswerID[t - 1].ToString() };
 
                 var labelTemp = new Label
                 {
                     ID = "lblRB" + t,
-                    Text = _optionAnswer[t - 1]
+                    Text = _optionAnswerText[t - 1]
                 };
 
                 panelRB.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
@@ -210,18 +223,17 @@ namespace VSQN.View.User
         {
             var t = 1;
 
-            // ReSharper disable once UnusedVariable
-            foreach (var t1 in _optionAnswer)
+            foreach (var t1 in _optionAnswerText)
             {
                 panelCB.Controls.Add(new LiteralControl(" <div class='form-inline'>"));
                 panelCB.Controls.Add(new LiteralControl("<div class='form-group'>"));
 
-                var RBTemp = new CheckBox { ID = "chkCB" + t };
+                var RBTemp = new CheckBox { ID = _optionAnswerID[t - 1].ToString() };
 
                 var labelTemp = new Label
                 {
                     ID = "lblCB" + t,
-                    Text = _optionAnswer[t - 1]
+                    Text = _optionAnswerText[t - 1]
                 };
 
                 panelCB.Controls.Add(new LiteralControl("<label class='form-check-label'>"));

@@ -28,10 +28,10 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-3" style="padding-right:0">
+                    <div class="col-md-3" style="padding-right: 0">
                         <asp:Button runat="server" ID="TBbtnDefault" Text="Default Answer" OnClick="Default_Answer" CssClass="btn btn-info" Width="100%" />
                     </div>
-                    <div class="col-md-3" style="padding-left:5px">
+                    <div class="col-md-3" style="padding-left: 5px">
                         <asp:Button runat="server" ID="TBbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100%" />
                     </div>
                 </div>
@@ -46,8 +46,11 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding-right: 0">
                         <asp:Button runat="server" ID="MMbtnDefault" Text="Default Answer" OnClick="Default_Answer" CssClass="btn btn-info" Width="100%" />
+                    </div>
+                    <div class="col-md-3" style="padding-left: 5px">
+                        <asp:Button runat="server" ID="MMbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100%" />
                     </div>
                 </div>
             </asp:View>
@@ -60,6 +63,12 @@
                         <asp:Panel runat="server" ID="panelRB"></asp:Panel>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="padding-right: 0px; width: 95px;"></label>
+                    <div class="col-md-3" style="padding-left: 5px">
+                        <asp:Button runat="server" ID="RBbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100px" />
+                    </div>
+                </div>
             </asp:View>
             <%--FOR CHECK BOX--%>
             <asp:View ID="ViewCB" runat="server">
@@ -68,6 +77,12 @@
                         ANSWER:</label>
                     <div class="col-md-8">
                         <asp:Panel runat="server" ID="panelCB"></asp:Panel>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="padding-right: 0px; width: 95px;"></label>
+                    <div class="col-md-3" style="padding-left: 5px">
+                        <asp:Button runat="server" ID="CBbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100px" />
                     </div>
                 </div>
             </asp:View>

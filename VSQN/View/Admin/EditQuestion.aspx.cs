@@ -153,10 +153,17 @@ namespace VSQN.View.Admin
             {
                 LoadModalMenuDropdown("HRMS_module");
             }
-
             else if (_systemChoose == 2)
             {
                 LoadModalMenuDropdown("ESS_module");
+            }
+            else if (_systemChoose == 3)
+            {
+                LoadModalMenuDropdown("HRSS_module");
+            }
+            else if (_systemChoose == 4)
+            {
+                LoadModalMenuDropdown("SAAS_module");
             }
         }
 
@@ -169,6 +176,14 @@ namespace VSQN.View.Admin
             else if (SystemList.SelectedIndex == 2)
             {
                 LoadModalMenuDropdown("ESS_module");
+            }
+            else if (SystemList.SelectedIndex == 3)
+            {
+                LoadModalMenuDropdown("HRSS_module");
+            }
+            else if (SystemList.SelectedIndex == 4)
+            {
+                LoadModalMenuDropdown("SAAS_module");
             }
         }
 
@@ -183,6 +198,14 @@ namespace VSQN.View.Admin
             else if (module == "ESS_module")
             {
                 ModuleQuery = "Select * from ESS_module ";
+            }
+            else if (module == "HRSS_module")
+            {
+                ModuleQuery = "Select * from HRSS_module ";
+            }
+            else if (module == "SAAS_module")
+            {
+                ModuleQuery = "Select * from SAAS_module ";
             }
 
             using (_con = new SqlConnection(cs))
