@@ -18,7 +18,7 @@ namespace VSQN.View.User
         private SqlDataAdapter _adapt;
         private SqlCommand _command;
         private DataTable _dt;
-        //private string _message;
+        private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
 
@@ -28,6 +28,13 @@ namespace VSQN.View.User
             {
                 if (!IsPostBack)
                 {
+                    if (Session["success_save"] != null)
+                    {
+                        _message = Session["success_save"].ToString();
+                        ShowMessage(_message, MessageType.Success);
+                        Session["success_save"] = null;
+                    }
+
                     ShowData();
                 }
             }
@@ -46,8 +53,6 @@ namespace VSQN.View.User
         {
             var systemNo = Session["System"];
             var moduleNo = Session["Module"];
-
-            
 
             string Query = "Select Ref_Code,Ques,Seq_Number from QuestionBank where System_FK = @system and Module_FK = @module ORDER BY Seq_Number ASC";
 

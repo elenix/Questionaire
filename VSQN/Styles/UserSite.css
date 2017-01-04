@@ -160,7 +160,13 @@ div.menutop ul li a:hover
 
 }
 
-.hiddencol { display: none; }
+.btnanim:hover{
+
+    width:100px;
+    height:auto;
+    -webkit-transition  : width 0.2s linear;
+    transition  : width 0.2s linear;
+}
 
 
 

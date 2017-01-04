@@ -348,7 +348,7 @@ namespace VSQN.View.Admin
             Session["cancel_edit"] = "You have cancelled your question update.";
             Session["selected_system"] = SystemList.SelectedValue;
             Session["selected_module"] = ModuleMenu.SelectedValue;
-            Response.Redirect("ViewQuestion.aspx");
+            Response.Redirect("QuestionBank.aspx");
         }
 
         //Button update question
@@ -503,7 +503,7 @@ namespace VSQN.View.Admin
                 Session["update_message"] = "Your question have been updated.";
                 Session["selected_system"] = SystemList.SelectedValue;
                 Session["selected_module"] = ModuleMenu.SelectedValue; 
-                Response.Redirect("ViewQuestion.aspx");
+                Response.Redirect("QuestionBank.aspx");
             }
         }
 
@@ -637,7 +637,7 @@ namespace VSQN.View.Admin
                 Session["create_message"] = "New Question have been created!";
                 Session["selected_system"] = SystemList.SelectedValue;
                 Session["selected_module"] = ModuleMenu.SelectedValue;
-                Response.Redirect("ViewQuestion.aspx");
+                Response.Redirect("QuestionBank.aspx");
             }
         }
     }

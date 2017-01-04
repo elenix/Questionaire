@@ -32,7 +32,7 @@
                         <asp:Button runat="server" ID="TBbtnDefault" Text="Default Answer" OnClick="Default_Answer" CssClass="btn btn-info" Width="100%" />
                     </div>
                     <div class="col-md-3" style="padding-left: 5px">
-                        <asp:Button runat="server" ID="TBbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100%" />
+                        <asp:Button runat="server" ID="TBbtnSave" Text="Save" OnClick="Save_Answer" CssClass="btn btn-success btnanim" Width="100%" />
                     </div>
                 </div>
             </asp:View>
@@ -50,7 +50,7 @@
                         <asp:Button runat="server" ID="MMbtnDefault" Text="Default Answer" OnClick="Default_Answer" CssClass="btn btn-info" Width="100%" />
                     </div>
                     <div class="col-md-3" style="padding-left: 5px">
-                        <asp:Button runat="server" ID="MMbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100%" />
+                        <asp:Button runat="server" ID="MMbtnSave" Text="Save" OnClick="Save_Answer" CssClass="btn btn-success btnanim" Width="100%" />
                     </div>
                 </div>
             </asp:View>
@@ -66,7 +66,7 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" style="padding-right: 0px; width: 95px;"></label>
                     <div class="col-md-3" style="padding-left: 5px">
-                        <asp:Button runat="server" ID="RBbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100px" />
+                        <asp:Button runat="server" ID="RBbtnSave" Text="Save" OnClick="Save_Answer" CssClass="btn btn-success btnanim" Width="100px" />
                     </div>
                 </div>
             </asp:View>
@@ -82,7 +82,7 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" style="padding-right: 0px; width: 95px;"></label>
                     <div class="col-md-3" style="padding-left: 5px">
-                        <asp:Button runat="server" ID="CBbtnSave" Text="Save" OnClick="Default_Answer" CssClass="btn btn-success" Width="100px" />
+                        <asp:Button runat="server" ID="CBbtnSave" Text="Save" OnClick="Save_Answer" CssClass="btn btn-success btnanim" Width="100px" />
                     </div>
                 </div>
             </asp:View>
@@ -90,7 +90,7 @@
         <div class="form-group row">
             <hr />
             <div class="col-md-2 col-form-label">
-                <asp:Button runat="server" ID="btnBack" Text="Back" OnClick="Change_Page" CssClass="btn btn-danger" Width="100%" />
+                <asp:Button runat="server" ID="btnBack" Text="Back" OnClick="Change_Page" CssClass="btn btn-danger btnanim" Width="100%" />
             </div>
         </div>
     </div>

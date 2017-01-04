@@ -87,8 +87,8 @@
     <Content Include="View\Admin\UserEdit.aspx" />
     <Content Include="View\Admin\UserList.aspx" />
     <Content Include="View\Admin\UserSetup.aspx" />
-    <Content Include="View\Admin\ViewQuestion.aspx" />
-    <Content Include="View\Admin\QuesSetup.aspx" />
+    <Content Include="View\Admin\QuestionBank.aspx" />
+    <Content Include="View\Admin\QuestionSetup.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.js" />
@@ -147,19 +147,19 @@
     <Compile Include="View\Admin\UserSetup.aspx.designer.cs">
       <DependentUpon>UserSetup.aspx</DependentUpon>
     </Compile>
-    <Compile Include="View\Admin\ViewQuestion.aspx.cs">
-      <DependentUpon>ViewQuestion.aspx</DependentUpon>
+    <Compile Include="View\Admin\QuestionBank.aspx.cs">
+      <DependentUpon>QuestionBank.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\Admin\ViewQuestion.aspx.designer.cs">
-      <DependentUpon>ViewQuestion.aspx</DependentUpon>
+    <Compile Include="View\Admin\QuestionBank.aspx.designer.cs">
+      <DependentUpon>QuestionBank.aspx</DependentUpon>
     </Compile>
-    <Compile Include="View\Admin\QuesSetup.aspx.cs">
-      <DependentUpon>QuesSetup.aspx</DependentUpon>
+    <Compile Include="View\Admin\QuestionSetup.aspx.cs">
+      <DependentUpon>QuestionSetup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\Admin\QuesSetup.aspx.designer.cs">
-      <DependentUpon>QuesSetup.aspx</DependentUpon>
+    <Compile Include="View\Admin\QuestionSetup.aspx.designer.cs">
+      <DependentUpon>QuestionSetup.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Admin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

@@ -1,5 +1,5 @@
-﻿<%@ Page Title="View Question" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true"
-    CodeBehind="ViewQuestion.aspx.cs" Inherits="VSQN.View.Admin.ViewQuestion" %>
+﻿<%@ Page Title="Question Bank" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true"
+    CodeBehind="QuestionBank.aspx.cs" Inherits="VSQN.View.Admin.ViewQuestion" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>

@@ -22,6 +22,9 @@ namespace VSQN.View.User
         string _textAnswer;
         List<string> _optionAnswerText = new List<string>();
         List<int> _optionAnswerID = new List<int>();
+        List<int> _checkedOption = new List<int>();
+
+        private enum MessageType { Error };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,14 +32,17 @@ namespace VSQN.View.User
             {
                 RBTable.Columns.Add("RB_BOX");
                 CBTable.Columns.Add("CB_BOX");
-
                 Load_Question();
 
                 if (!IsPostBack)
                 {
-                    AnswerField();
+                    ExtractUserTextAnswer();
+                    AnswerTextField();
                 }
+
+                AnswerOptionField();
             }
+
             else
             {
                 Response.Redirect("~/View/Login/Login.aspx");
@@ -119,10 +125,93 @@ namespace VSQN.View.User
             }
         }
 
-        private void AnswerField()
+        protected void ExtractUserTextAnswer()
+        {
+            string TextQuery = "Select * from User_Answer_Text where user_email = @email and ref_code = @Ref_Cod";
+            var refcode = Session["Table_Refcode"];
+            var email = Session["user_email"];
+
+            using (_con = new SqlConnection(cs))
+            {
+                switch (_typeOfInput)
+                {
+                    case 1:
+                        using (_command = new SqlCommand(TextQuery, _con))
+                        {
+                            _command.Parameters.AddWithValue("@email", email);
+                            _command.Parameters.AddWithValue("@Ref_Cod", refcode);
+                            _con.Open();
+                            DataTable data = new DataTable();
+                            _command.ExecuteNonQuery();
+                            SqlDataReader dr = _command.ExecuteReader();
+                            data.Load(dr);
+
+                            foreach (DataRow row in data.Rows)
+                            {
+                                TBUserAnswerBox.Text = row["answer_text"].ToString();
+                                Session["_UserTextAnswer"] = row["answer_text"].ToString();
+                            }
+
+                            _con.Close();
+                        }
+
+                        break;
+
+                    default:
+                        using (_command = new SqlCommand(TextQuery, _con))
+                        {
+                            _command.Parameters.AddWithValue("@email", email);
+                            _command.Parameters.AddWithValue("@Ref_Cod", refcode);
+                            _con.Open();
+                            DataTable data = new DataTable();
+                            _command.ExecuteNonQuery();
+                            SqlDataReader dr = _command.ExecuteReader();
+                            data.Load(dr);
+
+                            foreach (DataRow row in data.Rows)
+                            {
+                                MMUserAnswerBox.Text = row["answer_text"].ToString();
+                                Session["_UserTextAnswer"] = row["answer_text"].ToString();
+                            }
+
+                            _con.Close();
+                        }
+
+                        break;
+                }
+
+            }
+        }
+
+        protected void ExtractUserOptionAnswer()
+        {
+            string OptionQuery = "Select * from User_Answer_Option where user_email = @email and ref_code = @Ref_Cod ORDER BY answer_ID ASC";
+            var refcode = Session["Table_Refcode"];
+            var email = Session["user_email"];
+
+            using (_con = new SqlConnection(cs))
+            {
+                using (_command = new SqlCommand(OptionQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@email", email);
+                    _command.Parameters.AddWithValue("@Ref_Cod", refcode);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _checkedOption.Add(reader.GetInt32(3));
+                    }
+                    _con.Close();
+                }
+            }
+        }
+
+        private void AnswerTextField()
         {
             //For NULL value
-            if(_typeOfInput == 0)
+            if (_typeOfInput == 0)
             {
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
             }
@@ -141,7 +230,6 @@ namespace VSQN.View.User
                         TBLabel.Text = "<small>* Please enter in <u>Numbers</u> only *</small>";
                         break;
                 }
-
             }
 
             //For Question with Memo Answer Data
@@ -159,11 +247,21 @@ namespace VSQN.View.User
                         break;
                 }
             }
+        }
+
+        private void AnswerOptionField()
+        {
+            //For NULL value
+            if (_typeOfInput == 0)
+            {
+                TypeOfInputView.ActiveViewIndex = _typeOfInput;
+            }
 
             //For Question with Rudio Button Answer Data
             else if (_typeOfInput == 3)
             {
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
+                ExtractUserOptionAnswer();
                 LoadRBPanel();
             }
 
@@ -171,6 +269,7 @@ namespace VSQN.View.User
             else if (_typeOfInput == 4)
             {
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
+                ExtractUserOptionAnswer();
                 LoadCBPanel();
             }
         }
@@ -192,23 +291,36 @@ namespace VSQN.View.User
         private void LoadRBPanel()
         {
             var t = 1;
+            var c = 0;
 
-            foreach (var t1 in _optionAnswerText)
+            foreach (var x in _optionAnswerText)
             {
                 panelRB.Controls.Add(new LiteralControl(" <div class='form-inline'>"));
                 panelRB.Controls.Add(new LiteralControl("<div class='form-group'>"));
 
                 var RBTemp = new RadioButton { ID = _optionAnswerID[t - 1].ToString() };
+                RBTemp.CssClass = "radio";
+                RBTemp.GroupName = "radioGroup";
 
                 var labelTemp = new Label
                 {
                     ID = "lblRB" + t,
-                    Text = _optionAnswerText[t - 1]
+                    Text = x 
                 };
 
                 panelRB.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
-                panelRB.Controls.Add(RBTemp);
-                panelRB.Controls.Add(new LiteralControl("<a>   </a>"));
+
+                if (c < _checkedOption.Count && RBTemp.ID == _checkedOption[c].ToString())
+                {
+                    RBTemp.Checked = true;
+                    panelRB.Controls.Add(RBTemp);
+                    c++;
+                }
+                else
+                {
+                    panelRB.Controls.Add(RBTemp);
+                }
+                panelRB.Controls.Add(new LiteralControl("<a> </a>"));
                 panelRB.Controls.Add(labelTemp);
                 panelRB.Controls.Add(new LiteralControl("</label>"));
 
@@ -222,23 +334,36 @@ namespace VSQN.View.User
         private void LoadCBPanel()
         {
             var t = 1;
+            var c = 0;
 
-            foreach (var t1 in _optionAnswerText)
+            foreach (var x in _optionAnswerText)
             {
                 panelCB.Controls.Add(new LiteralControl(" <div class='form-inline'>"));
                 panelCB.Controls.Add(new LiteralControl("<div class='form-group'>"));
 
-                var RBTemp = new CheckBox { ID = _optionAnswerID[t - 1].ToString() };
+                var CBTemp = new CheckBox { ID = _optionAnswerID[t - 1].ToString() };
+                CBTemp.CssClass = "checkbox";
 
                 var labelTemp = new Label
                 {
                     ID = "lblCB" + t,
-                    Text = _optionAnswerText[t - 1]
+                    Text = x
                 };
 
                 panelCB.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
-                panelCB.Controls.Add(RBTemp);
-                panelCB.Controls.Add(new LiteralControl("<a>   </a>"));
+
+                if (c < _checkedOption.Count && CBTemp.ID == _checkedOption[c].ToString())
+                {
+                    CBTemp.Checked = true;
+                    panelCB.Controls.Add(CBTemp);
+                    c++;
+                }
+                else
+                {
+                    panelCB.Controls.Add(CBTemp);
+                }
+
+                panelCB.Controls.Add(new LiteralControl("<a> </a>"));
                 panelCB.Controls.Add(labelTemp);
                 panelCB.Controls.Add(new LiteralControl("</label>"));
 
@@ -247,6 +372,216 @@ namespace VSQN.View.User
                 panelCB.Controls.Add(new LiteralControl("</div>"));
                 panelCB.Controls.Add(new LiteralControl("</div>"));
             }
+        }
+
+        private void ShowMessage(string message, MessageType type)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
+        }
+
+        protected void Save_Answer(object sender, EventArgs e)
+        {
+            string OneSaveQuery = "INSERT INTO User_Answer_Text(user_email,ref_code,answer_text) VALUES (@email,@ref_code,@answer_text)";
+            string updateQuery = "update User_Answer_Text set answer_text = @answer_text where user_email = @email and ref_code = @ref_code";
+            string MultiSaveQuery = "INSERT INTO User_Answer_Option(user_email,ref_code,answer_ID) VALUES (@email,@ref_code,@answer_ID)";
+            string MultiDeleteQuery = "delete from User_Answer_Option where user_email = @email and answer_ID = @answer_ID ";
+            var refcode = Session["Table_Refcode"];
+            var email = Session["user_email"];
+
+            using (_con = new SqlConnection(cs))
+            {
+                switch (_typeOfInput)
+                {
+                    case 1:
+
+                        if(Session["_UserTextAnswer"] != null)
+                        {
+                            using (_command = new SqlCommand(updateQuery, _con))
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@email", email);
+                                _command.Parameters.AddWithValue("@ref_code", refcode);
+                                _command.Parameters.AddWithValue("@answer_text", TBUserAnswerBox.Text);
+                                _command.ExecuteNonQuery();
+                                _con.Close();
+                            }
+                        }
+                        else
+                        {
+                            using (_command = new SqlCommand(OneSaveQuery, _con))
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@email", email);
+                                _command.Parameters.AddWithValue("@ref_code", refcode);
+                                _command.Parameters.AddWithValue("@answer_text", TBUserAnswerBox.Text);
+                                _command.ExecuteNonQuery();
+                                _con.Close();
+                            }
+                        }
+
+                        Session["_UserTextAnswer"] = null;
+
+                        break;
+
+                    case 2:
+
+                        if (Session["_UserTextAnswer"] != null)
+                        {
+                            using (_command = new SqlCommand(updateQuery, _con))
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@email", email);
+                                _command.Parameters.AddWithValue("@ref_code", refcode);
+                                _command.Parameters.AddWithValue("@answer_text", MMUserAnswerBox.Text);
+                                _command.ExecuteNonQuery();
+                                _con.Close();
+                            }
+                        }
+                        else
+                        {
+                            using (_command = new SqlCommand(OneSaveQuery, _con))
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@email", email);
+                                _command.Parameters.AddWithValue("@ref_code", refcode);
+                                _command.Parameters.AddWithValue("@answer_text", MMUserAnswerBox.Text);
+                                _command.ExecuteNonQuery();
+                                _con.Close();
+                            }
+                        }
+
+                        Session["_UserTextAnswer"] = null;
+
+                        break;
+
+                    case 3:
+
+                        #region radiobutton validation
+                        List<int> checkedRB = new List<int>();
+                        List<int> uncheckedRB = new List<int>();
+
+                        foreach (var child in panelRB.Controls.OfType<RadioButton>())
+                        {
+                            if (child.Checked)
+                            {
+                                int id = Convert.ToInt32(child.ID.Trim());
+                                checkedRB.Add(id);
+                            }
+                            else
+                            {
+                                int id = Convert.ToInt32(child.ID.Trim());
+                                uncheckedRB.Add(id);
+                            }
+                        }
+
+                        if (checkedRB.Count == 0)
+                        {
+                            ShowMessage("Please choose <b>one</b> of the answer.", MessageType.Error);
+                        }
+                        else
+                        {
+                            using (_command = new SqlCommand(MultiSaveQuery, _con))
+                            {
+                                foreach (int c in checkedRB)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@email", email);
+                                    _command.Parameters.AddWithValue("@ref_code", refcode);
+                                    _command.Parameters.AddWithValue("@answer_ID", c);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+
+                            using (_command = new SqlCommand(MultiDeleteQuery, _con))
+                            {
+                                foreach (int x in uncheckedRB)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@email", email);
+                                    _command.Parameters.AddWithValue("@answer_ID", x);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+
+                        }
+
+                        break;
+
+                    #endregion
+
+                    default:
+
+                        #region checkbox validation
+
+                        List<int> checkedCB = new List<int>();
+                        List<int> uncheckedCB = new List<int>();
+
+                        foreach (var child in panelCB.Controls.OfType<CheckBox>())
+                        {
+                            if (child.Checked)
+                            {
+                                int id = Convert.ToInt32(child.ID.Trim());
+                                checkedCB.Add(id);
+                            }
+                            else
+                            {
+                                int id = Convert.ToInt32(child.ID.Trim());
+                                uncheckedCB.Add(id);
+                            }
+                        }
+
+                        List<int> newDifference = checkedCB.Except(_checkedOption).ToList();
+                        List<int> oldDifference = uncheckedCB.Except(checkedCB).ToList();
+
+                        if (newDifference != null)
+                        {
+                            using (_command = new SqlCommand(MultiSaveQuery, _con))
+                            {
+                                foreach (int c in newDifference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@email", email);
+                                    _command.Parameters.AddWithValue("@ref_code", refcode);
+                                    _command.Parameters.AddWithValue("@answer_ID", c);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }    
+                        }
+                        else
+                        {
+                            ShowMessage("Please choose <b>atlease one</b> of the answer.", MessageType.Error);
+                        }
+
+                        if (oldDifference != null)
+                        { 
+                            using (_command = new SqlCommand(MultiDeleteQuery, _con))
+                            {
+                                foreach (int x in oldDifference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@email", email);
+                                    _command.Parameters.AddWithValue("@answer_ID", x);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        break;
+
+                        #endregion
+                }
+            }
+
+            Session["success_save"] = "Your answer have been saved!";
+            Response.Redirect("QuestionList.aspx");
         }
     }
 }

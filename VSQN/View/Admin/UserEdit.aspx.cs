@@ -88,7 +88,6 @@ namespace VSQN.View.Admin
                         _UserHrmSmodule.Add(reader.GetInt32(2));
                     }
                     _con.Close();
-
                 }
 
                 using (_command = new SqlCommand(userEss, _con))
@@ -103,7 +102,6 @@ namespace VSQN.View.Admin
                         _UserEsSmodule.Add(reader.GetInt32(2));
                     }
                     _con.Close();
-
                 }
             }
         }

@@ -78,19 +78,17 @@ namespace VSQN.View.Admin
             var t = 1;
 
             // Extract user info from HRMS_Module based on User_email.
-
-            // ReSharper disable once UnusedVariable
-            foreach (var t1 in _hrmSmodule)
+            foreach (var x in _hrmSmodule)
             {
                 panelHRMS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
                 panelHRMS.Controls.Add(new LiteralControl("<div class='form-check'>"));
 
-                var chkTemp = new CheckBox {ID = "chkHRMS" + t};
+                var chkTemp = new CheckBox {ID = "c"+ t};
 
                 var labelTemp = new Label
                 {
                     ID = "lblHRMS" + t,
-                    Text = _hrmSmodule[t - 1].Replace("Module", "")
+                    Text = x.Replace("Module", "")
                 };
 
                 panelHRMS.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
@@ -110,18 +108,18 @@ namespace VSQN.View.Admin
         {
             var t = 1;
 
-            // ReSharper disable once UnusedVariable
-            foreach (var t1 in _esSmodule)
+            // Extract user info from ESS_Module based on User_email.
+            foreach (var x in _esSmodule)
             {
                 panelESS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
                 panelESS.Controls.Add(new LiteralControl("<div class='form-check'>"));
 
-                var chkTemp = new CheckBox {ID = "chkESS" + t};
+                var chkTemp = new CheckBox {ID = "c" + t};
 
                 var labelTemp = new Label
                 {
                     ID = "lblESS" + t,
-                    Text = _esSmodule[t - 1]
+                    Text = x
                 };
 
                 panelESS.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
@@ -180,7 +178,6 @@ namespace VSQN.View.Admin
         private void ShowMessage(string message, MessageType type)
         {
             ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
-
         }
 
         protected void btn_UncheckAll(object sender, EventArgs e)
@@ -263,7 +260,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", child.ID.Substring(7).Trim());
+                                _command.Parameters.AddWithValue("@module", child.ID.Substring(1).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
                                 _con.Close();
@@ -279,7 +276,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", child.ID.Substring(6).Trim());
+                                _command.Parameters.AddWithValue("@module", child.ID.Substring(1).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
                                 _con.Close();

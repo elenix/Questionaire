@@ -80,6 +80,16 @@ namespace VSQN.View.Admin
                 LoadModalMenuDropdown("ESS_module");
             }
 
+            else if (SystemList.SelectedIndex == 3)
+            {
+                LoadModalMenuDropdown("HRSS_module");
+            }
+
+            else if (SystemList.SelectedIndex == 4)
+            {
+                LoadModalMenuDropdown("SAAS_module");
+            }
+
             Session["selected_system"] = null;
         }
 
@@ -92,6 +102,15 @@ namespace VSQN.View.Admin
             else if (SystemList.SelectedIndex == 2)
             {
                 LoadModalMenuDropdown("ESS_module");    
+            }
+            else if (SystemList.SelectedIndex == 3)
+            {
+                LoadModalMenuDropdown("HRSS_module");
+            }
+
+            else if (SystemList.SelectedIndex == 4)
+            {
+                LoadModalMenuDropdown("SAAS_module");
             }
 
             ShowData();
@@ -108,6 +127,14 @@ namespace VSQN.View.Admin
             else if (module == "ESS_module")
             {
                 ModuleQuery = "Select * from ESS_module ";
+            }
+            else if (module == "HRSS_module")
+            {
+                ModuleQuery = "Select * from HRSS_module ";
+            }
+            else if (module == "SAAS_module")
+            {
+                ModuleQuery = "Select * from SAAS_module ";
             }
 
             using (_con = new SqlConnection(_cs))
@@ -175,7 +202,6 @@ namespace VSQN.View.Admin
 
         protected void Result_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            //NewEditIndex property used to determine the index of the row being edited.  
             Session["Row_Ref_Code"] = ((Label)Result.Rows[e.NewEditIndex].FindControl("lblReferenceCode")).Text;
             Response.Redirect("EditQuestion.aspx");
         }
@@ -183,7 +209,7 @@ namespace VSQN.View.Admin
         protected void Result_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             Label refNum = Result.Rows[e.RowIndex].FindControl("lblReferenceCode") as Label;
-
+            string deleteQuery = "Delete from QuestionBank where Ref_Code= @id";
             if (refNum != null)
             {
                 var id = Convert.ToInt32(refNum.Text);
@@ -191,11 +217,10 @@ namespace VSQN.View.Admin
                 if (id != 0)
                 {
                     _con = new SqlConnection(_cs);
-
                     _con.Open();
-                    _command = new SqlCommand("Delete from QuestionBank Where Ref_Code='" + id + "'", _con);
+                    _command = new SqlCommand(deleteQuery, _con);
+                    _command.Parameters.AddWithValue("@id", id);
                     _command.ExecuteNonQuery();
-                
                     _con.Close();
                     ShowData();
                     ShowMessage("Your Question have been deleted.", MessageType.Error);
