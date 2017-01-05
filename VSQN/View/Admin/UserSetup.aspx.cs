@@ -18,6 +18,7 @@ namespace VSQN.View.Admin
         SqlCommand _command;
         readonly List<string> _hrmSmodule = new List<string>();
         readonly List<string> _esSmodule = new List<string>();
+        readonly List<string> _hrsSmodule = new List<string>();
 
         private enum MessageType { Success, Error };
 
@@ -28,6 +29,7 @@ namespace VSQN.View.Admin
                 ExtractData();
                 LoadHrmsPanel();
                 LoadEssPanel();
+                LoadHrssPanel();
             }
 
             else
@@ -38,9 +40,9 @@ namespace VSQN.View.Admin
 
         private void ExtractData()
         {
-            _con = new SqlConnection(_cs);
             const string selectHrms = "Select * from HRMS_module";
             const string selectEss = "Select * from ESS_module";
+            const string selectHrss = "Select * from HRSS_module";
 
             using (_con = new SqlConnection(_cs))
             {
@@ -70,6 +72,19 @@ namespace VSQN.View.Admin
                 }
                 _con.Close();
 
+                using (_command = new SqlCommand(selectHrss, _con))
+                {
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _hrsSmodule.Add(reader.GetString(1));
+                    }
+                }
+                _con.Close();
+
             }
         }
 
@@ -83,7 +98,7 @@ namespace VSQN.View.Admin
                 panelHRMS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
                 panelHRMS.Controls.Add(new LiteralControl("<div class='form-check'>"));
 
-                var chkTemp = new CheckBox {ID = "c"+ t};
+                var chkTemp = new CheckBox {ID = "chkHRMS"+ t};
 
                 var labelTemp = new Label
                 {
@@ -114,7 +129,7 @@ namespace VSQN.View.Admin
                 panelESS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
                 panelESS.Controls.Add(new LiteralControl("<div class='form-check'>"));
 
-                var chkTemp = new CheckBox {ID = "c" + t};
+                var chkTemp = new CheckBox {ID = "chkESS" + t};
 
                 var labelTemp = new Label
                 {
@@ -132,6 +147,37 @@ namespace VSQN.View.Admin
 
                 panelESS.Controls.Add(new LiteralControl("</div>"));
                 panelESS.Controls.Add(new LiteralControl("</div>"));
+            }
+        }
+
+        private void LoadHrssPanel()
+        {
+            var t = 1;
+
+            // Extract user info from ESS_Module based on User_email.
+            foreach (var x in _hrsSmodule)
+            {
+                panelHRSS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
+                panelHRSS.Controls.Add(new LiteralControl("<div class='form-check'>"));
+
+                var chkTemp = new CheckBox { ID = "chkHRSS" + t };
+
+                var labelTemp = new Label
+                {
+                    ID = "lblHRSS" + t,
+                    Text = x
+                };
+
+                panelHRSS.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
+                panelHRSS.Controls.Add(chkTemp);
+                panelHRSS.Controls.Add(new LiteralControl("  "));
+                panelHRSS.Controls.Add(labelTemp);
+                panelHRSS.Controls.Add(new LiteralControl("</label>"));
+                panelHRSS.Controls.Add(new LiteralControl("<br />"));
+                t++;
+
+                panelHRSS.Controls.Add(new LiteralControl("</div>"));
+                panelHRSS.Controls.Add(new LiteralControl("</div>"));
             }
         }
 
@@ -191,6 +237,11 @@ namespace VSQN.View.Admin
             {
                 child.Checked = false;
             }
+
+            foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = false;
+            }
         }
 
         protected void btn_CheckAll(object sender, EventArgs e)
@@ -211,6 +262,7 @@ namespace VSQN.View.Admin
             string query = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
             string HRMSquery = "insert into HRMS_User_Info (User_Email,Module_number) values (@Email, @module) ";
             string ESSquery = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            string HRSSquery = "insert into HRSS_User_Info (User_Email,Module_number) values (@Email, @module) ";
 
             #region EmptyBoxValidation
 
@@ -260,7 +312,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", child.ID.Substring(1).Trim());
+                                _command.Parameters.AddWithValue("@module", child.ID.Substring(7).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
                                 _con.Close();
@@ -276,7 +328,23 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", child.ID.Substring(1).Trim());
+                                _command.Parameters.AddWithValue("@module", child.ID.Substring(6).Trim());
+                                _command.ExecuteNonQuery();
+                                _command.Parameters.Clear();
+                                _con.Close();
+                            }
+                        }
+                    }
+
+                    using (_command = new SqlCommand(HRSSquery, _con))
+                    {
+                        foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                        {
+                            if (child.Checked)
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@module", child.ID.Substring(7).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
                                 _con.Close();

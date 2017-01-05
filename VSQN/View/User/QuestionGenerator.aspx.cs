@@ -394,6 +394,8 @@ namespace VSQN.View.User
                 {
                     case 1:
 
+                        #region Textbox validation
+
                         if(Session["_UserTextAnswer"] != null)
                         {
                             using (_command = new SqlCommand(updateQuery, _con))
@@ -423,7 +425,11 @@ namespace VSQN.View.User
 
                         break;
 
+                    #endregion
+
                     case 2:
+
+                        #region Memobox validation
 
                         if (Session["_UserTextAnswer"] != null)
                         {
@@ -453,6 +459,8 @@ namespace VSQN.View.User
                         Session["_UserTextAnswer"] = null;
 
                         break;
+
+                    #endregion
 
                     case 3:
 

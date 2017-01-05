@@ -27,6 +27,13 @@ namespace VSQN.View.User
         {
             if (Session["user_role"] != null)
             {
+                if(Session["save_setting"] != null)
+                {
+                    string msg = Session["save_setting"].ToString();
+                    ShowMessage(msg, MessageType.Success);
+                    Session["save_setting"] = null;
+                }
+
                 if (!IsPostBack)
                 {
                     ExtractData();
@@ -120,7 +127,7 @@ namespace VSQN.View.User
                     }
                 }
 
-                ShowMessage("Your <b>new username and password</b> have been saved!", MessageType.Success);
+                Session["save_setting"] = "Your <b>new username and password</b> have been saved!"; 
                 Response.Redirect("~/View/User/UserSettings.aspx");
             }
         }

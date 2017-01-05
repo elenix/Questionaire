@@ -22,8 +22,10 @@ namespace VSQN.View.Admin
         SqlDataReader dr;
         readonly List<string> _hrmSmodule = new List<string>();
         readonly List<string> _esSmodule  = new List<string>();
+        readonly List<string> _hrsSmodule = new List<string>();
         List<int> _UserHrmSmodule = new List<int>();
         List<int> _UserEsSmodule  = new List<int>();
+        List<int> _UserHrsSmodule = new List<int>();
 
         private enum MessageType { Success, Error };
 
@@ -38,6 +40,7 @@ namespace VSQN.View.Admin
             ExtractModule();
             LoadHrmsPanel();
             LoadEssPanel();
+            LoadHrssPanel();
         }
 
         public void ExtractData()
@@ -73,6 +76,7 @@ namespace VSQN.View.Admin
         {
             const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
             const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
+            const string userHrss = "Select * from HRSS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
 
             using (_con = new SqlConnection(cs))
             {
@@ -103,6 +107,20 @@ namespace VSQN.View.Admin
                     }
                     _con.Close();
                 }
+
+                using (_command = new SqlCommand(userHrss, _con))
+                {
+                    _command.Parameters.AddWithValue("@userEmail", newEmail.Text);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _UserHrsSmodule.Add(reader.GetInt32(2));
+                    }
+                    _con.Close();
+                }
             }
         }
 
@@ -110,6 +128,7 @@ namespace VSQN.View.Admin
         {
             const string selectHrms = "Select * from HRMS_module";
             const string selectEss = "Select * from ESS_module";
+            const string selectHrss = "Select * from HRSS_module";
 
             using (_con = new SqlConnection(cs))
             {
@@ -135,6 +154,19 @@ namespace VSQN.View.Admin
                     while (reader.Read())
                     {
                         _esSmodule.Add(reader.GetString(1));
+                    }
+                    _con.Close();
+                }
+
+                using (_command = new SqlCommand(selectHrss, _con))
+                {
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _hrsSmodule.Add(reader.GetString(1));
                     }
                     _con.Close();
                 }
@@ -229,6 +261,49 @@ namespace VSQN.View.Admin
             }
         }
 
+        private void LoadHrssPanel()
+        {
+            var t = 1;
+            var c = 0;
+
+
+            foreach (var t1 in _hrsSmodule)
+            {
+                panelHRSS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
+                panelHRSS.Controls.Add(new LiteralControl("<div class='form-check'>"));
+
+                var chkTemp = new CheckBox { ID = "chkHRSS" + t };
+
+                var labelTemp = new Label
+                {
+                    ID = "lblHRSS" + t,
+                    Text = _hrsSmodule[t - 1]
+                };
+
+                panelHRSS.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
+
+                if (c < _UserHrsSmodule.Count && t == _UserHrsSmodule[c])
+                {
+                    chkTemp.Checked = true;
+                    panelHRSS.Controls.Add(chkTemp);
+                    c++;
+                }
+                else
+                {
+                    panelHRSS.Controls.Add(chkTemp);
+                }
+
+                panelHRSS.Controls.Add(new LiteralControl("  "));
+                panelHRSS.Controls.Add(labelTemp);
+                panelHRSS.Controls.Add(new LiteralControl("</label>"));
+
+                t++;
+
+                panelHRSS.Controls.Add(new LiteralControl("</div>"));
+                panelHRSS.Controls.Add(new LiteralControl("</div>"));
+            }
+        }
+
         #region menu
 
         protected void LinkHRMS_Click(object sender, EventArgs e)
@@ -286,8 +361,10 @@ namespace VSQN.View.Admin
             const string updatequery = "update UserAuth set username = @Username, Company = @company where email = @Email ";
             const string addHRMSquery = "insert into HRMS_User_Info (User_Email,Module_number) values (@Email, @module) ";
             const string addESSquery = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            const string addHRSSquery = "insert into HRSS_User_Info (User_Email,Module_number) values (@Email, @module) ";
             const string deleteHRMSquery = "delete from HRMS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteESSquery = "delete from ESS_User_Info where User_Email = @Email and Module_number = @module ";
+            const string deleteHRSSquery = "delete from HRSS_User_Info where User_Email = @Email and Module_number = @module ";
             #region EmptyBoxValidation
             if (String.IsNullOrWhiteSpace(userName.Text))
             {
@@ -380,7 +457,36 @@ namespace VSQN.View.Admin
                                 _command.Parameters.Clear();
                                 _con.Close();
                             }
-                        }    
+                        }     
+                    }
+
+                    using (_command = new SqlCommand(addHRSSquery, _con))
+                    {
+                        List<int> newCheckedlist = new List<int>();
+
+                        foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                        {
+                            if (child.Checked)
+                            {
+                                var CheckedID = child.ID.Substring(7).Trim();
+                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                            }
+                        }
+
+                        List<int> difference = newCheckedlist.Except(_UserHrsSmodule).ToList();
+
+                        if (difference != null)
+                        {
+                            foreach (var x in difference)
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@module", x);
+                                _command.ExecuteNonQuery();
+                                _command.Parameters.Clear();
+                                _con.Close();
+                            }
+                        }
                     }
 
                     #endregion
@@ -437,6 +543,41 @@ namespace VSQN.View.Admin
                             else
                             {
                                 var unCheckedID = child.ID.Substring(6).Trim();
+                                newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
+                            }
+                        }
+
+                        List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
+
+                        if (difference != null)
+                        {
+                            foreach (var y in difference)
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@module", y);
+                                _command.ExecuteNonQuery();
+                                _command.Parameters.Clear();
+                                _con.Close();
+                            }
+                        }
+                    }
+
+                    using (_command = new SqlCommand(deleteHRSSquery, _con))
+                    {
+                        List<int> newCheckedlist = new List<int>();
+                        List<int> newUncheckedlist = new List<int>();
+
+                        foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                        {
+                            if (child.Checked)
+                            {
+                                var CheckedID = child.ID.Substring(7).Trim();
+                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                            }
+                            else
+                            {
+                                var unCheckedID = child.ID.Substring(7).Trim();
                                 newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
                             }
                         }
