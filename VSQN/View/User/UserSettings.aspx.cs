@@ -25,7 +25,7 @@ namespace VSQN.View.User
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null)
+            if (Session["user_role"] != null && Session["user_role"].ToString() == "U")
             {
                 if(Session["save_setting"] != null)
                 {

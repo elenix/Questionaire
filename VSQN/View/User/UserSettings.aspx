@@ -7,7 +7,7 @@
     <div class="jumbotron" style="margin-top: 20px;">
         <div class="form-group">
             <div class="form-group row">
-                <h3 style="padding-left: 15px;">USER SETUP</h3>
+                <h3 style="padding-left: 15px;">SETTINGS</h3>
                 <hr />
             </div>
             <div class="form-group row" style="margin-top: 30px;">

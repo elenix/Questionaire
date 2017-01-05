@@ -23,24 +23,34 @@ namespace VSQN.View.Admin
         readonly List<string> _hrmSmodule = new List<string>();
         readonly List<string> _esSmodule  = new List<string>();
         readonly List<string> _hrsSmodule = new List<string>();
+        readonly List<string> _saaSmodule = new List<string>();
         List<int> _UserHrmSmodule = new List<int>();
         List<int> _UserEsSmodule  = new List<int>();
         List<int> _UserHrsSmodule = new List<int>();
+        List<int> _UserSaaSmodule = new List<int>();
 
         private enum MessageType { Success, Error };
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
             {
-                ExtractData();
-            }
+                if (!IsPostBack)
+                {
+                    ExtractData();
+                }
 
-            ExtractUserModule();
-            ExtractModule();
-            LoadHrmsPanel();
-            LoadEssPanel();
-            LoadHrssPanel();
+                ExtractUserModule();
+                ExtractModule();
+                LoadHrmsPanel();
+                LoadEssPanel();
+                LoadHrssPanel();
+                LoadSaasPanel();
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
+            }
         }
 
         public void ExtractData()
@@ -75,8 +85,9 @@ namespace VSQN.View.Admin
         public void ExtractUserModule()
         {
             const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
-            const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
+            const string userEss  = "Select * from ESS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
             const string userHrss = "Select * from HRSS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
+            const string userSaas = "Select * from SAAS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
 
             using (_con = new SqlConnection(cs))
             {
@@ -121,14 +132,29 @@ namespace VSQN.View.Admin
                     }
                     _con.Close();
                 }
+
+                using (_command = new SqlCommand(userSaas, _con))
+                {
+                    _command.Parameters.AddWithValue("@userEmail", newEmail.Text);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _UserSaaSmodule.Add(reader.GetInt32(2));
+                    }
+                    _con.Close();
+                }
             }
         }
 
         public void ExtractModule()
         {
             const string selectHrms = "Select * from HRMS_module";
-            const string selectEss = "Select * from ESS_module";
+            const string selectEss  = "Select * from ESS_module";
             const string selectHrss = "Select * from HRSS_module";
+            const string selectSaas = "Select * from SAAS_module";
 
             using (_con = new SqlConnection(cs))
             {
@@ -167,6 +193,19 @@ namespace VSQN.View.Admin
                     while (reader.Read())
                     {
                         _hrsSmodule.Add(reader.GetString(1));
+                    }
+                    _con.Close();
+                }
+
+                using (_command = new SqlCommand(selectSaas, _con))
+                {
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _saaSmodule.Add(reader.GetString(1));
                     }
                     _con.Close();
                 }
@@ -304,6 +343,49 @@ namespace VSQN.View.Admin
             }
         }
 
+        private void LoadSaasPanel()
+        {
+            var t = 1;
+            var c = 0;
+
+
+            foreach (var t1 in _saaSmodule)
+            {
+                panelSAAS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
+                panelSAAS.Controls.Add(new LiteralControl("<div class='form-check'>"));
+
+                var chkTemp = new CheckBox { ID = "chkSAAS" + t };
+
+                var labelTemp = new Label
+                {
+                    ID = "lblSAAS" + t,
+                    Text = _saaSmodule[t - 1].Replace("Module", "")
+                };
+
+                panelSAAS.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
+
+                if (c < _UserSaaSmodule.Count && t == _UserSaaSmodule[c])
+                {
+                    chkTemp.Checked = true;
+                    panelSAAS.Controls.Add(chkTemp);
+                    c++;
+                }
+                else
+                {
+                    panelSAAS.Controls.Add(chkTemp);
+                }
+
+                panelSAAS.Controls.Add(new LiteralControl("  "));
+                panelSAAS.Controls.Add(labelTemp);
+                panelSAAS.Controls.Add(new LiteralControl("</label>"));
+
+                t++;
+
+                panelSAAS.Controls.Add(new LiteralControl("</div>"));
+                panelSAAS.Controls.Add(new LiteralControl("</div>"));
+            }
+        }
+
         #region menu
 
         protected void LinkHRMS_Click(object sender, EventArgs e)
@@ -360,11 +442,13 @@ namespace VSQN.View.Admin
         {
             const string updatequery = "update UserAuth set username = @Username, Company = @company where email = @Email ";
             const string addHRMSquery = "insert into HRMS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            const string addESSquery = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            const string addESSquery  = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
             const string addHRSSquery = "insert into HRSS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            const string addSAASquery = "insert into SAAS_User_Info (User_Email,Module_number) values (@Email, @module) ";
             const string deleteHRMSquery = "delete from HRMS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteESSquery = "delete from ESS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteHRSSquery = "delete from HRSS_User_Info where User_Email = @Email and Module_number = @module ";
+            const string deleteSAASquery = "delete from SAAS_User_Info where User_Email = @Email and Module_number = @module ";
             #region EmptyBoxValidation
             if (String.IsNullOrWhiteSpace(userName.Text))
             {
@@ -489,6 +573,35 @@ namespace VSQN.View.Admin
                         }
                     }
 
+                    using (_command = new SqlCommand(addSAASquery, _con))
+                    {
+                        List<int> newCheckedlist = new List<int>();
+
+                        foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
+                        {
+                            if (child.Checked)
+                            {
+                                var CheckedID = child.ID.Substring(7).Trim();
+                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                            }
+                        }
+
+                        List<int> difference = newCheckedlist.Except(_UserSaaSmodule).ToList();
+
+                        if (difference != null)
+                        {
+                            foreach (var x in difference)
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@module", x);
+                                _command.ExecuteNonQuery();
+                                _command.Parameters.Clear();
+                                _con.Close();
+                            }
+                        }
+                    }
+
                     #endregion
 
                     #region delete_new_unchecked_list
@@ -569,6 +682,41 @@ namespace VSQN.View.Admin
                         List<int> newUncheckedlist = new List<int>();
 
                         foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                        {
+                            if (child.Checked)
+                            {
+                                var CheckedID = child.ID.Substring(7).Trim();
+                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                            }
+                            else
+                            {
+                                var unCheckedID = child.ID.Substring(7).Trim();
+                                newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
+                            }
+                        }
+
+                        List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
+
+                        if (difference != null)
+                        {
+                            foreach (var y in difference)
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@module", y);
+                                _command.ExecuteNonQuery();
+                                _command.Parameters.Clear();
+                                _con.Close();
+                            }
+                        }
+                    }
+
+                    using (_command = new SqlCommand(deleteSAASquery, _con))
+                    {
+                        List<int> newCheckedlist = new List<int>();
+                        List<int> newUncheckedlist = new List<int>();
+
+                        foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
                         {
                             if (child.Checked)
                             {

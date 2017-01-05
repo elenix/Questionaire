@@ -16,7 +16,7 @@
                     <ContentTemplate>
                         <%--put table here--%>
                         <asp:GridView ID="ResultSAASList" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDataBound="ResultUserList_RowDataBound"
-                            OnRowEditing="ResultUserList_RowAnswering" EmptyDataText="No Data Available. Please choose other Module"
+                            OnRowEditing="ResultUserList_RowAnswering" EmptyDataText="No Data Available. Please choose other system."
                             OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                             <Columns>
                                 <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />

@@ -19,17 +19,19 @@ namespace VSQN.View.Admin
         readonly List<string> _hrmSmodule = new List<string>();
         readonly List<string> _esSmodule = new List<string>();
         readonly List<string> _hrsSmodule = new List<string>();
+        readonly List<string> _saaSmodule = new List<string>();
 
         private enum MessageType { Success, Error };
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null)
+            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
             {
                 ExtractData();
                 LoadHrmsPanel();
                 LoadEssPanel();
                 LoadHrssPanel();
+                LoadSaasPanel();
             }
 
             else
@@ -41,8 +43,9 @@ namespace VSQN.View.Admin
         private void ExtractData()
         {
             const string selectHrms = "Select * from HRMS_module";
-            const string selectEss = "Select * from ESS_module";
+            const string selectEss  = "Select * from ESS_module";
             const string selectHrss = "Select * from HRSS_module";
+            const string selectSaas = "Select * from SAAS_module";
 
             using (_con = new SqlConnection(_cs))
             {
@@ -81,6 +84,19 @@ namespace VSQN.View.Admin
                     while (reader.Read())
                     {
                         _hrsSmodule.Add(reader.GetString(1));
+                    }
+                }
+                _con.Close();
+
+                using (_command = new SqlCommand(selectSaas, _con))
+                {
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _saaSmodule.Add(reader.GetString(1));
                     }
                 }
                 _con.Close();
@@ -154,7 +170,7 @@ namespace VSQN.View.Admin
         {
             var t = 1;
 
-            // Extract user info from ESS_Module based on User_email.
+            // Extract user info from HRSS_Module based on User_email.
             foreach (var x in _hrsSmodule)
             {
                 panelHRSS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
@@ -178,6 +194,37 @@ namespace VSQN.View.Admin
 
                 panelHRSS.Controls.Add(new LiteralControl("</div>"));
                 panelHRSS.Controls.Add(new LiteralControl("</div>"));
+            }
+        }
+
+        private void LoadSaasPanel()
+        {
+            var t = 1;
+
+            // Extract user info from SAAS_Module based on User_email.
+            foreach (var x in _saaSmodule)
+            {
+                panelSAAS.Controls.Add(new LiteralControl("<div class='col-md-4'>"));
+                panelSAAS.Controls.Add(new LiteralControl("<div class='form-check'>"));
+
+                var chkTemp = new CheckBox { ID = "chkSAAS" + t };
+
+                var labelTemp = new Label
+                {
+                    ID = "lblSAAS" + t,
+                    Text = x.Replace("Module", "")
+                };
+
+                panelSAAS.Controls.Add(new LiteralControl("<label class='form-check-label'>"));
+                panelSAAS.Controls.Add(chkTemp);
+                panelSAAS.Controls.Add(new LiteralControl("  "));
+                panelSAAS.Controls.Add(labelTemp);
+                panelSAAS.Controls.Add(new LiteralControl("</label>"));
+                panelSAAS.Controls.Add(new LiteralControl("<br />"));
+                t++;
+
+                panelSAAS.Controls.Add(new LiteralControl("</div>"));
+                panelSAAS.Controls.Add(new LiteralControl("</div>"));
             }
         }
 
@@ -242,6 +289,11 @@ namespace VSQN.View.Admin
             {
                 child.Checked = false;
             }
+
+            foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = false;
+            }
         }
 
         protected void btn_CheckAll(object sender, EventArgs e)
@@ -259,10 +311,11 @@ namespace VSQN.View.Admin
 
         protected void btn_create(object sender, EventArgs e)
         {
-            string query = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
+            string query     = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
             string HRMSquery = "insert into HRMS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            string ESSquery = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            string ESSquery  = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
             string HRSSquery = "insert into HRSS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            string SAASquery = "insert into SAAS_User_Info (User_Email,Module_number) values (@Email, @module) ";
 
             #region EmptyBoxValidation
 
@@ -339,6 +392,22 @@ namespace VSQN.View.Admin
                     using (_command = new SqlCommand(HRSSquery, _con))
                     {
                         foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                        {
+                            if (child.Checked)
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@module", child.ID.Substring(7).Trim());
+                                _command.ExecuteNonQuery();
+                                _command.Parameters.Clear();
+                                _con.Close();
+                            }
+                        }
+                    }
+
+                    using (_command = new SqlCommand(SAASquery, _con))
+                    {
+                        foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
                         {
                             if (child.Checked)
                             {

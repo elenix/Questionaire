@@ -38,22 +38,22 @@
                     <div class="col-md-3" style="padding-right: 5px">
                         <h1 id="sidemenuheader">MENU</h1>
                         <div class="list-group list-group-flush">
-                            <div class="list-group-item">
+                            <div id="menuHRMS" runat="server" class="list-group-item">
                                 <a href="UserHRMS.aspx">
                                     <h3 class="menuside">HRMS</h3>
                                 </a>
                             </div>
-                            <div class="list-group-item">
+                            <div id="menuESS" runat="server" class="list-group-item">
                                 <a href="UserESS.aspx">
                                     <h3 class="menuside">ESS</h3>
                                 </a>
                             </div>
-                            <div class="list-group-item">
+                            <div id="menuHRSS" runat="server" class="list-group-item">
                                 <a href="UserHRSS.aspx">
                                     <h3 class="menuside">HRSS</h3>
                                 </a>
                             </div>
-                            <div class="list-group-item">
+                            <div id="menuSAAS" class="list-group-item">
                                 <a href="UserSAAS.aspx">
                                     <h3 class="menuside">SAAS</h3>
                                 </a>

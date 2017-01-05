@@ -48,7 +48,7 @@
             <asp:ScriptManager ID="AjaxScriptManager" runat="server"></asp:ScriptManager>
             <asp:UpdatePanel ID="updPanelData" runat="server">
                 <ContentTemplate>
-                    <div class="form-group row" style="margin-top: 30px;">
+                    <div class="form-group row" style="margin-top: 30px;  margin-bottom: 0px;">
                         <ul class="nav nav-pill nav-stacked col-lg-2" style="margin-left: 40px;">
                             <li>
                                 <asp:Button ID="ButtonHRMS" runat="server" Text="HRMS" CssClass="btnsetup active" OnClick="LinkHRMS_Click" /></li>

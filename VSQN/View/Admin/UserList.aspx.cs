@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace VSQN.View.Admin
 {
-    public partial class UserList : System.Web.UI.Page
+    public partial class UserList : Page
     {
         private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
         private SqlConnection _con;
@@ -22,7 +22,7 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null)
+            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
             {
                 if (!IsPostBack)
                 {

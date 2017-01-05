@@ -11,7 +11,7 @@ namespace VSQN.View.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null)
+            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
             {
                 if (!IsPostBack)
                 {

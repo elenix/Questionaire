@@ -25,6 +25,7 @@ namespace VSQN.View.Login
         {
             if (!IsPostBack)
             {
+                Session["user_role"] = null;
                 MultiView.ActiveViewIndex = 0;
                 Session.RemoveAll();
             }

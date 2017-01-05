@@ -242,10 +242,12 @@ div.menu ul li a:hover
     
     border: grey solid !important;
     background-color: #ffffff !important;
-    padding: 10px !important;
-    height: 200px;
-    width: 545px !important;
-  
+    margin-bottom: 10px; 
+    padding-bottom: 30px; 
+    padding-top: 5px; 
+    padding-left: 5px; 
+    padding-right: 5px; 
+    background-color:white;
 }
 
 .form-check-label {
