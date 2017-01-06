@@ -21,7 +21,7 @@
                             <Columns>
                                 <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />
                                 <asp:BoundField DataField="Name" HeaderText="HRSS Module" ItemStyle-Width="60%" />
-                                <asp:BoundField HeaderText="Progress" ItemStyle-Width="10%" />
+                                <asp:BoundField HeaderText="Progress" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Center"/>
                                 <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">
                                     <ItemTemplate>
                                         <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="START" CommandName="Edit" CssClass="btn btn-info" />

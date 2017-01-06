@@ -388,13 +388,16 @@ namespace VSQN.View.User
 
         protected void Save_Answer(object sender, EventArgs e)
         {
-            string OneSaveQuery = "INSERT INTO User_Answer_Text(user_email,ref_code,answer_text) VALUES (@email,@ref_code,@answer_text)";
-            string updateQuery = "update User_Answer_Text set answer_text = @answer_text where user_email = @email and ref_code = @ref_code";
-            string MultiSaveQuery = "INSERT INTO User_Answer_Option(user_email,ref_code,answer_ID) VALUES (@email,@ref_code,@answer_ID)";
-            string MultiDeleteQuery = "delete from User_Answer_Option where user_email = @email and answer_ID = @answer_ID ";
+            var systemNo = Session["System"];
+            var moduleNo = Session["Module"];
             var refcode = Session["Table_Refcode"];
             var email = Session["user_email"];
 
+            string OneSaveQuery = "INSERT INTO User_Answer_Text(user_email,ref_code,answer_text,System_FK,Module_FK) VALUES (@email,@ref_code,@answer_text,@system,@module)";
+            string updateQuery = "update User_Answer_Text set answer_text = @answer_text where user_email = @email and ref_code = @ref_code";
+            string MultiSaveQuery = "INSERT INTO User_Answer_Option(user_email,ref_code,answer_ID,System_FK,Module_FK) VALUES (@email,@ref_code,@answer_ID,@system,@module)";
+            string MultiDeleteQuery = "delete from User_Answer_Option where user_email = @email and answer_ID = @answer_ID ";
+            
             using (_con = new SqlConnection(cs))
             {
                 switch (_typeOfInput)
@@ -431,6 +434,8 @@ namespace VSQN.View.User
                                 _command.Parameters.AddWithValue("@email", email);
                                 _command.Parameters.AddWithValue("@ref_code", refcode);
                                 _command.Parameters.AddWithValue("@answer_text", TBUserAnswerBox.Text);
+                                _command.Parameters.AddWithValue("@system", systemNo);
+                                _command.Parameters.AddWithValue("@module", moduleNo);
                                 _command.ExecuteNonQuery();
                                 _con.Close();
                             }
@@ -473,6 +478,8 @@ namespace VSQN.View.User
                                 _command.Parameters.AddWithValue("@email", email);
                                 _command.Parameters.AddWithValue("@ref_code", refcode);
                                 _command.Parameters.AddWithValue("@answer_text", MMUserAnswerBox.Text);
+                                _command.Parameters.AddWithValue("@system", systemNo);
+                                _command.Parameters.AddWithValue("@module", moduleNo);
                                 _command.ExecuteNonQuery();
                                 _con.Close();
                             }
@@ -518,6 +525,8 @@ namespace VSQN.View.User
                                     _command.Parameters.AddWithValue("@email", email);
                                     _command.Parameters.AddWithValue("@ref_code", refcode);
                                     _command.Parameters.AddWithValue("@answer_ID", c);
+                                    _command.Parameters.AddWithValue("@system", systemNo);
+                                    _command.Parameters.AddWithValue("@module", moduleNo);
                                     _command.ExecuteNonQuery();
                                     _command.Parameters.Clear();
                                     _con.Close();
@@ -579,6 +588,8 @@ namespace VSQN.View.User
                                     _command.Parameters.AddWithValue("@email", email);
                                     _command.Parameters.AddWithValue("@ref_code", refcode);
                                     _command.Parameters.AddWithValue("@answer_ID", c);
+                                    _command.Parameters.AddWithValue("@system", systemNo);
+                                    _command.Parameters.AddWithValue("@module", moduleNo);
                                     _command.ExecuteNonQuery();
                                     _command.Parameters.Clear();
                                     _con.Close();

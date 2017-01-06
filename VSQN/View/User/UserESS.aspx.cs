@@ -18,6 +18,8 @@ namespace VSQN.View.User
         private SqlCommand _command;
         private DataTable _dt;
         List<int> _UserEsSmodule = new List<int>();
+        readonly List<int> _statusAnswer = new List<int>();
+        readonly List<int> _totalQuestionModule = new List<int>();
         //private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
@@ -29,6 +31,8 @@ namespace VSQN.View.User
                 if (!IsPostBack)
                 {
                     LoadUserESSmodule();
+                    ExtractTotalQuestion();
+                    ExtractStatus();
                     ShowData();
                 }
             }
@@ -86,6 +90,73 @@ namespace VSQN.View.User
             }
         }
 
+        private void ExtractTotalQuestion()
+        {
+            var systemNo = 2;
+
+            string Query = "Select Module_FK from QuestionBank where System_FK = @system ORDER BY Module_FK ASC";
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(Query, _con))
+                {
+                    _command.Parameters.AddWithValue("@system", systemNo);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _totalQuestionModule.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
+            }
+        }
+
+        private void ExtractStatus()
+        {
+            var systemNo = 2;
+            var userEmail = Session["user_email"];
+
+            string textQuery   = "Select [Module_FK] from User_Answer_Text where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
+            string optionQuery = "Select distinct [ref_code], [Module_FK] from User_Answer_Option where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(textQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@system", systemNo);
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
+
+                using (_command = new SqlCommand(optionQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@system", systemNo);
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(1));
+                    }
+                    _con.Close();
+                }
+
+            }
+        }
+
         protected void ResultUserList_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -96,11 +167,18 @@ namespace VSQN.View.User
                 {
                     if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
                     {
+                        int total = Find_Total(_totalQuestionModule, x);
+                        int answered = Find_Total(_statusAnswer, x);
                         e.Row.Visible = true;
+                        e.Row.Cells[2].Text = answered + "/" + total;
                     }
                 }
             }
+        }
 
+        static int Find_Total(List<int> list, int valueToFind)
+        {
+            return ((from temp in list where temp.Equals(valueToFind) select temp).Count());
         }
 
         protected void ResultUserList_RowAnswering(object sender, GridViewEditEventArgs e)
