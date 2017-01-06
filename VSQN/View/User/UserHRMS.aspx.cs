@@ -44,6 +44,8 @@ namespace VSQN.View.User
             ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
         }
 
+
+
         private void ShowData()
         {
             _dt = new DataTable();
@@ -64,7 +66,7 @@ namespace VSQN.View.User
 
         protected void LoadUserHRMSmodule()
         {
-            const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail";
+            const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail order by Module_number ASC";
             var userEmail = Session["user_email"];
 
             using (_con = new SqlConnection(_cs))
@@ -83,28 +85,17 @@ namespace VSQN.View.User
                     _con.Close();
                 }
             }
-
-            SortData();
-        }
-
-        public void SortData()
-        {
-            _UserHrmSmodule = _UserHrmSmodule.OrderBy(i => i).ToList();
-            _UserHrmSmoduleString  = _UserHrmSmodule.ConvertAll<string>(delegate (int i) { return i.ToString(); });
         }
 
         protected void ResultUserList_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                foreach (GridViewRow grv in ResultHRMSList.Rows)
-                {
-                    e.Row.Visible = false;
-                }
+                e.Row.Visible = false;
 
-                foreach (string x in _UserHrmSmoduleString)
+                foreach (int x in _UserHrmSmodule)
                 {
-                    if (e.Row.Cells[0].Text == x)
+                    if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
                     {
                         e.Row.Visible = true;
                     }

@@ -16,12 +16,13 @@
                         <%--put table here--%>
                         <asp:GridView ID="ResultQuestionList" runat="server" AllowSorting="false" AutoGenerateColumns="False"
                             EmptyDataText="No Questions Available. Please choose other Module" OnRowEditing="ResultUserList_RowAnswering"
+                            OnRowDataBound="ResultQuestionList_RowDataBound"
                             OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                             <Columns>
                                 <asp:BoundField DataField="Seq_Number" HeaderText="Seq." ItemStyle-Width="5%" />
                                 <asp:BoundField DataField="Ref_Code" HeaderText="Reference" ItemStyle-Width="10%" />
                                 <asp:BoundField DataField="Ques" HeaderText="Question" ItemStyle-Width="55%" />
-                                <asp:BoundField HeaderText="Status" ItemStyle-Width="10%" />
+                                <asp:BoundField HeaderText="Status" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Center" />
                                 <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">
                                     <ItemTemplate>
                                         <asp:Button ID="btn_Answer" runat="server" Width="100%" Text="ANSWER" CommandName="Edit" CssClass="btn btn-success" />

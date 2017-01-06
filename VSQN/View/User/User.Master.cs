@@ -13,8 +13,9 @@ namespace VSQN.View.User
         SqlConnection _con;
         SqlCommand _command;
         List<int> _UserHrmSmodule = new List<int>();
-        List<int> _UserEsSmodule = new List<int>();
+        List<int> _UserEsSmodule  = new List<int>();
         List<int> _UserHrsSmodule = new List<int>();
+        List<int> _UserSaaSmodule = new List<int>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,8 +42,9 @@ namespace VSQN.View.User
         protected void ExtractData()
         {
             const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
-            const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
+            const string userEss  = "Select * from ESS_User_Info where User_Email  = @userEmail ORDER BY Module_number ASC";
             const string userHrss = "Select * from HRSS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
+            const string userSaas = "Select * from SAAS_User_Info where User_Email = @userEmail ORDER BY Module_number ASC";
             string email = Session["user_email"].ToString();
 
             using (_con = new SqlConnection(_cs))
@@ -88,6 +90,20 @@ namespace VSQN.View.User
                     }
                     _con.Close();
                 }
+
+                using (_command = new SqlCommand(userSaas, _con))
+                {
+                    _command.Parameters.AddWithValue("@userEmail", email);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _UserSaaSmodule.Add(reader.GetInt32(2));
+                    }
+                    _con.Close();
+                }
             }
         }
 
@@ -107,6 +123,12 @@ namespace VSQN.View.User
             if (!_UserHrsSmodule.Any())
             {
                 menuHRSS.Style.Add("display", "none");
+
+            }
+
+            if (!_UserSaaSmodule.Any())
+            {
+                menuSAAS.Style.Add("display", "none");
 
             }
         }

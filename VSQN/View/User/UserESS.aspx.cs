@@ -18,7 +18,6 @@ namespace VSQN.View.User
         private SqlCommand _command;
         private DataTable _dt;
         List<int> _UserEsSmodule = new List<int>();
-        List<string> _UserEsSmoduleString = new List<string>();
         //private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
@@ -66,7 +65,7 @@ namespace VSQN.View.User
 
         protected void LoadUserESSmodule()
         {
-            const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail";
+            const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail order by Module_number ASC";
             var userEmail = Session["user_email"];
 
             using (_con = new SqlConnection(_cs))
@@ -85,28 +84,17 @@ namespace VSQN.View.User
                     _con.Close();
                 }
             }
-
-            SortData();
-        }
-
-        public void SortData()
-        {
-            _UserEsSmodule = _UserEsSmodule.OrderBy(i => i).ToList();
-            _UserEsSmoduleString = _UserEsSmodule.ConvertAll<string>(delegate (int i) { return i.ToString(); });
         }
 
         protected void ResultUserList_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                foreach (GridViewRow grv in ResultESSList.Rows)
-                {
-                    e.Row.Visible = false;
-                }
+                e.Row.Visible = false;
 
-                foreach (string x in _UserEsSmoduleString)
+                foreach (int x in _UserEsSmodule)
                 {
-                    if (e.Row.Cells[0].Text == x)
+                    if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
                     {
                         e.Row.Visible = true;
                     }

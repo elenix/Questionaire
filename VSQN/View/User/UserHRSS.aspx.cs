@@ -18,7 +18,6 @@ namespace VSQN.View.User
         private SqlCommand _command;
         private DataTable _dt;
         List<int> _UserHrsSmodule = new List<int>();
-        List<string> _UserHrsSmoduleString = new List<string>();
         //private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
@@ -64,7 +63,7 @@ namespace VSQN.View.User
 
         protected void LoadUserHRSSmodule()
         {
-            const string userHrms = "Select * from HRSS_User_Info where User_Email = @userEmail";
+            const string userHrms = "Select * from HRSS_User_Info where User_Email = @userEmail order by Module_number ASC";
             var userEmail = Session["user_email"];
 
             using (_con = new SqlConnection(_cs))
@@ -83,28 +82,17 @@ namespace VSQN.View.User
                     _con.Close();
                 }
             }
-
-            SortData();
-        }
-
-        public void SortData()
-        {
-            _UserHrsSmodule = _UserHrsSmodule.OrderBy(i => i).ToList();
-            _UserHrsSmoduleString = _UserHrsSmodule.ConvertAll<string>(delegate (int i) { return i.ToString(); });
         }
 
         protected void ResultUserList_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                foreach (GridViewRow grv in ResultHRSSList.Rows)
-                {
-                    e.Row.Visible = false;
-                }
+                e.Row.Visible = false;
 
-                foreach (string x in _UserHrsSmoduleString)
+                foreach (int x in _UserHrsSmodule)
                 {
-                    if (e.Row.Cells[0].Text == x)
+                    if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
                     {
                         e.Row.Visible = true;
                     }

@@ -18,7 +18,6 @@ namespace VSQN.View.User
         private SqlCommand _command;
         private DataTable _dt;
         List<int> _UserSaaSmodule = new List<int>();
-        List<string> _UserSaaSmoduleString = new List<string>();
         //private string _message;
 
         protected enum MessageType { Success, Error, Info, Warning }
@@ -64,7 +63,7 @@ namespace VSQN.View.User
 
         protected void LoadUserSAASmodule()
         {
-            const string userSaas = "Select * from SAAS_User_Info where User_Email = @userEmail";
+            const string userSaas = "Select * from SAAS_User_Info where User_Email = @userEmail order by Module_number ASC";
             var userEmail = Session["user_email"];
 
             using (_con = new SqlConnection(_cs))
@@ -83,28 +82,17 @@ namespace VSQN.View.User
                     _con.Close();
                 }
             }
-
-            SortData();
-        }
-
-        public void SortData()
-        {
-            _UserSaaSmodule = _UserSaaSmodule.OrderBy(i => i).ToList();
-            _UserSaaSmoduleString = _UserSaaSmodule.ConvertAll<string>(delegate (int i) { return i.ToString(); });
         }
 
         protected void ResultUserList_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                foreach (GridViewRow grv in ResultSAASList.Rows)
-                {
-                    e.Row.Visible = false;
-                }
+                e.Row.Visible = false;
 
-                foreach (string x in _UserSaaSmoduleString)
+                foreach (int x in _UserSaaSmodule)
                 {
-                    if (e.Row.Cells[0].Text == x)
+                    if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
                     {
                         e.Row.Visible = true;
                     }

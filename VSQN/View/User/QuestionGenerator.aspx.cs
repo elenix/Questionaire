@@ -379,6 +379,13 @@ namespace VSQN.View.User
             ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
         }
 
+        protected void success_save()
+        {
+            Session["_UserTextAnswer"] = null;
+            Session["success_save"] = "Your answer have been saved!";
+            Response.Redirect("QuestionList.aspx");
+        }
+
         protected void Save_Answer(object sender, EventArgs e)
         {
             string OneSaveQuery = "INSERT INTO User_Answer_Text(user_email,ref_code,answer_text) VALUES (@email,@ref_code,@answer_text)";
@@ -396,7 +403,12 @@ namespace VSQN.View.User
 
                         #region Textbox validation
 
-                        if(Session["_UserTextAnswer"] != null)
+                        if (String.IsNullOrWhiteSpace(TBUserAnswerBox.Text))
+                        {
+                            ShowMessage("Please do not leave the answer box empty.", MessageType.Error);
+                        }
+
+                        else if(Session["_UserTextAnswer"] != null)
                         {
                             using (_command = new SqlCommand(updateQuery, _con))
                             {
@@ -407,7 +419,10 @@ namespace VSQN.View.User
                                 _command.ExecuteNonQuery();
                                 _con.Close();
                             }
+
+                            success_save();
                         }
+
                         else
                         {
                             using (_command = new SqlCommand(OneSaveQuery, _con))
@@ -419,9 +434,9 @@ namespace VSQN.View.User
                                 _command.ExecuteNonQuery();
                                 _con.Close();
                             }
-                        }
 
-                        Session["_UserTextAnswer"] = null;
+                            success_save();
+                        } 
 
                         break;
 
@@ -431,7 +446,12 @@ namespace VSQN.View.User
 
                         #region Memobox validation
 
-                        if (Session["_UserTextAnswer"] != null)
+                        if (String.IsNullOrWhiteSpace(MMUserAnswerBox.Text))
+                        {
+                            ShowMessage("Please do not leave the answer box empty.", MessageType.Error);
+                        }
+
+                        else if (Session["_UserTextAnswer"] != null)
                         {
                             using (_command = new SqlCommand(updateQuery, _con))
                             {
@@ -442,6 +462,8 @@ namespace VSQN.View.User
                                 _command.ExecuteNonQuery();
                                 _con.Close();
                             }
+
+                            success_save();
                         }
                         else
                         {
@@ -454,9 +476,9 @@ namespace VSQN.View.User
                                 _command.ExecuteNonQuery();
                                 _con.Close();
                             }
-                        }
 
-                        Session["_UserTextAnswer"] = null;
+                            success_save();
+                        }
 
                         break;
 
@@ -484,7 +506,7 @@ namespace VSQN.View.User
 
                         if (checkedRB.Count == 0)
                         {
-                            ShowMessage("Please choose <b>one</b> of the answer.", MessageType.Error);
+                            ShowMessage("Please atleast choose <b>one</b> of the answer.", MessageType.Error);
                         }
                         else
                         {
@@ -514,6 +536,8 @@ namespace VSQN.View.User
                                     _con.Close();
                                 }
                             }
+
+                            success_save();
 
                         }
 
@@ -545,7 +569,7 @@ namespace VSQN.View.User
                         List<int> newDifference = checkedCB.Except(_checkedOption).ToList();
                         List<int> oldDifference = uncheckedCB.Except(checkedCB).ToList();
 
-                        if (newDifference != null)
+                        if (newDifference.Any())
                         {
                             using (_command = new SqlCommand(MultiSaveQuery, _con))
                             {
@@ -559,27 +583,30 @@ namespace VSQN.View.User
                                     _command.Parameters.Clear();
                                     _con.Close();
                                 }
-                            }    
+                            }
+
+                            if (oldDifference != null)
+                            {
+                                using (_command = new SqlCommand(MultiDeleteQuery, _con))
+                                {
+                                    foreach (int x in oldDifference)
+                                    {
+                                        _con.Open();
+                                        _command.Parameters.AddWithValue("@email", email);
+                                        _command.Parameters.AddWithValue("@answer_ID", x);
+                                        _command.ExecuteNonQuery();
+                                        _command.Parameters.Clear();
+                                        _con.Close();
+                                    }
+                                }
+                            }
+
+                            success_save();
                         }
+
                         else
                         {
                             ShowMessage("Please choose <b>atlease one</b> of the answer.", MessageType.Error);
-                        }
-
-                        if (oldDifference != null)
-                        { 
-                            using (_command = new SqlCommand(MultiDeleteQuery, _con))
-                            {
-                                foreach (int x in oldDifference)
-                                {
-                                    _con.Open();
-                                    _command.Parameters.AddWithValue("@email", email);
-                                    _command.Parameters.AddWithValue("@answer_ID", x);
-                                    _command.ExecuteNonQuery();
-                                    _command.Parameters.Clear();
-                                    _con.Close();
-                                }
-                            }
                         }
 
                         break;
@@ -587,9 +614,6 @@ namespace VSQN.View.User
                         #endregion
                 }
             }
-
-            Session["success_save"] = "Your answer have been saved!";
-            Response.Redirect("QuestionList.aspx");
         }
     }
 }

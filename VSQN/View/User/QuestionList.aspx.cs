@@ -19,6 +19,7 @@ namespace VSQN.View.User
         private SqlCommand _command;
         private DataTable _dt;
         private string _message;
+        readonly List<int> _statusAnswer = new List<int>();
 
         protected enum MessageType { Success, Error, Info, Warning }
 
@@ -35,8 +36,9 @@ namespace VSQN.View.User
                         Session["success_save"] = null;
                     }
 
-                    ShowData();
-                }
+                    ExtractStatus();
+                    ShowData();     
+                }    
             }
             else
             {
@@ -76,6 +78,71 @@ namespace VSQN.View.User
             ViewState["dirState"] = _dt;
             ViewState["sortdr"] = "Asc";
         }
+
+        private void ExtractStatus()
+        {
+            var userEmail = Session["user_email"];
+
+            string textQuery = "Select ref_code from User_Answer_Text where user_email = @email order by ID ASC";
+            string optionQuery = "Select ref_code from User_Answer_Option where user_email = @email order by ID ASC";
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(textQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
+
+                using (_command = new SqlCommand(optionQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
+
+            }
+        }
+
+        protected void ResultQuestionList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                if (!_statusAnswer.Any())
+                {
+                    e.Row.Cells[3].Text = "<span class='glyphicon glyphicon-remove text-danger' aria-hidden='true' />";
+                }
+                else
+                {
+                    int referenceCode = Convert.ToInt32(e.Row.Cells[1].Text);
+
+                    if (_statusAnswer.Contains(referenceCode))
+                    {
+                        e.Row.Cells[3].Text = "<span class='glyphicon glyphicon-ok text-success' aria-hidden='true' />";
+                    }
+                    else
+                    {
+                        e.Row.Cells[3].Text = "<span class='glyphicon glyphicon-remove text-danger' aria-hidden='true' />"; 
+                    }
+                }
+            }
+        }
+
 
         protected void ResultUserList_RowAnswering(object sender, GridViewEditEventArgs e)
         {
