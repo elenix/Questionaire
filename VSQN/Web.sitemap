@@ -3,7 +3,9 @@
   <siteMapNode url="" title="Home"  description="">
     <siteMapNode url="~/View/Admin/QuestionSetup.aspx" title="QUESTION SETUP"  description="Question Setup" />
     <siteMapNode url="View/Admin/QuestionBank.aspx" title="QUESTION BANK"  description="Question bank" />
+    <siteMapNode url="View/Admin/AnswerBank.aspx" title="ANSWER BANK"  description="Answer bank" />
     <siteMapNode url="View/Admin/UserSetup.aspx" title="USER SETUP"  description="User Setup" />
     <siteMapNode url="View/Admin/UserList.aspx" title="USER LIST"  description="User List" />
+    <siteMapNode url="View/Admin/AdminSettings.aspx" title="SETTING"  description="Admin Settings" />
   </siteMapNode>
 </siteMap>

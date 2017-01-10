@@ -67,7 +67,7 @@ namespace VSQN.View.Login
                                 break;
 
                             case "U":
-                                Response.Redirect("~/View/User/UserHRMS.aspx");
+                                Response.Redirect("~/View/User/UserAbout.aspx");
                                 break;
                         }
 

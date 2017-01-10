@@ -218,27 +218,27 @@ namespace VSQN.View.Admin
             //checking if else
             if (SystemList.SelectedIndex == 0)
             {
-                ShowMessage("Please Choose Your System.", MessageType.Error);
+                ShowMessage("Please choose the <b>System</b>.", MessageType.Error);
             }
 
             else if (ModuleMenu.SelectedIndex == 0)
             {
-                ShowMessage("Please Choose Your Module.", MessageType.Error);
+                ShowMessage("Please choose the <b>Module</b>.", MessageType.Error);
             }
 
             else if (String.IsNullOrWhiteSpace(SeqNum.Text))
             {
-                ShowMessage("Please Enter The Sequence Number For The Question.", MessageType.Error);
+                ShowMessage("Please enter the <b>sequence number</b> for the question.", MessageType.Error);
             }
 
             else if (String.IsNullOrWhiteSpace(ques.Text))
             {
-                ShowMessage("Please Enter Your Question.", MessageType.Error);
+                ShowMessage("Please write the <b>Question</b>.", MessageType.Error);
             }
 
             else if (typeOfInputId == 0)
             {
-                ShowMessage("Please Choose Your Type Of Input.", MessageType.Error);
+                ShowMessage("Please choose <b>type of input</b>.", MessageType.Error);
             }
 
             else
@@ -313,11 +313,17 @@ namespace VSQN.View.Admin
                         //read all the value inside each radio button answer boxes
                         foreach (RepeaterItem item in RepeaterRBBox.Items)
                         {
-                            _answerOption.Add(((TextBox)item.FindControl(("RBanswer"))).Text);
+                            var optionText = ((TextBox)item.FindControl(("RBanswer"))).Text;
+
+                            //if (optionText != null)
+                            //{
+                                _answerOption.Add(optionText);
+                            //}
+                            //_answerOption.Add(((TextBox)item.FindControl(("RBanswer"))).Text);
                         }
 
                         //Store the answer for radio button into Question_Answer_OptionType table
-                        for (var i = 0; i < _answerOption.Count(); i++)
+                        foreach (var x in _answerOption)
                         {
                             using (_con = new SqlConnection(_cs))
                             {
@@ -326,7 +332,7 @@ namespace VSQN.View.Admin
                                 {
                                     _command.CommandType = CommandType.StoredProcedure;
                                     _command.Parameters.AddWithValue("@Ref_Code", refCode);
-                                    _command.Parameters.AddWithValue("@Answer_Option", _answerOption[i]);
+                                    _command.Parameters.AddWithValue("@Answer_Option", x);
                                     _command.ExecuteNonQuery();
                                 }
                             }
@@ -337,11 +343,13 @@ namespace VSQN.View.Admin
                         //read all the value inside each check box answer boxes
                         foreach (RepeaterItem item in RepeaterCBBox.Items)
                         {
-                            _answerOption.Add(((TextBox)item.FindControl(("CBanswer"))).Text);
+                            var optionText = ((TextBox)item.FindControl(("CBanswer"))).Text;
+
+                            _answerOption.Add(optionText);
                         }
 
                         //Store the answer for check box into Question_Answer_OptionType table
-                        for (var i = 0; i < _answerOption.Count(); i++)
+                        foreach (var x in _answerOption)
                         {
                             using (_con = new SqlConnection(_cs))
                             {
@@ -350,7 +358,7 @@ namespace VSQN.View.Admin
                                 {
                                     _command.CommandType = CommandType.StoredProcedure;
                                     _command.Parameters.AddWithValue("@Ref_Code", refCode);
-                                    _command.Parameters.AddWithValue("@Answer_Option", _answerOption[i]);
+                                    _command.Parameters.AddWithValue("@Answer_Option", x);
                                     _command.ExecuteNonQuery();
                                 }
                             }

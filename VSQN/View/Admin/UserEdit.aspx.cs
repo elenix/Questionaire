@@ -100,7 +100,7 @@ namespace VSQN.View.Admin
 
                     while (reader.Read())
                     {
-                        _UserHrmSmodule.Add(reader.GetInt32(2));
+                        _UserHrmSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
@@ -114,7 +114,7 @@ namespace VSQN.View.Admin
 
                     while (reader.Read())
                     {
-                        _UserEsSmodule.Add(reader.GetInt32(2));
+                        _UserEsSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
@@ -128,7 +128,7 @@ namespace VSQN.View.Admin
 
                     while (reader.Read())
                     {
-                        _UserHrsSmodule.Add(reader.GetInt32(2));
+                        _UserHrsSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
@@ -142,7 +142,7 @@ namespace VSQN.View.Admin
 
                     while (reader.Read())
                     {
-                        _UserSaaSmodule.Add(reader.GetInt32(2));
+                        _UserSaaSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
@@ -441,10 +441,10 @@ namespace VSQN.View.Admin
         protected void button_update(object sender, EventArgs e)
         {
             const string updatequery = "update UserAuth set username = @Username, Company = @company where email = @Email ";
-            const string addHRMSquery = "insert into HRMS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            const string addESSquery  = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            const string addHRSSquery = "insert into HRSS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            const string addSAASquery = "insert into SAAS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            const string addHRMSquery = "insert into HRMS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
+            const string addESSquery  = "insert into ESS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
+            const string addHRSSquery = "insert into HRSS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
+            const string addSAASquery = "insert into SAAS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             const string deleteHRMSquery = "delete from HRMS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteESSquery = "delete from ESS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteHRSSquery = "delete from HRSS_User_Info where User_Email = @Email and Module_number = @module ";
@@ -506,6 +506,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", x);
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
@@ -536,6 +537,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", x);
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
@@ -565,6 +567,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", x);
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
@@ -594,6 +597,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", x);
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();

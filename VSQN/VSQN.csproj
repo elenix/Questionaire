@@ -71,9 +71,13 @@
     <Content Include="icon\ca.png" />
     <Content Include="icon\eye.png" />
     <Content Include="icon\quanta.jpg" />
+    <Content Include="icon\vsqlogo.png" />
     <Content Include="icon\VSQ_logo.png" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\UserSite.css" />
+    <Content Include="View\Admin\AdminSettings.aspx" />
+    <Content Include="View\Admin\AnswerGenerator.aspx" />
+    <Content Include="View\Admin\AnswerList.aspx" />
     <Content Include="View\Admin\EditQuestion.aspx" />
     <Content Include="icon\add.png" />
     <Content Include="icon\favicon.jpg" />
@@ -84,6 +88,7 @@
     <Content Include="icon\view_sort_descending.png" />
     <Content Include="Scripts\Alert.js" />
     <Content Include="Styles\Alert.css" />
+    <Content Include="View\Admin\ModuleList.aspx" />
     <Content Include="View\Admin\UserEdit.aspx" />
     <Content Include="View\Admin\UserList.aspx" />
     <Content Include="View\Admin\UserSetup.aspx" />
@@ -99,9 +104,11 @@
     <Content Include="Styles\AdminSite.css" />
     <Content Include="View\Admin\Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="View\Admin\AnswerBank.aspx" />
     <Content Include="View\Login\Login.aspx" />
     <Content Include="View\User\QuestionGenerator.aspx" />
     <Content Include="View\User\QuestionList.aspx" />
+    <Content Include="View\User\UserAbout.aspx" />
     <Content Include="View\User\UserHRSS.aspx" />
     <Content Include="View\User\UserSAAS.aspx" />
     <Content Include="View\User\UserESS.aspx" />
@@ -118,13 +125,40 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Code\NavigationManager.cs" />
+    <Compile Include="View\Admin\AdminSettings.aspx.cs">
+      <DependentUpon>AdminSettings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\AdminSettings.aspx.designer.cs">
+      <DependentUpon>AdminSettings.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\AnswerGenerator.aspx.cs">
+      <DependentUpon>AnswerGenerator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\AnswerGenerator.aspx.designer.cs">
+      <DependentUpon>AnswerGenerator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\AnswerList.aspx.cs">
+      <DependentUpon>AnswerList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\AnswerList.aspx.designer.cs">
+      <DependentUpon>AnswerList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Admin\EditQuestion.aspx.cs">
       <DependentUpon>EditQuestion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Admin\EditQuestion.aspx.designer.cs">
       <DependentUpon>EditQuestion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\ModuleList.aspx.cs">
+      <DependentUpon>ModuleList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\ModuleList.aspx.designer.cs">
+      <DependentUpon>ModuleList.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Admin\UserEdit.aspx.cs">
       <DependentUpon>UserEdit.aspx</DependentUpon>
@@ -179,6 +213,13 @@
     <Compile Include="View\Admin\Admin.Master.designer.cs">
       <DependentUpon>Admin.Master</DependentUpon>
     </Compile>
+    <Compile Include="View\Admin\AnswerBank.aspx.cs">
+      <DependentUpon>AnswerBank.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Admin\AnswerBank.aspx.designer.cs">
+      <DependentUpon>AnswerBank.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Login\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -199,6 +240,13 @@
     </Compile>
     <Compile Include="View\User\QuestionList.aspx.designer.cs">
       <DependentUpon>QuestionList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\UserAbout.aspx.cs">
+      <DependentUpon>UserAbout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\User\UserAbout.aspx.designer.cs">
+      <DependentUpon>UserAbout.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\User\UserHRSS.aspx.cs">
       <DependentUpon>UserHRSS.aspx</DependentUpon>
@@ -244,7 +292,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="View\Admin\Admin.Master" />

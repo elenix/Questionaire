@@ -83,7 +83,7 @@ namespace VSQN.View.User
 
                     while (reader.Read())
                     {
-                        _UserEsSmodule.Add(reader.GetInt32(2));
+                        _UserEsSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }

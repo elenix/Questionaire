@@ -89,20 +89,32 @@ namespace VSQN.View.Admin
         {
             Label refEmail = ResultUserList.Rows[e.RowIndex].FindControl("lblemail") as Label;
             var email = refEmail?.Text;
+            List<string> deleteQuery = new List<string>();
+
+            deleteQuery.Add("Delete from UserAuth Where email = '" + email + "'");
+            deleteQuery.Add("Delete from HRMS_User_Info Where User_Email = '" + email + "'");
+            deleteQuery.Add("Delete from ESS_User_Info Where User_Email = '" + email + "'");
+            deleteQuery.Add("Delete from HRSS_User_Info Where User_Email = '" + email + "'");
+            deleteQuery.Add("Delete from SAAS_User_Info Where User_Email = '" + email + "'");
 
             if (email != null)
             {
-                _con = new SqlConnection(_cs);
+                using (_con = new SqlConnection(_cs))
+                {
+                    foreach (string x in deleteQuery)
+                    {
+                        using (_command = new SqlCommand(x, _con))
+                        {
+                            _con.Open();
+                            _command.ExecuteNonQuery();
+                            _con.Close();
+                        }
+                    }
+                }
 
-                _con.Open();
-                _command = new SqlCommand("Delete from UserAuth Where email = '" + email +"'", _con);
-                _command.ExecuteNonQuery();
-
-                _con.Close();
                 ShowData();
                 ShowMessage("The user with email: <b>" + email + "</b> have been deleted.", MessageType.Error);
             }
-
         }
 
         protected void Result_Sorting(object sender, GridViewSortEventArgs e)

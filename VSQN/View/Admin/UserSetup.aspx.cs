@@ -312,10 +312,10 @@ namespace VSQN.View.Admin
         protected void btn_create(object sender, EventArgs e)
         {
             string query     = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
-            string HRMSquery = "insert into HRMS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            string ESSquery  = "insert into ESS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            string HRSSquery = "insert into HRSS_User_Info (User_Email,Module_number) values (@Email, @module) ";
-            string SAASquery = "insert into SAAS_User_Info (User_Email,Module_number) values (@Email, @module) ";
+            string HRMSquery = "insert into HRMS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
+            string ESSquery  = "insert into ESS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
+            string HRSSquery = "insert into HRSS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
+            string SAASquery = "insert into SAAS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
 
             #region EmptyBoxValidation
 
@@ -365,6 +365,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", child.ID.Substring(7).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
@@ -381,6 +382,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", child.ID.Substring(6).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
@@ -397,6 +399,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", child.ID.Substring(7).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();
@@ -413,6 +416,7 @@ namespace VSQN.View.Admin
                             {
                                 _con.Open();
                                 _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                _command.Parameters.AddWithValue("@company", companyId.Text);
                                 _command.Parameters.AddWithValue("@module", child.ID.Substring(7).Trim());
                                 _command.ExecuteNonQuery();
                                 _command.Parameters.Clear();

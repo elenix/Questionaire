@@ -58,7 +58,7 @@ namespace VSQN.View.User
 
                     while (reader.Read())
                     {
-                        _UserHrmSmodule.Add(reader.GetInt32(2));
+                        _UserHrmSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
@@ -72,7 +72,7 @@ namespace VSQN.View.User
 
                     while (reader.Read())
                     {
-                        _UserEsSmodule.Add(reader.GetInt32(2));
+                        _UserEsSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
@@ -86,7 +86,7 @@ namespace VSQN.View.User
 
                     while (reader.Read())
                     {
-                        _UserHrsSmodule.Add(reader.GetInt32(2));
+                        _UserHrsSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
@@ -100,7 +100,7 @@ namespace VSQN.View.User
 
                     while (reader.Read())
                     {
-                        _UserSaaSmodule.Add(reader.GetInt32(2));
+                        _UserSaaSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
