@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="ModuleList.aspx.cs" Inherits="VSQN.View.Admin.ModuleList" %>
+﻿<%@ Page Title="Module List" Language="C#" MasterPageFile="~/View/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="ModuleList.aspx.cs" Inherits="VSQN.View.Admin.ModuleList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -20,9 +20,8 @@
                         OnRowDataBound="ResultModuleList_RowDataBound" EmptyDataText="No Data Available. Please choose other system." OnRowEditing="ResultModuleList_RowAnswer"
                         OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                         <Columns>
-                            <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />
-                            <asp:BoundField DataField="Name" HeaderText="Module" ItemStyle-Width="60%" />
-                            <asp:BoundField HeaderText="Progress" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="Name" HeaderText="Module" ItemStyle-Width="65%" />
+                            <asp:BoundField HeaderText="Progress" ItemStyle-Width="15%" ItemStyle-HorizontalAlign="Center" />
                             <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">
                                 <ItemTemplate>
                                     <asp:Button ID="btn_View" runat="server" Width="100%" Text="VIEW QUESTION" CommandName="Edit" CssClass="btn btn-info" />

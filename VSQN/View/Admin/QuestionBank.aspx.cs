@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Collections.Generic;
+
 
 namespace VSQN.View.Admin
 {
@@ -209,19 +211,35 @@ namespace VSQN.View.Admin
         protected void Result_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             Label refNum = Result.Rows[e.RowIndex].FindControl("lblReferenceCode") as Label;
-            string deleteQuery = "Delete from QuestionBank where Ref_Code= @id";
+            List<string> deleteQuery = new List<string>();
+
+            deleteQuery.Add("Delete from QuestionBank where Ref_Code = @id");
+            deleteQuery.Add("Delete from Question_Answer_OptionType where Ref_FK = @id");
+            deleteQuery.Add("Delete from Question_Answer_TextType where Ref_FK = @id");
+            deleteQuery.Add("Delete from User_Answer_Text where ref_Code = @id");
+            deleteQuery.Add("Delete from User_Answer_Option where ref_Code = @id");
+            deleteQuery.Add("Delete from User_Attachment where ref_Code = @id");
+
             if (refNum != null)
             {
                 var id = Convert.ToInt32(refNum.Text);
 
                 if (id != 0)
                 {
-                    _con = new SqlConnection(_cs);
-                    _con.Open();
-                    _command = new SqlCommand(deleteQuery, _con);
-                    _command.Parameters.AddWithValue("@id", id);
-                    _command.ExecuteNonQuery();
-                    _con.Close();
+                    using (_con = new SqlConnection(_cs))
+                    {
+                        foreach (string x in deleteQuery)
+                        {
+                            using (_command = new SqlCommand(x, _con))
+                            {
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@id", id);
+                                _command.ExecuteNonQuery();
+                                _con.Close();
+                            }
+                        }
+                    }
+
                     ShowData();
                     ShowMessage("Your Question have been deleted.", MessageType.Error);
                 }

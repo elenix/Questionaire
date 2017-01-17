@@ -11,15 +11,14 @@ namespace VSQN.View.Admin
 {
     public partial class QuesSetup : Page
     {
-        private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
-        private readonly DataTable _rbTable = new DataTable();
-        private readonly DataTable _cbTable = new DataTable();
-        private SqlConnection _con;
-        private SqlDataAdapter _adapt;
-        private DataTable _dt;
-        private SqlCommand _command; 
+        readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        SqlConnection _con;
+        readonly DataTable _rbTable = new DataTable();
+        readonly DataTable _cbTable = new DataTable();
+        SqlDataAdapter _adapt;
+        DataTable _dt;
+        SqlCommand _command; 
         readonly List<string> _answerOption = new List<string>();
-
 
         private enum MessageType { Success, Error };
 
@@ -125,6 +124,7 @@ namespace VSQN.View.Admin
 
         private void ClearAll()
         {
+            ShowMessage("The Question have been saved!", MessageType.Success);
             ques.Text = string.Empty;
             ModuleMenu.SelectedIndex = 0;
             SeqNum.Text = string.Empty;
@@ -211,11 +211,38 @@ namespace VSQN.View.Admin
 
         #endregion
 
+        protected int Write_Question()
+        {
+            const string query = "AddQuestionProcedure";
+            var typeOfInputId = int.Parse(TypeOfInput.SelectedValue);
+            int refCode;
+            var moduleId = int.Parse(ModuleMenu.SelectedValue);
+            var systemId = int.Parse(SystemList.SelectedValue);
+
+            using (_con = new SqlConnection(_cs))
+            {
+                using (_command = new SqlCommand(query, _con))
+                {
+                    _command.CommandType = CommandType.StoredProcedure;
+                    _command.Parameters.AddWithValue("@System", systemId);
+                    _command.Parameters.AddWithValue("@Module", moduleId);
+                    _command.Parameters.AddWithValue("@Seq", SeqNum.Text);
+                    _command.Parameters.AddWithValue("@ques", ques.Text);
+                    _command.Parameters.AddWithValue("@TOI", typeOfInputId);
+                    _con.Open();
+                    refCode = Convert.ToInt32(_command.ExecuteScalar());
+                }
+            }
+
+            return refCode;
+        }
+
         //Button for Add Question
         protected void btnCreate_Click(object sender, EventArgs e)
         {
             var typeOfInputId = int.Parse(TypeOfInput.SelectedValue);
-            //checking if else
+
+            #region input box validation
             if (SystemList.SelectedIndex == 0)
             {
                 ShowMessage("Please choose the <b>System</b>.", MessageType.Error);
@@ -240,106 +267,100 @@ namespace VSQN.View.Admin
             {
                 ShowMessage("Please choose <b>type of input</b>.", MessageType.Error);
             }
+            #endregion
 
             else
             {
-                _con = new SqlConnection(_cs);
-                const string query = "AddQuestionProcedure";
-                const string queryText = "AddQuestionAnswerForText";
-                const string queryOption = "AddQuestionAnswerOption";
+                const string queryText = "INSERT INTO Question_Answer_TextType(Ref_FK,Ans_Default,Field_Type) VALUES (@Ref_Cod,@answer,@FieldNum)";
+                const string queryOption = "INSERT INTO Question_Answer_OptionType(Ref_FK,Ans_Option) VALUES (@Ref_Code,@Answer_Option)";
+                const string queryAttachment = "INSERT INTO Question_Answer_Attachment (Ref_FK, doc_type) VALUES (@Ref_Cod,@doc_type)";
                 int refCode;
-                var moduleId = int.Parse(ModuleMenu.SelectedValue);
-                var systemId = int.Parse(SystemList.SelectedValue);
+                int typeOfField;
 
-                //Store the main question into QuestionInfo table
-                using (_con = new SqlConnection(_cs))
-                {
-                    using (_command = new SqlCommand(query, _con))
-                    {
-                        _command.CommandType = CommandType.StoredProcedure;
-                        _command.Parameters.AddWithValue("@System", systemId);
-                        _command.Parameters.AddWithValue("@Module", moduleId);
-                        _command.Parameters.AddWithValue("@Seq", SeqNum.Text);
-                        _command.Parameters.AddWithValue("@ques", ques.Text);
-                        _command.Parameters.AddWithValue("@TOI", typeOfInputId);
-                        _con.Open();
-                        refCode = Convert.ToInt32(_command.ExecuteScalar());
-                    }
-                }
 
                 switch (typeOfInputId)
                 {
                     case 1:
-                        {
-                            var typeOfField = int.Parse(TBT.SelectedValue);
 
-                            //Store the answer for textbox into Question_Answer_TextType table
-                            using (_con = new SqlConnection(_cs))
+                        typeOfField = int.Parse(TBT.SelectedValue);
+                        refCode = Write_Question();
+                        //Store the answer for textbox into Question_Answer_TextType table
+                        using (_con = new SqlConnection(_cs))
+                        {
+                            using (_command = new SqlCommand(queryText, _con))
                             {
-                                using (_command = new SqlCommand(queryText, _con))
-                                {
-                                    _command.CommandType = CommandType.StoredProcedure;
-                                    _command.Parameters.AddWithValue("@Ref_Cod", refCode);
-                                    _command.Parameters.AddWithValue("@answer", TBAnswer.Text);
-                                    _command.Parameters.AddWithValue("@FieldNum", typeOfField);
-                                    _con.Open();
-                                    _command.ExecuteNonQuery();
-                                }
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                                _command.Parameters.AddWithValue("@answer", TBAnswer.Text);
+                                _command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                                _command.ExecuteNonQuery();
+                                _con.Close();
                             }
                         }
+
+                        ClearAll();
+
                         break;
 
                     case 2:
-                        {
-                            //Store the answer for memo into Question_Answer_TextType table
-                            var typeOfField = int.Parse(MMT.SelectedValue);
 
-                            using (_con = new SqlConnection(_cs))
+                        //Store the answer for memo into Question_Answer_TextType table
+                        typeOfField = int.Parse(MMT.SelectedValue);
+                        refCode = Write_Question();
+
+                        using (_con = new SqlConnection(_cs))
+                        {
+                            using (_command = new SqlCommand(queryText, _con))
                             {
-                                using (_command = new SqlCommand(queryText, _con))
-                                {
-                                    _command.CommandType = CommandType.StoredProcedure;
-                                    _command.Parameters.AddWithValue("@Ref_Cod", refCode);
-                                    _command.Parameters.AddWithValue("@answer", MMAnswer.Text);
-                                    _command.Parameters.AddWithValue("@FieldNum", typeOfField);
-                                    _con.Open();
-                                    _command.ExecuteNonQuery();
-                                }
+                                _con.Open();
+                                _command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                                _command.Parameters.AddWithValue("@answer", MMAnswer.Text);
+                                _command.Parameters.AddWithValue("@FieldNum", typeOfField);
+                                _command.ExecuteNonQuery();
+                                _con.Close();
                             }
                         }
+
+                        ClearAll();
+
                         break;
 
                     case 3:
+
+                        refCode = Write_Question();
+
                         //read all the value inside each radio button answer boxes
                         foreach (RepeaterItem item in RepeaterRBBox.Items)
                         {
                             var optionText = ((TextBox)item.FindControl(("RBanswer"))).Text;
+                            _answerOption.Add(optionText);
 
-                            //if (optionText != null)
-                            //{
-                                _answerOption.Add(optionText);
-                            //}
-                            //_answerOption.Add(((TextBox)item.FindControl(("RBanswer"))).Text);
                         }
 
-                        //Store the answer for radio button into Question_Answer_OptionType table
-                        foreach (var x in _answerOption)
+                        using (_con = new SqlConnection(_cs))
                         {
-                            using (_con = new SqlConnection(_cs))
+                            //Store the answer for radio button into Question_Answer_OptionType table
+                            foreach (var x in _answerOption)
                             {
-                                _con.Open();
                                 using (_command = new SqlCommand(queryOption, _con))
                                 {
-                                    _command.CommandType = CommandType.StoredProcedure;
+                                    _con.Open();
                                     _command.Parameters.AddWithValue("@Ref_Code", refCode);
                                     _command.Parameters.AddWithValue("@Answer_Option", x);
                                     _command.ExecuteNonQuery();
+                                    _con.Close();
                                 }
                             }
                         }
+
+                        ClearAll();
+
                         break;
 
                     case 4:
+
+                        refCode = Write_Question();
+
                         //read all the value inside each check box answer boxes
                         foreach (RepeaterItem item in RepeaterCBBox.Items)
                         {
@@ -348,32 +369,57 @@ namespace VSQN.View.Admin
                             _answerOption.Add(optionText);
                         }
 
-                        //Store the answer for check box into Question_Answer_OptionType table
-                        foreach (var x in _answerOption)
+                        using (_con = new SqlConnection(_cs))
                         {
-                            using (_con = new SqlConnection(_cs))
+                            //Store the answer for check box into Question_Answer_OptionType table
+                            foreach (var x in _answerOption)
                             {
-                                _con.Open();
                                 using (_command = new SqlCommand(queryOption, _con))
                                 {
-                                    _command.CommandType = CommandType.StoredProcedure;
+                                    _con.Open();
                                     _command.Parameters.AddWithValue("@Ref_Code", refCode);
                                     _command.Parameters.AddWithValue("@Answer_Option", x);
                                     _command.ExecuteNonQuery();
+                                    _con.Close();
                                 }
                             }
                         }
+
+                        ClearAll();
+
+                        break;
+
+                    case 5:
+
+                        //Store the answer for attachment into Question_Answer_Attachment table
+                        if (TypeOfAttachment.SelectedIndex != 0)
+                        {
+                            refCode = Write_Question();
+
+                            using (_con = new SqlConnection(_cs))
+                            {
+                                using (_command = new SqlCommand(queryAttachment, _con))
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Ref_Cod", refCode);
+                                    _command.Parameters.AddWithValue("@doc_type", TypeOfAttachment.SelectedIndex);
+                                    _command.ExecuteNonQuery();
+                                    _con.Close();
+                                }
+                            }
+
+                            ClearAll();
+                        }
+
+                        else
+                        {
+                            ShowMessage("Please choose the <b>Attachment Type</b>.", MessageType.Error);
+                        }
+
                         break;
                 }
-                _con.Close();
-                ShowMessage("The Question have been saved!", MessageType.Success);
-                //Response.Write("<script>alert('Data Inserted !!')</script>");
-                ClearAll();
-            }
 
-            
+            }   
         }
     }
-
-
 }

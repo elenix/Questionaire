@@ -19,7 +19,6 @@
                             EmptyDataText="No Data Available. Please choose other system." OnRowEditing="ResultUserList_RowAnswering"
                             OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover">
                             <Columns>
-                                <asp:BoundField DataField="PK" HeaderText="Ref" ItemStyle-Width="10%" />
                                 <asp:BoundField DataField="Name" HeaderText="HRMS Module" ItemStyle-Width="60%" />
                                 <asp:BoundField HeaderText="Progress" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Center"/>
                                 <asp:TemplateField HeaderText="Options" HeaderStyle-Width="20%">

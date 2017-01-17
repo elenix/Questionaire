@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml;
 
 namespace VSQN.View.User
 {
@@ -15,8 +18,6 @@ namespace VSQN.View.User
         SqlConnection _con;
         DataTable _dt;
         SqlCommand _command;
-        DataTable RBTable = new DataTable();
-        DataTable CBTable = new DataTable();
         int _typeOfInput;
         string _fieldTypeEdit;
         string _textAnswer;
@@ -30,8 +31,6 @@ namespace VSQN.View.User
         {
             if (Session["user_role"] != null && Session["user_role"].ToString() == "U")
             {
-                RBTable.Columns.Add("RB_BOX");
-                CBTable.Columns.Add("CB_BOX");
                 Load_Question();
 
                 if (!IsPostBack)
@@ -56,18 +55,18 @@ namespace VSQN.View.User
 
         protected void Load_Question()
         {
-            string query = "ExtractQuestionData";
+            string query = "SELECT System_FK, Module_FK, Ques, In_Type_FK, Seq_Number from QuestionBank where Ref_Code = @Ref_Cod;";
             string TextData = "Select * from Question_Answer_TextType where Ref_FK = @Ref_Cod ";
             string OptionData = "Select * from Question_Answer_OptionType where Ref_FK = @Ref_Cod ";
-            var refcode = Session["Table_Refcode"];
+            string attachmentData = "Select * from Question_Answer_Attachment where Ref_FK = @Ref_Cod ";
 
+            var refcode = Session["Table_Refcode"];
 
             //Extract Data from QuestionInfo Table
             using (_con = new SqlConnection(cs))
             {
                 using (_command = new SqlCommand(query, _con))
                 {
-                    _command.CommandType = CommandType.StoredProcedure;
                     _command.Parameters.AddWithValue("@Ref_Cod", refcode);
                     _con.Open();
                     DataTable data = new DataTable();
@@ -104,7 +103,7 @@ namespace VSQN.View.User
                     _con.Close();
                 }
 
-                else
+                else if (_typeOfInput == 3 || _typeOfInput == 4) //Extract Question Answer with option type value from  Question_Answer_Option table
                 {
                     using (_command = new SqlCommand(OptionData, _con))
                     {
@@ -122,14 +121,34 @@ namespace VSQN.View.User
                     }
                     _con.Close();
                 }
+
+                else
+                {
+                    using (_command = new SqlCommand(attachmentData, _con))
+                    {
+                        _command.Parameters.AddWithValue("@Ref_Cod", refcode);
+                        _con.Open();
+                        DataTable data = new DataTable();
+                        _command.ExecuteNonQuery();
+                        SqlDataReader dr = _command.ExecuteReader();
+                        data.Load(dr);
+
+                        foreach (DataRow row in data.Rows)
+                        {
+                            _fieldTypeEdit = row["doc_type"].ToString();
+                        }
+                    }
+                    _con.Close();
+                }
             }
         }
 
         protected void ExtractUserTextAnswer()
         {
-            string TextQuery = "Select * from User_Answer_Text where user_email = @email and ref_code = @Ref_Cod";
-            var refcode = Session["Table_Refcode"];
-            var email = Session["user_email"];
+            string TextQuery       = "Select * from User_Answer_Text where user_email = @email and ref_code = @Ref_Cod";
+            string attachmentQuery = "Select * from User_Attachment where user_email = @email and ref_code = @Ref_Cod";
+            var refcode            = Session["Table_Refcode"];
+            var email              = Session["user_email"];
 
             using (_con = new SqlConnection(cs))
             {
@@ -157,7 +176,7 @@ namespace VSQN.View.User
 
                         break;
 
-                    default:
+                    case 2:
                         using (_command = new SqlCommand(TextQuery, _con))
                         {
                             _command.Parameters.AddWithValue("@email", email);
@@ -172,6 +191,33 @@ namespace VSQN.View.User
                             {
                                 MMUserAnswerBox.Text = row["answer_text"].ToString();
                                 Session["_UserTextAnswer"] = row["answer_text"].ToString();
+                            }
+
+                            _con.Close();
+                        }
+
+                        break;
+
+                    default:
+                        using (_command = new SqlCommand(attachmentQuery, _con))
+                        {
+                            _command.Parameters.AddWithValue("@email", email);
+                            _command.Parameters.AddWithValue("@Ref_Cod", refcode);
+                            _con.Open();
+                            DataTable data = new DataTable();
+                            _command.ExecuteNonQuery();
+                            SqlDataReader dr = _command.ExecuteReader();
+                            data.Load(dr);
+
+                            foreach (DataRow row in data.Rows)
+                            {
+                                Session["_UserTextAnswer"] = row["path"].ToString();
+
+                                if(Session["_UserTextAnswer"] != null)
+                                {
+                                    fileUploaded.Visible = true;
+                                    fileUploaded.Text = row["path"].ToString().Replace("D:\\Projects\\Visualsolution\\Questionaire\\VSQN\\Attachment", ""); ;
+                                }
                             }
 
                             _con.Close();
@@ -220,6 +266,7 @@ namespace VSQN.View.User
             else if (_typeOfInput == 1)
             {
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
+
                 switch (_fieldTypeEdit)
                 {
                     case "1":
@@ -246,6 +293,21 @@ namespace VSQN.View.User
                         MMLabel.Text = "<small>* Please enter in <u>Numbers</u> only *</small>";
                         break;
                 }
+            }
+            else if (_typeOfInput == 5)
+            {
+                TypeOfInputView.ActiveViewIndex = _typeOfInput;
+                switch (_fieldTypeEdit)
+                {
+                    case "1":
+                        StatusLabel.Text = "<small>* Please upload file in <u>document</u> type only. Ex: .doc, .ppt, .xlxs, .rar, .pdf *</small>";
+                        break;
+
+                    default:
+                        StatusLabel.Text = "<small>* Please upload file in <u>image</u> type only. Ex: .jpeg, .png, .tiff *</small>";
+                        break;
+                }
+
             }
         }
 
@@ -382,7 +444,15 @@ namespace VSQN.View.User
         protected void success_save()
         {
             Session["_UserTextAnswer"] = null;
-            Session["success_save"] = "Your answer have been saved!";
+            if (_typeOfInput == 5)
+            {
+                Session["success_save"] = "Your attachment have been saved!";
+            }
+            else
+            {
+                Session["success_save"] = "Your answer have been saved!";
+            }
+            
             Response.Redirect("QuestionList.aspx");
         }
 
@@ -390,14 +460,16 @@ namespace VSQN.View.User
         {
             var systemNo = Session["System"];
             var moduleNo = Session["Module"];
-            var refcode = Session["Table_Refcode"];
-            var email = Session["user_email"];
+            var refcode  = Session["Table_Refcode"];
+            var email    = Session["user_email"];
 
             string OneSaveQuery = "INSERT INTO User_Answer_Text(user_email,ref_code,answer_text,System_FK,Module_FK) VALUES (@email,@ref_code,@answer_text,@system,@module)";
-            string updateQuery = "update User_Answer_Text set answer_text = @answer_text where user_email = @email and ref_code = @ref_code";
-            string MultiSaveQuery = "INSERT INTO User_Answer_Option(user_email,ref_code,answer_ID,System_FK,Module_FK) VALUES (@email,@ref_code,@answer_ID,@system,@module)";
+            string updateQuery  = "update User_Answer_Text set answer_text = @answer_text where user_email = @email and ref_code = @ref_code";
+            string MultiSaveQuery   = "INSERT INTO User_Answer_Option(user_email,ref_code,answer_ID,System_FK,Module_FK) VALUES (@email,@ref_code,@answer_ID,@system,@module)";
             string MultiDeleteQuery = "delete from User_Answer_Option where user_email = @email and answer_ID = @answer_ID ";
-            
+            string attachmentQuery       = "INSERT INTO User_Attachment(user_email,ref_code,doc_type,path,System_FK,Module_FK) VALUES (@email,@ref_code,@dT,@path,@system,@module)";
+            string updateAttachmentQuery = "update User_Attachment set path = @path where user_email = @email and ref_code = @ref_code ";
+
             using (_con = new SqlConnection(cs))
             {
                 switch (_typeOfInput)
@@ -554,7 +626,7 @@ namespace VSQN.View.User
 
                     #endregion
 
-                    default:
+                    case 4:
 
                         #region checkbox validation
 
@@ -622,6 +694,193 @@ namespace VSQN.View.User
 
                         break;
 
+                    #endregion
+
+                    default:
+
+                        #region attachment
+                        string lstringXmlPath = HttpContext.Current.Server.MapPath("~/App_Data/config.xml");
+                        string filename = Path.GetFileName(FileUploadControl.FileName);
+                        string lstringFilePath = "";
+                        XmlDocument xmlDocument = new XmlDocument();
+                        xmlDocument.Load(lstringXmlPath);
+                        XmlNode lXmlNodeSingleNode;
+
+                        #region update Attachment path
+                        if (Session["_UserTextAnswer"] != null)
+                        {
+                            if (FileUploadControl.HasFile)
+                            {
+                                try
+                                {
+                                    if (_fieldTypeEdit == "1")
+                                    {
+                                        if (FileUploadControl.PostedFile.ContentType != "image/jpeg" && FileUploadControl.PostedFile.ContentType != "image/png")
+                                        {
+                                            if (FileUploadControl.PostedFile.ContentLength < 25102400)
+                                            {
+                                                lXmlNodeSingleNode = xmlDocument.SelectSingleNode("/Configuration/Upload/Path[@name='Documents']");
+                                                lstringFilePath = lXmlNodeSingleNode.Attributes["value"].Value + filename;
+                                                FileUploadControl.SaveAs(lstringFilePath);
+
+                                                using (_command = new SqlCommand(updateAttachmentQuery, _con))
+                                                {
+                                                    _con.Open();
+                                                    _command.Parameters.AddWithValue("@email", email);
+                                                    _command.Parameters.AddWithValue("@ref_code", refcode);
+                                                    _command.Parameters.AddWithValue("@path", lstringFilePath);
+                                                    _command.ExecuteNonQuery();
+                                                    _command.Parameters.Clear();
+                                                    _con.Close();
+                                                }
+
+                                                success_save();
+                                            }
+                                            else
+                                            {
+                                                StatusLabel.Text = "Upload status: The file has to be less than 25 Mb.";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            StatusLabel.Text = "Upload status: Only .doc, .ppt, .xlxs, and .rar files are accepted.";
+                                        }
+                                    }
+
+                                    else //_fieldTypeEdit == "2" 
+                                    {
+                                        if (FileUploadControl.PostedFile.ContentType == "image/jpeg" || FileUploadControl.PostedFile.ContentType == "image/png" || FileUploadControl.PostedFile.ContentType == "image/jpg" || FileUploadControl.PostedFile.ContentType == "image/tiff")
+                                        {
+                                            if (FileUploadControl.PostedFile.ContentLength < 25102400)
+                                            {
+                                                lXmlNodeSingleNode = xmlDocument.SelectSingleNode("/Configuration/Upload/Path[@name='Images']");
+                                                lstringFilePath = lXmlNodeSingleNode.Attributes["value"].Value + filename;
+                                                FileUploadControl.SaveAs(lstringFilePath);
+
+                                                using (_command = new SqlCommand(updateAttachmentQuery, _con))
+                                                {
+                                                    _con.Open();
+                                                    _command.Parameters.AddWithValue("@email", email);
+                                                    _command.Parameters.AddWithValue("@ref_code", refcode);
+                                                    _command.Parameters.AddWithValue("@path", lstringFilePath);
+                                                    _command.ExecuteNonQuery();
+                                                    _command.Parameters.Clear();
+                                                    _con.Close();
+                                                }
+
+                                                success_save();
+                                            }
+                                            else
+                                            {
+                                                StatusLabel.Text = "Upload status: The file has to be less than 25 Mb.";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            StatusLabel.Text = "Upload status: Only .jpeg, .jpg, .png, and .tiff files are accepted.";
+                                        }
+                                    }
+                                }
+
+                                catch (Exception ex)
+                                {
+                                    StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                                }
+                            }
+                        }
+                        #endregion
+
+                        #region create new Attachment path
+                        else
+                        {
+                            if (FileUploadControl.HasFile)
+                            {
+                                try
+                                {
+                                    if (_fieldTypeEdit == "1")
+                                    {
+                                        if (FileUploadControl.PostedFile.ContentType != "image/jpeg" && FileUploadControl.PostedFile.ContentType != "image/png")
+                                        {
+                                            if (FileUploadControl.PostedFile.ContentLength < 25102400)
+                                            {
+                                                lXmlNodeSingleNode = xmlDocument.SelectSingleNode("/Configuration/Upload/Path[@name='Documents']");
+                                                lstringFilePath = lXmlNodeSingleNode.Attributes["value"].Value + filename;
+                                                FileUploadControl.SaveAs(lstringFilePath);
+
+                                                using (_command = new SqlCommand(attachmentQuery, _con))
+                                                {
+                                                    _con.Open();
+                                                    _command.Parameters.AddWithValue("@email", email);
+                                                    _command.Parameters.AddWithValue("@ref_code", refcode);
+                                                    _command.Parameters.AddWithValue("@dT", Convert.ToInt32(_fieldTypeEdit));
+                                                    _command.Parameters.AddWithValue("@path", lstringFilePath);
+                                                    _command.Parameters.AddWithValue("@system", systemNo);
+                                                    _command.Parameters.AddWithValue("@module", moduleNo);
+                                                    _command.ExecuteNonQuery();
+                                                    _command.Parameters.Clear();
+                                                    _con.Close();
+                                                }
+
+                                                success_save();
+                                            }
+                                            else
+                                            {
+                                                StatusLabel.Text = "Upload status: The file has to be less than 25 Mb.";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            StatusLabel.Text = "Upload status: Only .doc, .ppt, .xlxs, and .rar files are accepted.";
+                                        }
+                                    }
+
+                                    else //_fieldTypeEdit == "2" 
+                                    {
+                                        if (FileUploadControl.PostedFile.ContentType == "image/jpeg" || FileUploadControl.PostedFile.ContentType == "image/png" || FileUploadControl.PostedFile.ContentType == "image/jpg" || FileUploadControl.PostedFile.ContentType == "image/tiff")
+                                        {
+                                            if (FileUploadControl.PostedFile.ContentLength < 25102400)
+                                            {
+                                                lXmlNodeSingleNode = xmlDocument.SelectSingleNode("/Configuration/Upload/Path[@name='Images']");
+                                                lstringFilePath = lXmlNodeSingleNode.Attributes["value"].Value + filename;
+                                                FileUploadControl.SaveAs(lstringFilePath);
+
+                                                using (_command = new SqlCommand(attachmentQuery, _con))
+                                                {
+                                                    _con.Open();
+                                                    _command.Parameters.AddWithValue("@email", email);
+                                                    _command.Parameters.AddWithValue("@ref_code", refcode);
+                                                    _command.Parameters.AddWithValue("@dT", Convert.ToInt32(_fieldTypeEdit));
+                                                    _command.Parameters.AddWithValue("@path", lstringFilePath);
+                                                    _command.Parameters.AddWithValue("@system", systemNo);
+                                                    _command.Parameters.AddWithValue("@module", moduleNo);
+                                                    _command.ExecuteNonQuery();
+                                                    _command.Parameters.Clear();
+                                                    _con.Close();
+                                                }
+
+                                                success_save();
+                                            }
+                                            else
+                                            {
+                                                StatusLabel.Text = "Upload status: The file has to be less than 25 Mb.";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            StatusLabel.Text = "Upload status: Only .jpeg, .jpg, .png, and .tiff files are accepted.";
+                                        }
+                                    }
+                                }
+
+                                catch (Exception ex)
+                                {
+                                    StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                                }
+                            }
+                        }
+                        #endregion
+
+                        break;
                         #endregion
                 }
             }

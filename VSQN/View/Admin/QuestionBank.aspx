@@ -30,7 +30,7 @@
                     <ContentTemplate>
                         <%--put table here--%>
                         <asp:GridView ID="Result" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False"
-                            PageSize="10" OnRowEditing="Result_RowEditing" OnPageIndexChanging="Result_PageIndexChanging" EmptyDataText="No Data Available. Please choose other Module"
+                            PageSize="10" OnRowEditing="Result_RowEditing" OnPageIndexChanging="Result_PageIndexChanging" EmptyDataText="No Data Available. Please choose other System or Module."
                             OnRowDeleting="Result_RowDeleting" OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
                             <Columns>
                                 <asp:TemplateField HeaderText="Reference Code" HeaderStyle-Width="10%" SortExpression="Ref_Code">

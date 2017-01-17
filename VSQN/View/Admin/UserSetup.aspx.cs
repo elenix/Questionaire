@@ -228,11 +228,39 @@ namespace VSQN.View.Admin
             }
         }
 
+        protected void TypeOfInput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            userView.ActiveViewIndex = userRole.SelectedIndex;
+
+            if (userRole.SelectedIndex == 0 || userRole.SelectedIndex == 1)
+            {
+                foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
+                {
+                    child.Checked = false;
+                }
+
+                foreach (var child in panelESS.Controls.OfType<CheckBox>())
+                {
+                    child.Checked = false;
+                }
+
+                foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                {
+                    child.Checked = false;
+                }
+
+                foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
+                {
+                    child.Checked = false;
+                }
+            }
+        }
+
         #region menu
 
         protected void LinkHRMS_Click(object sender, EventArgs e)
         {
-            MultiView1.ActiveViewIndex = 0;
+            moduleView.ActiveViewIndex = 0;
             ButtonHRMS.CssClass = "btnsetup active";
             ButtonESS.CssClass = "btnsetup";
             ButtonHRSS.CssClass = "btnsetup";
@@ -241,7 +269,7 @@ namespace VSQN.View.Admin
 
         protected void LinkESS_Click(object sender, EventArgs e)
         {
-            MultiView1.ActiveViewIndex = 1;
+            moduleView.ActiveViewIndex = 1;
             ButtonHRMS.CssClass = "btnsetup";
             ButtonESS.CssClass = "btnsetup active";
             ButtonHRSS.CssClass = "btnsetup";
@@ -250,7 +278,7 @@ namespace VSQN.View.Admin
 
         protected void LinkHRSS_Click(object sender, EventArgs e)
         {
-            MultiView1.ActiveViewIndex = 2;
+            moduleView.ActiveViewIndex = 2;
             ButtonHRMS.CssClass = "btnsetup";
             ButtonESS.CssClass = "btnsetup";
             ButtonHRSS.CssClass = "btnsetup active";
@@ -259,7 +287,7 @@ namespace VSQN.View.Admin
 
         protected void LinkSAAS_Click(object sender, EventArgs e)
         {
-            MultiView1.ActiveViewIndex = 3;
+            moduleView.ActiveViewIndex = 3;
             ButtonHRMS.CssClass = "btnsetup";
             ButtonESS.CssClass = "btnsetup";
             ButtonHRSS.CssClass = "btnsetup";
@@ -309,7 +337,57 @@ namespace VSQN.View.Admin
             }
         }
 
-        protected void btn_create(object sender, EventArgs e)
+        protected void createAdmin(object sender, EventArgs e)
+        {
+            string query = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'A', @company)";
+
+            #region EmptyBoxValidation
+
+            if (String.IsNullOrWhiteSpace(userName.Text))
+            {
+                ShowMessage("Please enter the <b>Username</b>", MessageType.Error);
+            }
+            else if (String.IsNullOrWhiteSpace(companyId.Text))
+            {
+                ShowMessage("Please enter the <b>Company Name</b> of Customer", MessageType.Error);
+            }
+            else if (String.IsNullOrWhiteSpace(newEmail.Text))
+            {
+                ShowMessage("Please enter the <b>Company Email</b>", MessageType.Error);
+            }
+            else if (string.IsNullOrWhiteSpace(newPassword.Text))
+            {
+                ShowMessage("Please enter the <b>Password</b> before proceed", MessageType.Error);
+            }
+            else if (confirmPassword.Text != newPassword.Text)
+            {
+                ShowMessage("The password entered did not match with the first password!", MessageType.Error);
+            }
+
+            #endregion
+
+            else
+            {
+                using (_con = new SqlConnection(_cs))
+                {
+                    using (_command = new SqlCommand(query, _con))
+                    {
+                        _con.Open();
+                        _command.Parameters.AddWithValue("@Username", userName.Text);
+                        _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                        _command.Parameters.AddWithValue("@Password", Encrypt(newPassword.Text));
+                        _command.Parameters.AddWithValue("@company", companyId.Text);
+                        _command.ExecuteNonQuery();
+                        _con.Close();
+                    }
+                }
+            }
+
+            ClearAll();
+            ShowMessage("The Account for <b>" + userName.Text + "</b> Have Been Created!", MessageType.Success);
+        }
+
+        protected void createCustomer(object sender, EventArgs e)
         {
             string query     = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
             string HRMSquery = "insert into HRMS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
@@ -458,6 +536,7 @@ namespace VSQN.View.Admin
 
         private void ClearAll()
         {
+            userRole.SelectedIndex = 0;
             userName.Text = string.Empty;
             newEmail.Text = string.Empty;
             companyId.Text = string.Empty;

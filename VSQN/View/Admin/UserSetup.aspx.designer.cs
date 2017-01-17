@@ -13,6 +13,15 @@ namespace VSQN.View.Admin {
     public partial class UserSetup {
         
         /// <summary>
+        /// userRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList userRole;
+        
+        /// <summary>
         /// userName control.
         /// </summary>
         /// <remarks>
@@ -67,6 +76,51 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.ScriptManager AjaxScriptManager;
         
         /// <summary>
+        /// userView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.MultiView userView;
+        
+        /// <summary>
+        /// View1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View View1;
+        
+        /// <summary>
+        /// View2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View View2;
+        
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
+        
+        /// <summary>
+        /// View3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View View3;
+        
+        /// <summary>
         /// updPanelData control.
         /// </summary>
         /// <remarks>
@@ -112,22 +166,22 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.Button ButtonSAAS;
         
         /// <summary>
-        /// MultiView1 control.
+        /// moduleView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.MultiView MultiView1;
+        protected global::System.Web.UI.WebControls.MultiView moduleView;
         
         /// <summary>
-        /// View1 control.
+        /// View4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View View1;
+        protected global::System.Web.UI.WebControls.View View4;
         
         /// <summary>
         /// panelHRMS control.
@@ -139,13 +193,13 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.Panel panelHRMS;
         
         /// <summary>
-        /// View2 control.
+        /// View5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View View2;
+        protected global::System.Web.UI.WebControls.View View5;
         
         /// <summary>
         /// panelESS control.
@@ -157,13 +211,13 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.Panel panelESS;
         
         /// <summary>
-        /// View3 control.
+        /// View6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View View3;
+        protected global::System.Web.UI.WebControls.View View6;
         
         /// <summary>
         /// panelHRSS control.
@@ -175,13 +229,13 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.Panel panelHRSS;
         
         /// <summary>
-        /// View4 control.
+        /// View7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View View4;
+        protected global::System.Web.UI.WebControls.View View7;
         
         /// <summary>
         /// panelSAAS control.

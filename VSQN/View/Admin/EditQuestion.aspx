@@ -7,14 +7,14 @@
         <div class="jumbotron" style="margin-top: 20px;">
             <div class="form-group">
                 <div class="form-group row">
-                        <label class="col-md-3 col-form-label">
-                            SYSTEM :</label>
-                        <div class="col-md-4">
-                            <asp:DropDownList ID="SystemList" runat="server" AutoPostBack="true" CssClass="form-control"
-                                ControlStyle-Width="100%" OnSelectedIndexChanged="SystemList_SelectedIndexChanged">
-                            </asp:DropDownList>
-                        </div>
+                    <label class="col-md-3 col-form-label">
+                        SYSTEM :</label>
+                    <div class="col-md-4">
+                        <asp:DropDownList ID="SystemList" runat="server" AutoPostBack="true" CssClass="form-control"
+                            ControlStyle-Width="100%" OnSelectedIndexChanged="SystemList_SelectedIndexChanged">
+                        </asp:DropDownList>
                     </div>
+                </div>
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">
                         MODULE :</label>
@@ -56,6 +56,7 @@
                             <asp:ListItem Value="2">Memo</asp:ListItem>
                             <asp:ListItem Value="3">Radio Button</asp:ListItem>
                             <asp:ListItem Value="4">Check Box</asp:ListItem>
+                            <asp:ListItem Value="5">Attachment</asp:ListItem>
                         </asp:DropDownList>
                         <br />
                     </div>
@@ -159,6 +160,32 @@
                                     <asp:Button ID="btnAddCBClick" runat="server" Text="ADD MORE ANSWER" CommandName="Add"
                                         CssClass="btn btn-success thisbtnanim" OnClick="btnAddCB_Click" />
                                 </div>
+                            </div>
+                        </div>
+                    </asp:View>
+                    <%--FOR ATTACHMENT--%>
+                    <asp:View ID="ViewAtt" runat="server">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">
+                                TYPE OF FILE:</label>
+                            <div class="col-md-4">
+                                <asp:DropDownList ID="TypeOfAttachment" runat="server" AutoPostBack="True" CssClass="form-control">
+                                    <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                    <asp:ListItem Value="1">Documents</asp:ListItem>
+                                    <asp:ListItem Value="2">Images</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">
+                                ATTACHMENT:</label>
+                            <div class="col-md-8">
+                                <asp:FileUpload ID="FileUploadControl" runat="server" Enabled="false" />
+                                <br />
+                                <asp:Button runat="server" ID="UploadButton" Text="Upload" CssClass="btn btn-info" Enabled="false" />
+                                <br />
+                                <br />
+                                <asp:Label runat="server" ID="StatusLabel" Text="Upload status: " />
                             </div>
                         </div>
                     </asp:View>

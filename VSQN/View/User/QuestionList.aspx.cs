@@ -85,6 +85,7 @@ namespace VSQN.View.User
 
             string textQuery = "Select ref_code from User_Answer_Text where user_email = @email order by ID ASC";
             string optionQuery = "Select ref_code from User_Answer_Option where user_email = @email order by ID ASC";
+            string attachmentQuery = "Select ref_code from User_Attachment where user_email = @email order by ID ASC";
 
             using (_con = new SqlConnection(_cs))
             {
@@ -116,6 +117,19 @@ namespace VSQN.View.User
                     _con.Close();
                 }
 
+                using (_command = new SqlCommand(attachmentQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
             }
         }
 

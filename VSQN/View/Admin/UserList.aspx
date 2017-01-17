@@ -12,11 +12,33 @@
                 <hr />
             </div>
             <div class="form-group row">
+                <div class="col-md-2">
+                    <h3 style="margin-top: 0">Filter:</h3>
+                </div>
+                <div class="col-md-3" style="padding-left:0">
+                    <asp:DropDownList ID="userRole" OnSelectedIndexChanged="userRole_SelectedIndexChanged"
+                        runat="server" AutoPostBack="True" CssClass="form-control">
+                        <asp:ListItem Value="0">All</asp:ListItem>
+                        <asp:ListItem Value="1">Admin</asp:ListItem>
+                        <asp:ListItem Value="2">Customer</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+                <div class="col-md-2">
+                    <h3 style="margin-top: 0">Search:</h3>
+                </div>
+                <div class="col-md-3" style="padding:0px;">
+                    <asp:TextBox ID="nameSearch" runat="server" CssClass="form-control" placeholder="Company name"></asp:TextBox>
+                </div>
+                <div class="col-md-2" style="padding-left:5px;">
+                    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-info" onClick="Name_Search" />
+                </div>
+            </div>
+            <div class="form-group row">
                 <asp:UpdatePanel ID="UpdateViewQuestion" runat="server">
                     <ContentTemplate>
                         <%--put table here--%>
                         <asp:GridView ID="ResultUserList" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False"
-                            PageSize="10" OnRowEditing="ResultUserList_RowEditing" EmptyDataText="No Data Available. Please choose other Module" OnPageIndexChanging="Result_PageIndexChanging"
+                            PageSize="10" OnRowEditing="ResultUserList_RowEditing" EmptyDataText="No Data Available. Please create more user." OnPageIndexChanging="Result_PageIndexChanging"
                             OnRowDeleting="ResultUserList_RowDeleting" OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
                             <Columns>
                                 <asp:TemplateField HeaderText="Company Name" HeaderStyle-Width="25%" SortExpression="Company">
@@ -24,7 +46,12 @@
                                         <asp:Label ID="lblCompany" runat="server" Text='<%#Eval("Company") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="User Name" HeaderStyle-Width="25%">
+                                <asp:TemplateField HeaderText="Role" HeaderStyle-Width="5%">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lbluserrole" runat="server" Text='<%#Eval("user_role") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="User Name" HeaderStyle-Width="20%">
                                     <ItemTemplate>
                                         <asp:Label ID="lblusername" runat="server" Text='<%#Eval("username") %>'></asp:Label>
                                     </ItemTemplate>

@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="UserContentPlaceHolder" runat="server">
     <div class="jumbotron" style="margin-top: 20px;">
         <div class="form-group row">
-            <div class="col-md-3 col-form-label">
+            <div class="col-md-4 col-form-label">
                 <asp:Label ID="ques_seq" runat="server" Text="Label"></asp:Label>
             </div>
             <hr />
@@ -86,6 +86,24 @@
                     </div>
                 </div>
             </asp:View>
+             <%--FOR ATTACHMENT--%>
+                <asp:View ID="ViewAtt" runat="server">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">
+                            ATTACHMENT:</label>
+                        <div class="col-md-8">
+                            <asp:Label runat="server" ID="fileUploaded" Text="" Visible ="false" />
+                            <br />
+                            <br />
+                            <asp:FileUpload ID="FileUploadControl" runat="server" />
+                            <br />
+                            <asp:Button runat="server" ID="UploadButton" Text="Upload" CssClass="btn btn-info" OnClick="Save_Answer"/>
+                            <br />
+                            <br />
+                            <asp:Label runat="server" ID="StatusLabel" Text="Upload status: " />
+                        </div>
+                    </div>
+                </asp:View>
         </asp:MultiView>
         <div class="form-group row">
             <hr />

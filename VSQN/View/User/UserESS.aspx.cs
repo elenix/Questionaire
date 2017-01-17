@@ -17,7 +17,8 @@ namespace VSQN.View.User
         private SqlDataAdapter _adapt;
         private SqlCommand _command;
         private DataTable _dt;
-        List<int> _UserEsSmodule = new List<int>();
+        readonly List<int> _idEsSmodule = new List<int>();
+        readonly List<string> _UserEsSmodule = new List<string>();
         readonly List<int> _statusAnswer = new List<int>();
         readonly List<int> _totalQuestionModule = new List<int>();
         //private string _message;
@@ -28,14 +29,16 @@ namespace VSQN.View.User
         {
             if (Session["user_role"] != null && Session["user_role"].ToString() == "U")
             {
+                LoadUserESSmodule();
+
                 if (!IsPostBack)
-                {
-                    LoadUserESSmodule();
+                { 
                     ExtractTotalQuestion();
                     ExtractStatus();
                     ShowData();
                 }
             }
+
             else
             {
                 Response.Redirect("~/View/Login/Login.aspx");
@@ -70,6 +73,7 @@ namespace VSQN.View.User
         protected void LoadUserESSmodule()
         {
             const string userEss = "Select * from ESS_User_Info where User_Email = @userEmail order by Module_number ASC";
+            const string moduleNameQuery = "Select * from ESS_module where PK = @id order by PK ASC";
             var userEmail = Session["user_email"];
 
             using (_con = new SqlConnection(_cs))
@@ -83,9 +87,26 @@ namespace VSQN.View.User
 
                     while (reader.Read())
                     {
-                        _UserEsSmodule.Add(reader.GetInt32(3));
+                        _idEsSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
+                }
+
+                foreach (int x in _idEsSmodule)
+                {
+                    using (_command = new SqlCommand(moduleNameQuery, _con))
+                    {
+                        _command.Parameters.AddWithValue("@id", x);
+                        _con.Open();
+                        _command.ExecuteNonQuery();
+                        var reader = _command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            _UserEsSmodule.Add(reader.GetString(1));
+                        }
+                        _con.Close();
+                    }
                 }
             }
         }
@@ -120,11 +141,27 @@ namespace VSQN.View.User
             var userEmail = Session["user_email"];
 
             string textQuery   = "Select [Module_FK] from User_Answer_Text where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
+            string attachmentQuery = "Select [Module_FK] from User_Attachment where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
             string optionQuery = "Select distinct [ref_code], [Module_FK] from User_Answer_Option where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
 
             using (_con = new SqlConnection(_cs))
             {
                 using (_command = new SqlCommand(textQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@system", systemNo);
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
+
+                using (_command = new SqlCommand(attachmentQuery, _con))
                 {
                     _command.Parameters.AddWithValue("@system", systemNo);
                     _command.Parameters.AddWithValue("@email", userEmail);
@@ -163,15 +200,19 @@ namespace VSQN.View.User
             {
                 e.Row.Visible = false;
 
-                foreach (int x in _UserEsSmodule)
+                int count = 0;
+
+                foreach (string x in _UserEsSmodule)
                 {
-                    if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
+                    if (e.Row.Cells[0].Text == x)
                     {
-                        int total = Find_Total(_totalQuestionModule, x);
-                        int answered = Find_Total(_statusAnswer, x);
+                        int total = Find_Total(_totalQuestionModule, _idEsSmodule[count]);
+                        int answered = Find_Total(_statusAnswer, _idEsSmodule[count]);
                         e.Row.Visible = true;
-                        e.Row.Cells[2].Text = answered + "/" + total;
+                        e.Row.Cells[1].Text = answered + "/" + total;
                     }
+
+                    count++;
                 }
             }
         }
@@ -183,10 +224,20 @@ namespace VSQN.View.User
 
         protected void ResultUserList_RowAnswering(object sender, GridViewEditEventArgs e)
         {
-            Session["System"] = "2";
-            Session["Module"] = (ResultESSList.Rows[e.NewEditIndex].Cells[0]).Text;
+            int count = 0;
+            var module = (ResultESSList.Rows[e.NewEditIndex].Cells[0]).Text;
 
-            Response.Redirect("~/View/User/QuestionList.aspx");
+            foreach (var x in _UserEsSmodule)
+            {
+                if (module == x)
+                {
+                    Session["System"] = "2";
+                    Session["Module"] = _idEsSmodule[count];
+                    Response.Redirect("~/View/User/QuestionList.aspx");
+                }
+
+                count++;
+            }
         }
 
         protected void Result_Sorting(object sender, GridViewSortEventArgs e)

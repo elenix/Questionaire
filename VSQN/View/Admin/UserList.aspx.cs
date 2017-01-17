@@ -53,11 +53,31 @@ namespace VSQN.View.Admin
             ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
         }
 
+        protected void userRole_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            nameSearch.Text = string.Empty;
+            ShowData();
+        }
+
         private void ShowData()
         {
             _dt = new DataTable();
             _con = new SqlConnection(_cs);
-            string pstringQuery = "Select email, Company, username from UserAuth where user_role = 'U' ";
+            string pstringQuery = "";
+
+            if(userRole.SelectedIndex == 1)
+            {
+                pstringQuery = "Select email, Company, username, user_role from UserAuth where user_role = 'A' ";
+            }
+            else if(userRole.SelectedIndex == 2)
+            {
+                pstringQuery = "Select email, Company, username, user_role from UserAuth where user_role = 'U' ";
+            }
+            else
+            {
+                pstringQuery = "Select email, Company, username, user_role from UserAuth ORDER BY user_role ASC";
+            }
+
             _con.Open();
             _command = new SqlCommand(pstringQuery, _con);
             _adapt = new SqlDataAdapter(_command);
@@ -73,6 +93,29 @@ namespace VSQN.View.Admin
             _con.Close();   
         }
 
+        protected void Name_Search(object sender, EventArgs e)
+        {
+            userRole.SelectedIndex = 0;
+
+            _dt = new DataTable();
+            _con = new SqlConnection(_cs);
+            string pstringQuery = "Select email, Company, username, user_role from UserAuth where Company LIKE '%"+ nameSearch.Text + "%'" ;
+            _con.Open();
+            _command = new SqlCommand(pstringQuery, _con);
+            //_command.Parameters.AddWithValue("@search", nameSearch.Text);
+            _adapt = new SqlDataAdapter(_command);
+            _command.ExecuteNonQuery();
+            SqlDataReader dr = _command.ExecuteReader();
+            _dt.Load(dr);
+
+            ResultUserList.DataSource = _dt;
+            ResultUserList.DataBind();
+            ViewState["dirState"] = _dt;
+            ViewState["sortdr"] = "Asc";
+
+            _con.Close();
+        }
+
         protected void Result_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             ResultUserList.PageIndex = e.NewPageIndex;
@@ -82,6 +125,7 @@ namespace VSQN.View.Admin
         protected void ResultUserList_RowEditing(object sender, GridViewEditEventArgs e)
         {
             Session["Edit_UserEmail"] = ((Label)ResultUserList.Rows[e.NewEditIndex].FindControl("lblemail")).Text;
+            Session["Edit_UserRole"] = ((Label)ResultUserList.Rows[e.NewEditIndex].FindControl("lbluserrole")).Text;
             Response.Redirect("~/View/Admin/UserEdit.aspx");
         }
 
@@ -96,6 +140,8 @@ namespace VSQN.View.Admin
             deleteQuery.Add("Delete from ESS_User_Info Where User_Email = '" + email + "'");
             deleteQuery.Add("Delete from HRSS_User_Info Where User_Email = '" + email + "'");
             deleteQuery.Add("Delete from SAAS_User_Info Where User_Email = '" + email + "'");
+            deleteQuery.Add("Delete from User_Answer_Option Where user_Email = '" + email + "'");
+            deleteQuery.Add("Delete from User_Answer_Text Where User_Email = '" + email + "'");
 
             if (email != null)
             {

@@ -34,16 +34,13 @@
                 <label class="col-md-2 col-form-label" style="padding-right: 0;">
                     Password :</label>
                 <div class="col-md-5" style="padding-right:5px">
-                    <asp:TextBox ID="newPassword" runat="server" placeholder="Enter The Password" CssClass="form-control" BackColor="Yellow" Enabled="false"></asp:TextBox>
-                </div>
-                <div class="col-md-3" style="padding-left:0px">
-                    <asp:Button ID="btnDecrypt" runat="server" Text="DECRYPT PASSWORD" CssClass="btn btn-info form-inline" OnClick="button_decrypt" Enabled="true" />
+                    <asp:TextBox ID="newPassword" runat="server" placeholder="Enter The Password" CssClass="form-control"></asp:TextBox>
                 </div>
             </div>
             <asp:ScriptManager ID="AjaxScriptManager" runat="server"/>
             <asp:UpdatePanel ID="updPanelData" runat="server">
                 <ContentTemplate>
-                    <div class="form-group row" style="margin-top: 30px;">
+                    <div id="companyModule" runat="server" class="form-group row" style="margin-top: 30px;">
                         <ul class="nav nav-pill nav-stacked col-lg-2" style="margin-left: 40px;">
                             <li>
                                 <asp:Button ID="ButtonHRMS" runat="server" Text="HRMS" CssClass="btnsetup active" OnClick="LinkHRMS_Click" /></li>

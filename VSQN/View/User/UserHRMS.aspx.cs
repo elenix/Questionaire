@@ -17,7 +17,8 @@ namespace VSQN.View.User
         private SqlDataAdapter _adapt;
         private SqlCommand _command;
         private DataTable _dt;
-        List<int> _UserHrmSmodule = new List<int>();
+        readonly List<int> _idHrmSmodule = new List<int>();
+        readonly List<string> _UserHrmSmodule = new List<string>();
         readonly List<int> _statusAnswer = new List<int>();
         readonly List<int> _totalQuestionModule = new List<int>();
         //private string _message;
@@ -28,9 +29,10 @@ namespace VSQN.View.User
         {
             if (Session["user_role"] != null && Session["user_role"].ToString() == "U")
             {
+                LoadUserHRMSmodule();
+
                 if (!IsPostBack)
                 {
-                    LoadUserHRMSmodule();
                     ExtractTotalQuestion();
                     ExtractStatus();
                     ShowData();
@@ -68,6 +70,8 @@ namespace VSQN.View.User
         protected void LoadUserHRMSmodule()
         {
             const string userHrms = "Select * from HRMS_User_Info where User_Email = @userEmail order by Module_number ASC";
+            const string moduleNameQuery = "Select * from HRMS_module where PK = @id order by PK ASC";
+
             var userEmail = Session["user_email"];
 
             using (_con = new SqlConnection(_cs))
@@ -81,9 +85,27 @@ namespace VSQN.View.User
 
                     while (reader.Read())
                     {
-                        _UserHrmSmodule.Add(reader.GetInt32(3));
+                        _idHrmSmodule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
+                }
+
+
+                foreach (int x in _idHrmSmodule)
+                {
+                    using (_command = new SqlCommand(moduleNameQuery, _con))
+                    {
+                        _command.Parameters.AddWithValue("@id", x);
+                        _con.Open();
+                        _command.ExecuteNonQuery();
+                        var reader = _command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            _UserHrmSmodule.Add(reader.GetString(1));
+                        }
+                        _con.Close();
+                    }
                 }
             }
         }
@@ -118,6 +140,7 @@ namespace VSQN.View.User
             var userEmail = Session["user_email"];
 
             string textQuery   = "Select [Module_FK] from User_Answer_Text where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
+            string attachmentQuery = "Select [Module_FK] from User_Attachment where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
             string optionQuery = "Select distinct [ref_code], [Module_FK] from User_Answer_Option where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
 
             using (_con = new SqlConnection(_cs))
@@ -136,7 +159,22 @@ namespace VSQN.View.User
                     }
                     _con.Close();
                 }
-            
+
+                using (_command = new SqlCommand(attachmentQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@system", systemNo);
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
+
                 using (_command = new SqlCommand(optionQuery, _con))
                 {
                     _command.Parameters.AddWithValue("@system", systemNo);
@@ -166,25 +204,40 @@ namespace VSQN.View.User
             {
                 e.Row.Visible = false;
 
-                foreach (int x in _UserHrmSmodule)
+                int count = 0;
+
+                foreach (string x in _UserHrmSmodule)
                 {
-                    if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
+                    if (e.Row.Cells[0].Text == x)
                     {
-                        int total = Find_Total(_totalQuestionModule, x);
-                        int answered = Find_Total(_statusAnswer, x);
+                        int total = Find_Total(_totalQuestionModule, _idHrmSmodule[count]);
+                        int answered = Find_Total(_statusAnswer, _idHrmSmodule[count]);
                         e.Row.Visible = true;
-                        e.Row.Cells[2].Text = answered + "/" + total;
+                        e.Row.Cells[1].Text = answered + "/" + total;
                     }
+
+                    count++;
                 }
-            }    
-        }
+            }
+        }    
+        
 
         protected void ResultUserList_RowAnswering(object sender, GridViewEditEventArgs e)
         {
-            Session["System"] = "1";
-            Session["Module"] = (ResultHRMSList.Rows[e.NewEditIndex].Cells[0]).Text;
+            int count = 0;
+            var module = (ResultHRMSList.Rows[e.NewEditIndex].Cells[0]).Text;
 
-            Response.Redirect("~/View/User/QuestionList.aspx");
+            foreach (var x in _UserHrmSmodule)
+            {
+                if (module == x)
+                {
+                    Session["System"] = "1";
+                    Session["Module"] = _idHrmSmodule[count];
+                    Response.Redirect("~/View/User/QuestionList.aspx");
+                }
+
+                count++;
+            }
         }
 
         protected void Result_Sorting(object sender, GridViewSortEventArgs e)

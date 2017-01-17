@@ -16,7 +16,8 @@ namespace VSQN.View.Admin
         private SqlConnection _con;
         private SqlCommand _command;
         private DataTable _dt;
-        List<int> _userModule = new List<int>();
+        readonly List<int> _userIDModule = new List<int>();
+        readonly List<string> _userModule = new List<string>();
         readonly List<int> _statusAnswer = new List<int>();
         readonly List<int> _totalQuestionModule = new List<int>();
         string _system = "";
@@ -25,14 +26,14 @@ namespace VSQN.View.Admin
         {
             if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
             {
+                LoadUserModule();
+
                 if (!IsPostBack)
                 {
                     SelectedSystem();
 
                     var company = Session["Answer_UserCompany"];
-                    CompanyName.Text = _system + " Module available for <b>" + company.ToString() + "'s</b> company";
-
-                    LoadUserUserModule();
+                    CompanyName.Text = "The list of available " + _system + "'s Module for <b>" + company.ToString() + "'s</b> company"; 
                     ExtractTotalQuestion();
                     ExtractStatus();
                     ShowData();
@@ -74,19 +75,19 @@ namespace VSQN.View.Admin
 
             if (systemChoosed == 1)
             {
-                pstringQuery = "Select PK, Name from HRMS_module";
+                pstringQuery = "Select Name from HRMS_module";
             }
             else if (systemChoosed == 2)
             {
-                pstringQuery = "Select PK, Name from ESS_module";
+                pstringQuery = "Select Name from ESS_module";
             }
             else if (systemChoosed == 3)
             {
-                pstringQuery = "Select PK, Name from HRSS_module";
+                pstringQuery = "Select Name from HRSS_module";
             }
             else if (systemChoosed == 4)
             {
-                pstringQuery = "Select PK, Name from SAAS_module";
+                pstringQuery = "Select Name from SAAS_module";
             }
 
             using (_con = new SqlConnection(_cs))
@@ -108,32 +109,37 @@ namespace VSQN.View.Admin
             ViewState["sortdr"] = "Asc";
         }
 
-        protected void LoadUserUserModule()
+        protected void LoadUserModule()
         {
             int systemChoosed = Convert.ToInt32(Session["System_Selected"]);
             var userEmail = Session["Answer_UserEmail"];
-            string moduleQuery = "";
+            string moduleIDQuery = "";
+            string moduleNameQuery = "";
 
             if (systemChoosed == 1)
             {
-                moduleQuery = "Select * from HRMS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleIDQuery = "Select * from HRMS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleNameQuery = "Select * from HRMS_module where PK = @id order by PK ASC";
             }
             else if (systemChoosed == 2)
             {
-                moduleQuery = "Select * from ESS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleIDQuery = "Select * from ESS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleNameQuery = "Select * from ESS_module where PK = @id order by PK ASC";
             }
             else if (systemChoosed == 3)
             {
-                moduleQuery = "Select * from HRSS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleIDQuery = "Select * from HRSS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleNameQuery = "Select * from HRSS_module where PK = @id order by PK ASC";
             }
             else if (systemChoosed == 4)
             {
-                moduleQuery = "Select * from SAAS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleIDQuery = "Select * from SAAS_User_Info where User_Email = @userEmail order by Module_number ASC";
+                moduleNameQuery = "Select * from SAAS_module where PK = @id order by PK ASC";
             }
 
             using (_con = new SqlConnection(_cs))
             {
-                using (_command = new SqlCommand(moduleQuery, _con))
+                using (_command = new SqlCommand(moduleIDQuery, _con))
                 {
                     _command.Parameters.AddWithValue("@userEmail", userEmail);
                     _con.Open();
@@ -142,10 +148,27 @@ namespace VSQN.View.Admin
 
                     while (reader.Read())
                     {
-                        _userModule.Add(reader.GetInt32(3));
+                        _userIDModule.Add(reader.GetInt32(3));
                     }
                     _con.Close();
                 }
+
+                foreach(int x in _userIDModule)
+                {
+                    using (_command = new SqlCommand(moduleNameQuery, _con))
+                    {
+                        _command.Parameters.AddWithValue("@id", x);
+                        _con.Open();
+                        _command.ExecuteNonQuery();
+                        var reader = _command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            _userModule.Add(reader.GetString(1));
+                        }
+                        _con.Close();
+                    }
+                }   
             }
         }
 
@@ -180,6 +203,7 @@ namespace VSQN.View.Admin
 
             string textQuery = "Select [Module_FK] from User_Answer_Text where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
             string optionQuery = "Select distinct [ref_code], [Module_FK] from User_Answer_Option where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
+            string attachmentQuery = "Select [Module_FK] from User_Attachment where [System_FK] = @system and [user_email] = @email order by Module_FK ASC";
 
             using (_con = new SqlConnection(_cs))
             {
@@ -213,6 +237,20 @@ namespace VSQN.View.Admin
                     _con.Close();
                 }
 
+                using (_command = new SqlCommand(attachmentQuery, _con))
+                {
+                    _command.Parameters.AddWithValue("@system", systemNo);
+                    _command.Parameters.AddWithValue("@email", userEmail);
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    var reader = _command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _statusAnswer.Add(reader.GetInt32(0));
+                    }
+                    _con.Close();
+                }
             }
         }
 
@@ -227,24 +265,38 @@ namespace VSQN.View.Admin
             {
                 e.Row.Visible = false;
 
-                foreach (int x in _userModule)
+                int count = 0;
+
+                foreach (string x in _userModule)
                 {
-                    if (Convert.ToInt32(e.Row.Cells[0].Text) == x)
+                    if (e.Row.Cells[0].Text == x)
                     {
-                        int total = Find_Total(_totalQuestionModule, x);
-                        int answered = Find_Total(_statusAnswer, x);
+                        int total = Find_Total(_totalQuestionModule, _userIDModule[count]);
+                        int answered = Find_Total(_statusAnswer, _userIDModule[count]);
                         e.Row.Visible = true;
-                        e.Row.Cells[2].Text = answered + "/" + total;
+                        e.Row.Cells[1].Text = answered + "/" + total;
                     }
+
+                    count++;
                 }
             }
         }
 
         protected void ResultModuleList_RowAnswer(object sender, GridViewEditEventArgs e)
         {
-            Session["Choosed_Module"] = (ResultModuleList.Rows[e.NewEditIndex].Cells[0]).Text;
+            int count = 0;
+            var module = (ResultModuleList.Rows[e.NewEditIndex].Cells[0]).Text;
 
-            Response.Redirect("~/View/Admin/AnswerList.aspx");
+            foreach (var x in _userModule)
+            {
+                if (module == x)
+                {
+                    Session["Choosed_Module"] = _userIDModule[count];
+                    Response.Redirect("~/View/Admin/AnswerList.aspx");    
+                }
+
+                count++;
+            }   
         }
 
         protected void Result_Sorting(object sender, GridViewSortEventArgs e)

@@ -66,6 +66,9 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\config.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="icon\Background white.jpg" />
     <Content Include="icon\Background.jpg" />
     <Content Include="icon\ca.png" />
@@ -293,7 +296,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
-    <Folder Include="App_Data\" />
     <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Configuration>
+  <Upload>
+    <Path name="Documents" value="D:\Projects\Visualsolution\Questionaire\VSQN\Attachment\Documents\"></Path>
+  </Upload>
+  <Upload>
+    <Path name="Images" value="D:\Projects\Visualsolution\Questionaire\VSQN\Attachment\Images\"></Path>
+  </Upload>
+  
+</Configuration>

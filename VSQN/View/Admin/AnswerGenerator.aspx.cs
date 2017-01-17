@@ -15,8 +15,6 @@ namespace VSQN.View.Admin
         SqlConnection _con;
         DataTable _dt;
         SqlCommand _command;
-        DataTable RBTable = new DataTable();
-        DataTable CBTable = new DataTable();
         int _typeOfInput;
         string _fieldTypeEdit;
         string _textAnswer;
@@ -122,6 +120,7 @@ namespace VSQN.View.Admin
         protected void ExtractUserTextAnswer()
         {
             string TextQuery = "Select * from User_Answer_Text where user_email = @email and ref_code = @Ref_Cod";
+            string AttachmentQuery = "Select * from User_Attachment where user_email = @email and ref_code = @Ref_Cod";
             var refcode = Session["Table_answerRefcode"];
             var email = Session["Answer_UserEmail"];
 
@@ -150,7 +149,7 @@ namespace VSQN.View.Admin
 
                         break;
 
-                    default:
+                    case 2:
                         using (_command = new SqlCommand(TextQuery, _con))
                         {
                             _command.Parameters.AddWithValue("@email", email);
@@ -169,6 +168,37 @@ namespace VSQN.View.Admin
                             _con.Close();
                         }
 
+                        break;
+
+                    default:
+                        using (_command = new SqlCommand(AttachmentQuery, _con))
+                        {
+                            _command.Parameters.AddWithValue("@email", email);
+                            _command.Parameters.AddWithValue("@Ref_Cod", refcode);
+                            _con.Open();
+                            DataTable data = new DataTable();
+                            _command.ExecuteNonQuery();
+                            SqlDataReader dr = _command.ExecuteReader();
+                            data.Load(dr);
+
+                            foreach (DataRow row in data.Rows)
+                            {
+                                var fileType = row["doc_type"].ToString();
+                                fileUploaded.Visible = true;
+                                fileUploaded.Text = "<b>Source: </b>" + row["path"].ToString().Replace("D:\\Projects\\Visualsolution\\Questionaire\\VSQN\\Attachment", "");
+
+                                if(fileType == "1")
+                                {
+                                    uploadedImage.ImageUrl = "~\\Attachment\\Images\\documentImage.png";
+                                }
+                                else
+                                {
+                                    uploadedImage.ImageUrl = row["path"].ToString().Replace("D:\\Projects\\Visualsolution\\Questionaire\\VSQN", "~");
+                                }    
+                            }
+
+                            _con.Close();
+                        }
                         break;
                 }
 
@@ -217,6 +247,10 @@ namespace VSQN.View.Admin
 
             //For Question with Memo Answer Data
             else if (_typeOfInput == 2)
+            {
+                TypeOfInputView.ActiveViewIndex = _typeOfInput;
+            }
+            else
             {
                 TypeOfInputView.ActiveViewIndex = _typeOfInput;
             }

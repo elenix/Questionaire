@@ -49,15 +49,6 @@ namespace VSQN.View.Admin {
         protected global::System.Web.UI.WebControls.TextBox newPassword;
         
         /// <summary>
-        /// btnDecrypt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDecrypt;
-        
-        /// <summary>
         /// AjaxScriptManager control.
         /// </summary>
         /// <remarks>
@@ -74,6 +65,15 @@ namespace VSQN.View.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updPanelData;
+        
+        /// <summary>
+        /// companyModule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl companyModule;
         
         /// <summary>
         /// ButtonHRMS control.

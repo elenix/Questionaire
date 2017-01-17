@@ -25,9 +25,6 @@ namespace VSQN.View.Admin
         string _textAnswer;
         List<string> _optionAnswer      = new List<string>();
         List<string> AnswerOptionUpdate = new List<string>();
-        string queryDelete = "DeleteQuestionAnswerOption";
-        string queryOption = "AddQuestionAnswerOption";
-        string queryText   = "AddQuestionAnswerForText";
 
         protected enum MessageType { Success, Error, Info, Warning }
 
@@ -62,7 +59,8 @@ namespace VSQN.View.Admin
             string query = "ExtractQuestionData";
             string TextData = "Select * from Question_Answer_TextType where Ref_FK = @Ref_Cod ";
             string OptionData = "Select * from Question_Answer_OptionType where Ref_FK = @Ref_Cod ";
-            
+            string attachmentData = "Select * from Question_Answer_Attachment where Ref_FK = @Ref_Cod ";
+
 
             //Extract Data from QuestionInfo Table
             using (_con = new SqlConnection(cs))
@@ -108,7 +106,7 @@ namespace VSQN.View.Admin
                     _con.Close();
                 }
 
-                else
+                else if (_typeOfInput == 3 || _typeOfInput == 4)
                 {
                     using (_command = new SqlCommand(OptionData, _con))
                     {
@@ -121,6 +119,26 @@ namespace VSQN.View.Admin
                         while (reader.Read())
                         {
                             _optionAnswer.Add(reader.GetString(2));
+                        }
+                    }
+                    _con.Close();
+                }
+
+                else
+                {
+                    using (_command = new SqlCommand(attachmentData, _con))
+                    {
+                        _command.Parameters.AddWithValue("@Ref_Cod", AutoGenerateEdit.Text);
+                        _con.Open();
+                        DataTable data = new DataTable();
+                        _command.ExecuteNonQuery();
+                        SqlDataReader dr = _command.ExecuteReader();
+                        data.Load(dr);
+
+                        foreach (DataRow row in data.Rows)
+                        {
+                            int i = Convert.ToInt32(row["doc_type"].ToString());
+                            TypeOfAttachment.SelectedIndex = i;
                         }
                     }
                     _con.Close();
@@ -273,6 +291,11 @@ namespace VSQN.View.Admin
 
                 Bind();
             }
+            else if (_typeOfInput == 5)
+            {
+                TypeOfInputEdit.SelectedIndex = _typeOfInput;
+                TypeOfInputView.ActiveViewIndex = _typeOfInput;
+            }
         }
         //Bind for both Radio Button and Check Box table
         private void Bind()
@@ -354,8 +377,14 @@ namespace VSQN.View.Admin
         //Button update question
         protected void button_update(object sender, EventArgs e)
         {
-            string queryQuest = "Update QuestionBank set System_FK = @System, Module_FK = @Module, Ques = @ques, Date_Time = GETDATE(), Seq_Number = @Seq where Ref_Code = @refcode ";
-            string queryTextType = "Update Question_Answer_TextType set Ans_Default = @answer, Field_Type = @FT where Ref_FK = @refkode ";
+            #region SQL Query commad
+            const string queryQuest  = "Update QuestionBank set System_FK = @System, Module_FK = @Module, Ques = @ques, Date_Time = GETDATE(), Seq_Number = @Seq where Ref_Code = @refcode ";
+            const string queryDelete = "DELETE FROM Question_Answer_OptionType WHERE Ref_FK = @Ref_Code";
+            const string queryOption = "INSERT INTO Question_Answer_OptionType(Ref_FK,Ans_Option) VALUES (@Ref_Code,@Answer_Option)";
+            const string queryTextType = "Update Question_Answer_TextType set Ans_Default = @answer, Field_Type = @FT where Ref_FK = @refkode ";
+            const string queryAttachmentType = "Update Question_Answer_Attachment set doc_type = @dT where Ref_FK = @refkode ";
+            #endregion
+
             int systemId = Int32.Parse(SystemList.SelectedValue);
             int moduleId = Int32.Parse(ModuleMenu.SelectedValue);
             int refcode = Int32.Parse(AutoGenerateEdit.Text);
@@ -436,7 +465,6 @@ namespace VSQN.View.Admin
                         //Delete answer inside table
                         using (_command = new SqlCommand(queryDelete, _con))
                         {
-                            _command.CommandType = CommandType.StoredProcedure;
                             _command.Parameters.AddWithValue("@Ref_Code", refcode);
                             _con.Open();
                             _command.ExecuteNonQuery();
@@ -451,7 +479,6 @@ namespace VSQN.View.Admin
                         {
                             using (_command = new SqlCommand(queryOption, _con))
                             {
-                                _command.CommandType = CommandType.StoredProcedure;
                                 _command.Parameters.AddWithValue("@Ref_Code", refcode);
                                 _command.Parameters.AddWithValue("@Answer_Option", AnswerOptionUpdate[i]);
                                 _command.ExecuteNonQuery();
@@ -474,7 +501,6 @@ namespace VSQN.View.Admin
                         //Delete answer inside table
                         using (_command = new SqlCommand(queryDelete, _con))
                         {
-                            _command.CommandType = CommandType.StoredProcedure;
                             _command.Parameters.AddWithValue("@Ref_Code", refcode);
                             _con.Open();
                             _command.ExecuteNonQuery();
@@ -489,13 +515,29 @@ namespace VSQN.View.Admin
                         {
                             using (_command = new SqlCommand(queryOption, _con))
                             {
-                                _command.CommandType = CommandType.StoredProcedure;
                                 _command.Parameters.AddWithValue("@Ref_Code", refcode);
                                 _command.Parameters.AddWithValue("@Answer_Option", AnswerOptionUpdate[i]);
                                 _command.ExecuteNonQuery();
                             }
                         }
 
+                    }
+                }
+
+                else if (TypeOfInputEdit.SelectedIndex == 5)
+                {
+                    //Update the answer for textbox into Question_Answer_TextType table
+                    int typeOfField = Int32.Parse(TypeOfAttachment.SelectedValue);
+
+                    using (_con = new SqlConnection(cs))
+                    {
+                        using (_command = new SqlCommand(queryAttachmentType, _con))
+                        {
+                            _command.Parameters.AddWithValue("@refkode", refcode);
+                            _command.Parameters.AddWithValue("@dT", typeOfField);
+                            _con.Open();
+                            _command.ExecuteNonQuery();
+                        }
                     }
                 }
 
@@ -509,9 +551,17 @@ namespace VSQN.View.Admin
 
         protected void button_create(object sender, EventArgs e)
         {
+            #region SQL query command
+            const string query = "AddQuestionProcedure";
+            const string queryText = "INSERT INTO Question_Answer_TextType(Ref_FK,Ans_Default,Field_Type) VALUES (@Ref_Cod,@answer,@FieldNum)";
+            const string queryOption = "INSERT INTO Question_Answer_OptionType(Ref_FK,Ans_Option) VALUES (@Ref_Code,@Answer_Option)";
+            const string queryAttachment = "INSERT INTO Question_Answer_Attachment (Ref_FK, doc_type) VALUES (@Ref_Cod,@doc_type)";
+            #endregion
+
             var typeOfInputId = int.Parse(TypeOfInputEdit.SelectedValue);
             var systemId = int.Parse(SystemList.SelectedValue);
             var moduleId = int.Parse(ModuleMenu.SelectedValue);
+
             //checking if else
             if (ModuleMenu.SelectedIndex == 0)
             {
@@ -525,8 +575,6 @@ namespace VSQN.View.Admin
 
             else
             {
-                _con = new SqlConnection(cs);
-                const string query = "AddQuestionProcedure";
                 //Store the main question into QuestionInfo table
                 int refcode;
                 using (_con = new SqlConnection(cs))
@@ -555,7 +603,6 @@ namespace VSQN.View.Admin
                         {
                             using (_command = new SqlCommand(queryText, _con))
                             {
-                                _command.CommandType = CommandType.StoredProcedure;
                                 _command.Parameters.AddWithValue("@Ref_Cod", refcode);
                                 _command.Parameters.AddWithValue("@answer", TBAnswerEditBox.Text);
                                 _command.Parameters.AddWithValue("@FieldNum", typeOfField);
@@ -575,7 +622,6 @@ namespace VSQN.View.Admin
                         {
                             using (_command = new SqlCommand(queryText, _con))
                             {
-                                _command.CommandType = CommandType.StoredProcedure;
                                 _command.Parameters.AddWithValue("@Ref_Cod", refcode);
                                 _command.Parameters.AddWithValue("@answer", MMAnswerEditBox.Text);
                                 _command.Parameters.AddWithValue("@FieldNum", typeOfField);
@@ -600,7 +646,6 @@ namespace VSQN.View.Admin
                                 _con.Open();
                                 using (_command = new SqlCommand(queryOption, _con))
                                 {
-                                    _command.CommandType = CommandType.StoredProcedure;
                                     _command.Parameters.AddWithValue("@Ref_Code", refcode);
                                     _command.Parameters.AddWithValue("@Answer_Option", AnswerOptionUpdate[i]);
                                     _command.ExecuteNonQuery();
@@ -624,13 +669,36 @@ namespace VSQN.View.Admin
                                 _con.Open();
                                 using (_command = new SqlCommand(queryOption, _con))
                                 {
-                                    _command.CommandType = CommandType.StoredProcedure;
                                     _command.Parameters.AddWithValue("@Ref_Code", refcode);
                                     _command.Parameters.AddWithValue("@Answer_Option", AnswerOptionUpdate[i]);
                                     _command.ExecuteNonQuery();
                                 }
                             }
                         }
+                        break;
+
+                    case 5:
+
+                        if (TypeOfAttachment.SelectedIndex != 0)
+                        {
+                            using (_con = new SqlConnection(cs))
+                            {
+                                using (_command = new SqlCommand(queryAttachment, _con))
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Ref_Cod", refcode);
+                                    _command.Parameters.AddWithValue("@doc_type", TypeOfAttachment.SelectedIndex);
+                                    _command.ExecuteNonQuery();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        else
+                        {
+                            TypeOfAttachment.SelectedIndex = 1;
+                        }
+
                         break;
                 }
                 _con.Close();

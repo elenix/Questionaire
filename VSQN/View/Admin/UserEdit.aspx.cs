@@ -40,16 +40,35 @@ namespace VSQN.View.Admin
                     ExtractData();
                 }
 
+                HideFunction();   
+            }
+            else
+            {
+                Response.Redirect("~/View/Login/Login.aspx");
+            }
+        }
+
+        public void HideFunction()
+        {
+            string userRole = Session["Edit_UserRole"].ToString();
+
+            if(userRole == "A")
+            {
+                userName.Enabled = false;
+                companyId.Enabled = false;
+                newEmail.Enabled = false;
+                newPassword.Enabled = false;
+                companyModule.Visible = false;   
+            }
+
+            else
+            {
                 ExtractUserModule();
                 ExtractModule();
                 LoadHrmsPanel();
                 LoadEssPanel();
                 LoadHrssPanel();
                 LoadSaasPanel();
-            }
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
             }
         }
 
@@ -75,7 +94,7 @@ namespace VSQN.View.Admin
                         userName.Text = row["username"].ToString();
                         companyId.Text = row["Company"].ToString();
                         newEmail.Text = row["email"].ToString();
-                        newPassword.Text = row["password"].ToString();
+                        newPassword.Text = Decrypt(row["password"].ToString());
                     }
                     _con.Close();
                 }
@@ -426,12 +445,6 @@ namespace VSQN.View.Admin
 
         #endregion //menu
 
-        protected void button_decrypt(object sender, EventArgs e)
-        {
-            newPassword.Text = Decrypt(newPassword.Text);
-            btnDecrypt.Enabled = false;
-        }
-
         private void ShowMessage(string message, MessageType type)
         {
             ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
@@ -440,15 +453,23 @@ namespace VSQN.View.Admin
 
         protected void button_update(object sender, EventArgs e)
         {
-            const string updatequery = "update UserAuth set username = @Username, Company = @company where email = @Email ";
+            string userRole = Session["Edit_UserRole"].ToString();
+
+            #region updateQuery
+            const string updatequery = "update UserAuth set username = @Username, Company = @company, password = @pass where email = @Email ";
             const string addHRMSquery = "insert into HRMS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             const string addESSquery  = "insert into ESS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             const string addHRSSquery = "insert into HRSS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             const string addSAASquery = "insert into SAAS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
+            #endregion
+
+            #region deleteQuery
             const string deleteHRMSquery = "delete from HRMS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteESSquery = "delete from ESS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteHRSSquery = "delete from HRSS_User_Info where User_Email = @Email and Module_number = @module ";
             const string deleteSAASquery = "delete from SAAS_User_Info where User_Email = @Email and Module_number = @module ";
+            #endregion
+
             #region EmptyBoxValidation
             if (String.IsNullOrWhiteSpace(userName.Text))
             {
@@ -478,280 +499,283 @@ namespace VSQN.View.Admin
                         _command.Parameters.AddWithValue("@Email", newEmail.Text);
                         _command.Parameters.AddWithValue("@Username", userName.Text);
                         _command.Parameters.AddWithValue("@company", companyId.Text);
+                        _command.Parameters.AddWithValue("@pass", Encrypt(newPassword.Text));
                         _command.ExecuteNonQuery();
                         _con.Close();
                     }
-                    
 
-                    #region update_new_checked_list
+                    if(userRole == "U") {
 
-                    using (_command = new SqlCommand(addHRMSquery, _con))
-                    {
-                        List<int> newCheckedlist = new List<int>();
+                        #region update_new_checked_list
 
-                        foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
+                        using (_command = new SqlCommand(addHRMSquery, _con))
                         {
-                            if (child.Checked)
+                            List<int> newCheckedlist = new List<int>();
+
+                            foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
                             {
-                                var CheckedID = child.ID.Substring(7).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(7).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
+                            }
+
+                            List<int> difference = newCheckedlist.Except(_UserHrmSmodule).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var x in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@company", companyId.Text);
+                                    _command.Parameters.AddWithValue("@module", x);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
                             }
                         }
 
-                        List<int> difference = newCheckedlist.Except(_UserHrmSmodule).ToList();
-
-                        if (difference != null)
+                        using (_command = new SqlCommand(addESSquery, _con))
                         {
-                            foreach (var x in difference)
+
+                            List<int> newCheckedlist = new List<int>();
+
+                            foreach (var child in panelESS.Controls.OfType<CheckBox>())
                             {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@company", companyId.Text);
-                                _command.Parameters.AddWithValue("@module", x);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(6).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
                             }
-                        }   
+
+                            List<int> difference = newCheckedlist.Except(_UserEsSmodule).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var x in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@company", companyId.Text);
+                                    _command.Parameters.AddWithValue("@module", x);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        using (_command = new SqlCommand(addHRSSquery, _con))
+                        {
+                            List<int> newCheckedlist = new List<int>();
+
+                            foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                            {
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(7).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
+                            }
+
+                            List<int> difference = newCheckedlist.Except(_UserHrsSmodule).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var x in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@company", companyId.Text);
+                                    _command.Parameters.AddWithValue("@module", x);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        using (_command = new SqlCommand(addSAASquery, _con))
+                        {
+                            List<int> newCheckedlist = new List<int>();
+
+                            foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
+                            {
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(7).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
+                            }
+
+                            List<int> difference = newCheckedlist.Except(_UserSaaSmodule).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var x in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@company", companyId.Text);
+                                    _command.Parameters.AddWithValue("@module", x);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        #endregion
+
+                        #region delete_new_unchecked_list
+
+                        using (_command = new SqlCommand(deleteHRMSquery, _con))
+                        {
+                            List<int> newCheckedlist = new List<int>();
+                            List<int> newUncheckedlist = new List<int>();
+
+                            foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
+                            {
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(7).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
+                                else
+                                {
+                                    var unCheckedID = child.ID.Substring(7).Trim();
+                                    newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
+                                }
+                            }
+
+                            List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var y in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@module", y);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        using (_command = new SqlCommand(deleteESSquery, _con))
+                        {
+                            List<int> newCheckedlist = new List<int>();
+                            List<int> newUncheckedlist = new List<int>();
+
+                            foreach (var child in panelESS.Controls.OfType<CheckBox>())
+                            {
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(6).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
+                                else
+                                {
+                                    var unCheckedID = child.ID.Substring(6).Trim();
+                                    newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
+                                }
+                            }
+
+                            List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var y in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@module", y);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        using (_command = new SqlCommand(deleteHRSSquery, _con))
+                        {
+                            List<int> newCheckedlist = new List<int>();
+                            List<int> newUncheckedlist = new List<int>();
+
+                            foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+                            {
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(7).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
+                                else
+                                {
+                                    var unCheckedID = child.ID.Substring(7).Trim();
+                                    newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
+                                }
+                            }
+
+                            List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var y in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@module", y);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        using (_command = new SqlCommand(deleteSAASquery, _con))
+                        {
+                            List<int> newCheckedlist = new List<int>();
+                            List<int> newUncheckedlist = new List<int>();
+
+                            foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
+                            {
+                                if (child.Checked)
+                                {
+                                    var CheckedID = child.ID.Substring(7).Trim();
+                                    newCheckedlist.Add(Convert.ToInt32(CheckedID));
+                                }
+                                else
+                                {
+                                    var unCheckedID = child.ID.Substring(7).Trim();
+                                    newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
+                                }
+                            }
+
+                            List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
+
+                            if (difference != null)
+                            {
+                                foreach (var y in difference)
+                                {
+                                    _con.Open();
+                                    _command.Parameters.AddWithValue("@Email", newEmail.Text);
+                                    _command.Parameters.AddWithValue("@module", y);
+                                    _command.ExecuteNonQuery();
+                                    _command.Parameters.Clear();
+                                    _con.Close();
+                                }
+                            }
+                        }
+
+                        #endregion
                     }
-
-                    using (_command = new SqlCommand(addESSquery, _con))
-                    {
-
-                        List<int> newCheckedlist = new List<int>();
-
-                        foreach (var child in panelESS.Controls.OfType<CheckBox>())
-                        {
-                            if (child.Checked)
-                            {
-                                var CheckedID = child.ID.Substring(6).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
-                            }
-                        }
-
-                        List<int> difference = newCheckedlist.Except(_UserEsSmodule).ToList();
-
-                        if(difference != null)
-                        {
-                            foreach (var x in difference)
-                            {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@company", companyId.Text);
-                                _command.Parameters.AddWithValue("@module", x);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
-                            }
-                        }     
-                    }
-
-                    using (_command = new SqlCommand(addHRSSquery, _con))
-                    {
-                        List<int> newCheckedlist = new List<int>();
-
-                        foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
-                        {
-                            if (child.Checked)
-                            {
-                                var CheckedID = child.ID.Substring(7).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
-                            }
-                        }
-
-                        List<int> difference = newCheckedlist.Except(_UserHrsSmodule).ToList();
-
-                        if (difference != null)
-                        {
-                            foreach (var x in difference)
-                            {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@company", companyId.Text);
-                                _command.Parameters.AddWithValue("@module", x);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
-                            }
-                        }
-                    }
-
-                    using (_command = new SqlCommand(addSAASquery, _con))
-                    {
-                        List<int> newCheckedlist = new List<int>();
-
-                        foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
-                        {
-                            if (child.Checked)
-                            {
-                                var CheckedID = child.ID.Substring(7).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
-                            }
-                        }
-
-                        List<int> difference = newCheckedlist.Except(_UserSaaSmodule).ToList();
-
-                        if (difference != null)
-                        {
-                            foreach (var x in difference)
-                            {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@company", companyId.Text);
-                                _command.Parameters.AddWithValue("@module", x);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
-                            }
-                        }
-                    }
-
-                    #endregion
-
-                    #region delete_new_unchecked_list
-
-                    using (_command = new SqlCommand(deleteHRMSquery, _con))
-                    {
-                        List<int> newCheckedlist = new List<int>();
-                        List<int> newUncheckedlist = new List<int>();
-
-                        foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
-                        {
-                            if (child.Checked)
-                            {
-                                var CheckedID = child.ID.Substring(7).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
-                            }
-                            else
-                            {
-                                var unCheckedID = child.ID.Substring(7).Trim();
-                                newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
-                            }
-                        }
-
-                        List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
-
-                        if (difference != null)
-                        {
-                            foreach (var y in difference)
-                            {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", y);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
-                            }
-                        }
-                    }
-
-                    using (_command = new SqlCommand(deleteESSquery, _con))
-                    {
-                        List<int> newCheckedlist = new List<int>();
-                        List<int> newUncheckedlist = new List<int>();
-
-                        foreach (var child in panelESS.Controls.OfType<CheckBox>())
-                        {
-                            if (child.Checked)
-                            {
-                                var CheckedID = child.ID.Substring(6).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
-                            }
-                            else
-                            {
-                                var unCheckedID = child.ID.Substring(6).Trim();
-                                newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
-                            }
-                        }
-
-                        List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
-
-                        if (difference != null)
-                        {
-                            foreach (var y in difference)
-                            {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", y);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
-                            }
-                        }
-                    }
-
-                    using (_command = new SqlCommand(deleteHRSSquery, _con))
-                    {
-                        List<int> newCheckedlist = new List<int>();
-                        List<int> newUncheckedlist = new List<int>();
-
-                        foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
-                        {
-                            if (child.Checked)
-                            {
-                                var CheckedID = child.ID.Substring(7).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
-                            }
-                            else
-                            {
-                                var unCheckedID = child.ID.Substring(7).Trim();
-                                newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
-                            }
-                        }
-
-                        List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
-
-                        if (difference != null)
-                        {
-                            foreach (var y in difference)
-                            {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", y);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
-                            }
-                        }
-                    }
-
-                    using (_command = new SqlCommand(deleteSAASquery, _con))
-                    {
-                        List<int> newCheckedlist = new List<int>();
-                        List<int> newUncheckedlist = new List<int>();
-
-                        foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
-                        {
-                            if (child.Checked)
-                            {
-                                var CheckedID = child.ID.Substring(7).Trim();
-                                newCheckedlist.Add(Convert.ToInt32(CheckedID));
-                            }
-                            else
-                            {
-                                var unCheckedID = child.ID.Substring(7).Trim();
-                                newUncheckedlist.Add(Convert.ToInt32(unCheckedID));
-                            }
-                        }
-
-                        List<int> difference = newUncheckedlist.Except(newCheckedlist).ToList();
-
-                        if (difference != null)
-                        {
-                            foreach (var y in difference)
-                            {
-                                _con.Open();
-                                _command.Parameters.AddWithValue("@Email", newEmail.Text);
-                                _command.Parameters.AddWithValue("@module", y);
-                                _command.ExecuteNonQuery();
-                                _command.Parameters.Clear();
-                                _con.Close();
-                            }
-                        }
-                    }
-
-                    #endregion
-                }
+                }                         
             }
 
             Session["update_message"] = "The User Data have been updated.";

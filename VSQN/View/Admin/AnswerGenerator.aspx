@@ -56,6 +56,23 @@
                     </div>
                 </div>
             </asp:View>
+            <%--FOR ATTACHMENT--%>
+                <asp:View ID="ViewAtt" runat="server">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">
+                            ATTACHMENT:</label>
+                        <div class="col-md-8">
+                            <div style="background-color:white; padding:20px; width:150px; border:solid">
+                                <asp:Image ID="uploadedImage" runat="server" Style="width:100px; height:auto" />
+                            </div>
+                            <br />
+                            <asp:Label runat="server" ID="fileUploaded" Text="" />
+                            <br />
+                            <br />
+                            <asp:Button runat="server" ID="downloadButton" Text="Download" CssClass="btn btn-success"/>
+                        </div>
+                    </div>
+                </asp:View>
         </asp:MultiView>
         <div class="form-group row">
             <hr />
