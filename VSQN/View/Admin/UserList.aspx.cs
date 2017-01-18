@@ -67,15 +67,15 @@ namespace VSQN.View.Admin
 
             if(userRole.SelectedIndex == 1)
             {
-                pstringQuery = "Select email, Company, username, user_role from UserAuth where user_role = 'A' ";
+                pstringQuery = "Select email, Company, username, user_role, status from UserAuth where user_role = 'A' ";
             }
             else if(userRole.SelectedIndex == 2)
             {
-                pstringQuery = "Select email, Company, username, user_role from UserAuth where user_role = 'U' ";
+                pstringQuery = "Select email, Company, username, user_role, status from UserAuth where user_role = 'U' ";
             }
             else
             {
-                pstringQuery = "Select email, Company, username, user_role from UserAuth ORDER BY user_role ASC";
+                pstringQuery = "Select email, Company, username, user_role, status from UserAuth ORDER BY user_role ASC";
             }
 
             _con.Open();
@@ -99,7 +99,7 @@ namespace VSQN.View.Admin
 
             _dt = new DataTable();
             _con = new SqlConnection(_cs);
-            string pstringQuery = "Select email, Company, username, user_role from UserAuth where Company LIKE '%"+ nameSearch.Text + "%'" ;
+            string pstringQuery = "Select email, Company, username, user_role, status from UserAuth where Company LIKE '%"+ nameSearch.Text + "%'" ;
             _con.Open();
             _command = new SqlCommand(pstringQuery, _con);
             //_command.Parameters.AddWithValue("@search", nameSearch.Text);
@@ -142,6 +142,7 @@ namespace VSQN.View.Admin
             deleteQuery.Add("Delete from SAAS_User_Info Where User_Email = '" + email + "'");
             deleteQuery.Add("Delete from User_Answer_Option Where user_Email = '" + email + "'");
             deleteQuery.Add("Delete from User_Answer_Text Where User_Email = '" + email + "'");
+            deleteQuery.Add("Delete from User_Attachment Where User_Email = '" + email + "'");
 
             if (email != null)
             {

@@ -9,6 +9,16 @@
                 <h3 style="padding-left: 15px;">EDIT USER'S INFO</h3>
                 <hr />
             </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" style="padding-right: 0;">
+                    Status :</label>
+                <div class="col-md-4">
+                    <asp:DropDownList ID="userStatus" runat="server" CssClass="form-control">
+                        <asp:ListItem Value="0">Active</asp:ListItem>
+                        <asp:ListItem Value="1">Deactivate</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+            </div>
             <div class="form-group row" style="margin-top: 30px;">
                 <label class="col-md-2 col-form-label" style="padding-right: 0;">
                     User Name :</label>

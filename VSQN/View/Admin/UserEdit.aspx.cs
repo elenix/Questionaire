@@ -58,7 +58,8 @@ namespace VSQN.View.Admin
                 companyId.Enabled = false;
                 newEmail.Enabled = false;
                 newPassword.Enabled = false;
-                companyModule.Visible = false;   
+                companyModule.Visible = false;
+                userStatus.Enabled = false;
             }
 
             else
@@ -76,9 +77,10 @@ namespace VSQN.View.Admin
         {
             const string query = "Select * from UserAuth where email = @userEmail";
             var email = Session["Edit_UserEmail"];
+            string status;
 
             //Extract Data from UserAuth Table
-            using(_con = new SqlConnection(cs))
+            using (_con = new SqlConnection(cs))
             {
                 using (_command = new SqlCommand(query, _con))
                 {
@@ -91,6 +93,17 @@ namespace VSQN.View.Admin
 
                     foreach (DataRow row in _dt.Rows)
                     {
+                        status = row["status"].ToString();
+
+                        if(status == "E")
+                        {
+                            userStatus.SelectedIndex = 0;
+                        }
+                        else
+                        {
+                            userStatus.SelectedIndex = 1;
+                        }
+
                         userName.Text = row["username"].ToString();
                         companyId.Text = row["Company"].ToString();
                         newEmail.Text = row["email"].ToString();
@@ -454,9 +467,19 @@ namespace VSQN.View.Admin
         protected void button_update(object sender, EventArgs e)
         {
             string userRole = Session["Edit_UserRole"].ToString();
+            string status;
+
+            if (userStatus.SelectedIndex == 0)
+            {
+                status = "E";
+            }
+            else
+            {
+                status = "D";
+            }
 
             #region updateQuery
-            const string updatequery = "update UserAuth set username = @Username, Company = @company, password = @pass where email = @Email ";
+            const string updatequery = "update UserAuth set username = @Username, Company = @company, password = @pass, status = @stats where email = @Email ";
             const string addHRMSquery = "insert into HRMS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             const string addESSquery  = "insert into ESS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             const string addHRSSquery = "insert into HRSS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
@@ -500,6 +523,7 @@ namespace VSQN.View.Admin
                         _command.Parameters.AddWithValue("@Username", userName.Text);
                         _command.Parameters.AddWithValue("@company", companyId.Text);
                         _command.Parameters.AddWithValue("@pass", Encrypt(newPassword.Text));
+                        _command.Parameters.AddWithValue("@stats", status);
                         _command.ExecuteNonQuery();
                         _con.Close();
                     }

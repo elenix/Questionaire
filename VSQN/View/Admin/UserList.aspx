@@ -41,7 +41,7 @@
                             PageSize="10" OnRowEditing="ResultUserList_RowEditing" EmptyDataText="No Data Available. Please create more user." OnPageIndexChanging="Result_PageIndexChanging"
                             OnRowDeleting="ResultUserList_RowDeleting" OnSorting="Result_Sorting" CssClass="table table-striped table-bordered table-hover" PagerStyle-CssClass="pgr">
                             <Columns>
-                                <asp:TemplateField HeaderText="Company Name" HeaderStyle-Width="25%" SortExpression="Company">
+                                <asp:TemplateField HeaderText="Company Name" HeaderStyle-Width="20%" SortExpression="Company">
                                     <ItemTemplate>
                                         <asp:Label ID="lblCompany" runat="server" Text='<%#Eval("Company") %>'></asp:Label>
                                     </ItemTemplate>
@@ -59,6 +59,11 @@
                                 <asp:TemplateField HeaderText="Email" HeaderStyle-Width="28%">
                                     <ItemTemplate>
                                         <asp:Label ID="lblemail" runat="server" Text='<%#Eval("email") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Status" HeaderStyle-Width="5%">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblstatus" runat="server" Text='<%#Eval("status") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Options" HeaderStyle-Width="22%">

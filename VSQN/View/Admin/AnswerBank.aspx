@@ -42,7 +42,7 @@
 								</asp:TemplateField>
 								<asp:TemplateField HeaderText="Options" HeaderStyle-Width="22%">
 									<ItemTemplate>
-										<asp:Button ID="btn_Edit" runat="server" Text="View Answer" CommandName="Edit" CssClass="btn btn-info" Width="100%" />
+										<asp:Button ID="btn_Edit" runat="server" Text="View User Answer" CommandName="Edit" CssClass="btn btn-info" Width="100%" />
 									</ItemTemplate>
 								</asp:TemplateField>
 							</Columns>

@@ -18,8 +18,9 @@ namespace VSQN.View.Login
         private DataTable _dt;
         private SqlCommand _command;
         string _usertype;
+        string _status;
 
-        private enum MessageType { Success, Error };
+        private enum MessageType { Success, Error, Warning };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -58,6 +59,7 @@ namespace VSQN.View.Login
                             Session["user_email"] = row["email"].ToString();
                             Session["user_role"] = row["user_role"].ToString();
                             _usertype = row["user_role"].ToString();
+                            _status = row["status"].ToString();
                         }
 
                         switch (_usertype)
@@ -67,7 +69,15 @@ namespace VSQN.View.Login
                                 break;
 
                             case "U":
-                                Response.Redirect("~/View/User/UserAbout.aspx");
+                                if(_status == "E")
+                                {
+                                    Response.Redirect("~/View/User/UserAbout.aspx");
+                                }
+                                else
+                                {
+                                    ShowMessage("You account have been disable by admin.", MessageType.Warning);
+                                }
+
                                 break;
                         }
 

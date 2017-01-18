@@ -339,7 +339,7 @@ namespace VSQN.View.Admin
 
         protected void createAdmin(object sender, EventArgs e)
         {
-            string query = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'A', @company)";
+            string query = "insert into UserAuth (username,email,password,user_role,Company, status) values (@Username, @Email, @Password, 'A', @company, 'E')";
 
             #region EmptyBoxValidation
 
@@ -389,7 +389,7 @@ namespace VSQN.View.Admin
 
         protected void createCustomer(object sender, EventArgs e)
         {
-            string query     = "insert into UserAuth (username,email,password,user_role,Company) values (@Username, @Email, @Password, 'U', @company)";
+            string query     = "insert into UserAuth (username,email,password,user_role,Company,status) values (@Username, @Email, @Password, 'U', @company, 'E')";
             string HRMSquery = "insert into HRMS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             string ESSquery  = "insert into ESS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";
             string HRSSquery = "insert into HRSS_User_Info (User_Email,Company,Module_number) values (@Email,@company,@module) ";

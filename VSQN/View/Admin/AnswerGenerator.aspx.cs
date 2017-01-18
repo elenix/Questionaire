@@ -50,8 +50,7 @@ namespace VSQN.View.Admin
 
         protected void Load_Question()
         {
-            string query = "ExtractQuestionData";
-            string TextData = "Select * from Question_Answer_TextType where Ref_FK = @Ref_Cod ";
+            string query = "SELECT System_FK, Module_FK, Ques, In_Type_FK, Seq_Number from QuestionBank where Ref_Code = @Ref_Cod;";
             string OptionData = "Select * from Question_Answer_OptionType where Ref_FK = @Ref_Cod ";
             var refcode = Session["Table_answerRefcode"];
 
@@ -60,7 +59,6 @@ namespace VSQN.View.Admin
             {
                 using (_command = new SqlCommand(query, _con))
                 {
-                    _command.CommandType = CommandType.StoredProcedure;
                     _command.Parameters.AddWithValue("@Ref_Cod", refcode);
                     _con.Open();
                     DataTable data = new DataTable();
@@ -75,29 +73,7 @@ namespace VSQN.View.Admin
                         _typeOfInput = Int32.Parse(row["In_Type_FK"].ToString());
                     }
                     _con.Close();
-                }
 
-                if (_typeOfInput == 1 || _typeOfInput == 2) //Extract Question Answer with text type value from  Question_Answer_TextType table
-                {
-                    using (_command = new SqlCommand(TextData, _con))
-                    {
-                        _command.Parameters.AddWithValue("@Ref_Cod", refcode);
-                        _con.Open();
-                        DataTable data = new DataTable();
-                        _command.ExecuteNonQuery();
-                        SqlDataReader dr = _command.ExecuteReader();
-                        data.Load(dr);
-
-                        foreach (DataRow row in data.Rows)
-                        {
-                            _textAnswer = row["Ans_Default"].ToString();
-                        }
-                    }
-                    _con.Close();
-                }
-
-                else
-                {
                     using (_command = new SqlCommand(OptionData, _con))
                     {
                         _command.Parameters.AddWithValue("@Ref_Cod", refcode);

@@ -69,12 +69,8 @@
     <Content Include="App_Data\config.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="icon\Background white.jpg" />
-    <Content Include="icon\Background.jpg" />
-    <Content Include="icon\ca.png" />
-    <Content Include="icon\eye.png" />
-    <Content Include="icon\quanta.jpg" />
     <Content Include="icon\vsqlogo.png" />
+    <Content Include="icon\VSQuestionnaireLogo.png" />
     <Content Include="icon\VSQ_logo.png" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\UserSite.css" />
@@ -82,13 +78,9 @@
     <Content Include="View\Admin\AnswerGenerator.aspx" />
     <Content Include="View\Admin\AnswerList.aspx" />
     <Content Include="View\Admin\EditQuestion.aspx" />
-    <Content Include="icon\add.png" />
     <Content Include="icon\favicon.jpg" />
     <Content Include="icon\favicon.png" />
     <Content Include="icon\maxresdefault.png" />
-    <Content Include="icon\remove.png" />
-    <Content Include="icon\view_sort_ascending.png" />
-    <Content Include="icon\view_sort_descending.png" />
     <Content Include="Scripts\Alert.js" />
     <Content Include="Styles\Alert.css" />
     <Content Include="View\Admin\ModuleList.aspx" />
