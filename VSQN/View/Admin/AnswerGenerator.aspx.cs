@@ -151,7 +151,7 @@ namespace VSQN.View.Admin
                             {
                                 var fileType = row["doc_type"].ToString();
                                 fileUploaded.Visible = true;
-                                fileUploaded.Text = "<b>Source: </b>" + row["path"].ToString().Replace("D:\\Projects\\Visualsolution\\Questionaire\\VSQN\\Attachment", "");
+                                fileUploaded.Text = "<b>Source: </b>" + row["path"].ToString().Replace("D:\\Projects\\Visualsolution\\E-Questionnaire\\VSQN\\Attachment", "");
 
                                 if(fileType == "1")
                                 {
@@ -159,7 +159,7 @@ namespace VSQN.View.Admin
                                 }
                                 else
                                 {
-                                    uploadedImage.ImageUrl = row["path"].ToString().Replace("D:\\Projects\\Visualsolution\\Questionaire\\VSQN", "~");
+                                    uploadedImage.ImageUrl = row["path"].ToString().Replace("D:\\Projects\\Visualsolution\\E-Questionnaire\\VSQN", "~");
                                 }    
                             }
 

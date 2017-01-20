@@ -2,10 +2,10 @@
 
 <Configuration>
   <Upload>
-    <Path name="Documents" value="D:\Projects\Visualsolution\Questionaire\VSQN\Attachment\Documents\"></Path>
+    <Path name="Documents" value="D:\Projects\Visualsolution\E-Questionnaire\VSQN\Attachment\Documents\"></Path>
   </Upload>
   <Upload>
-    <Path name="Images" value="D:\Projects\Visualsolution\Questionaire\VSQN\Attachment\Images\"></Path>
+    <Path name="Images" value="D:\Projects\Visualsolution\E-Questionnaire\VSQN\Attachment\Images\"></Path>
   </Upload>
   
 </Configuration>

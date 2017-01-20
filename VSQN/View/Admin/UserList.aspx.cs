@@ -125,7 +125,7 @@ namespace VSQN.View.Admin
         protected void ResultUserList_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             Label refEmail = ResultUserList.Rows[e.RowIndex].FindControl("lblemail") as Label;
-            var email = refEmail?.Text;
+            var email = refEmail.Text;
             List<string> deleteQuery = new List<string>();
 
             deleteQuery.Add("Delete from UserAuth Where email = '" + email + "'");

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="conn-Web.config Connection String" description="conn Connection String used in web.config by the application to access the database." defaultValue="Data Source=NTBK20\SQL2014;Initial Catalog=VSQ;User ID=sa;Password=p@ssw0rd" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Projects\\Visualsolution\\E-Questionnaire\\VSQN\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='conn']/@connectionString" />
+  </parameter>
+</parameters>

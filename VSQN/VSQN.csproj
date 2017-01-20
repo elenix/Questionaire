@@ -304,6 +304,7 @@
     <None Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Navigation\Admin.sitemap" />
     <Content Include="Navigation\User.sitemap" />
+    <None Include="Properties\PublishProfiles\E-QUESTIONNAIRE.pubxml" />
     <None Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Web.sitemap" />
     <Content Include="View\User\User.Master" />

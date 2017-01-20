@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="E-QUESTIONNAIRE" />
+  <setParameter name="conn-Web.config Connection String" value="Data Source=NTBK20\SQL2014;Initial Catalog=VSQ;User ID=sa;Password=p@ssw0rd" />
+</parameters>

@@ -1,0 +1,62 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.Master.cs" Inherits="VSQN.View.Admin.SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title></title>
+    <link href="~/icon/favicon.png" rel="Shortcut Icon" type="image/x-icon" />
+    <link href="~/Styles/AdminSite.css" rel="stylesheet" type="text/css" />
+    <link href="../../Styles/Alert.css" rel="stylesheet" />
+    <link href="../../Content/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../Scripts/Alert.js"></script>
+    <script type="text/javascript" src="../../Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></script>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body id="mainbody">
+    <form runat="server">
+        <div class="header">
+            <div class="clear hideSkiplink">
+                <div class="form-inline">
+                    <asp:Label ID="welcomemsg" runat="server" ForeColor="White"></asp:Label>
+                    <asp:Menu ID="HeaderMenu" runat="server" CssClass="menutop" EnableViewState="false"
+                        IncludeStyleBlock="false" Orientation="Horizontal">
+                        <Items>
+                            <asp:MenuItem Text="LOG OUT" NavigateUrl="~/View/Login/Login.aspx"></asp:MenuItem>
+                        </Items>
+                    </asp:Menu>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            <div class="main">
+                <div class="messagealert" id="alert_container">
+                </div>
+                <div class="row">
+                    <div class="col-md-3" style="padding-right: 5px">
+                        <h1 id="sidemenuheader">MENU</h1>
+                        <asp:SiteMapDataSource ID="AdminDataSource" runat="server" ShowStartingNode="false" />
+                        <asp:Menu ID="AdminNavigationMenu" runat="server" CssClass="menu" DataSourceID="AdminDataSource" Orientation="Vertical" OnMenuItemDataBound="OnMenuItemDataBound">
+                            <LevelMenuItemStyles>
+                                <asp:MenuItemStyle CssClass="main_menu" />
+                            </LevelMenuItemStyles>
+                        </asp:Menu>
+
+                    </div>
+                    <div class="col-md-9" style="padding-left: 5px">
+                        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="footer">
+            <hr style="background-color: grey;" />
+            <h3>&copy; All Right Reserved</h3>
+        </div>
+    </form> 
+</body>
+</html>
