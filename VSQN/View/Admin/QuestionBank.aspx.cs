@@ -22,39 +22,31 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["user_role"] != null && (Session["user_role"].ToString() == "A" || Session["user_role"].ToString() == "M"))
-            //{
-                if (!IsPostBack)
+            if (!IsPostBack)
+            {
+                LoadSystemListDropwdown();
+
+                if (Session["update_message"] != null)
                 {
-                    LoadSystemListDropwdown();
-
-                    if (Session["update_message"] != null)
-                    {
-                        _message = Session["update_message"].ToString();
-                        ShowMessage(_message, MessageType.Info);
-                        Session["update_message"] = null;
-                    }
-                    else if (Session["create_message"] != null)
-                    {
-                        _message = Session["create_message"].ToString();
-                        ShowMessage(_message, MessageType.Success);
-                        Session["create_message"] = null;
-                    }
-                    else if (Session["cancel_edit"] != null)
-                    {
-                        _message = Session["cancel_edit"].ToString();
-                        ShowMessage(_message, MessageType.Warning);
-                        Session["cancel_edit"] = null;
-                    }
-
-                    ShowData();
+                    _message = Session["update_message"].ToString();
+                    ShowMessage(_message, MessageType.Info);
+                    Session["update_message"] = null;
                 }
-            //}
-            //else
-            //{
-            //    Response.Redirect("~/View/Login/Login.aspx");
-            //}
+                else if (Session["create_message"] != null)
+                {
+                    _message = Session["create_message"].ToString();
+                    ShowMessage(_message, MessageType.Success);
+                    Session["create_message"] = null;
+                }
+                else if (Session["cancel_edit"] != null)
+                {
+                    _message = Session["cancel_edit"].ToString();
+                    ShowMessage(_message, MessageType.Warning);
+                    Session["cancel_edit"] = null;
+                }
 
+                ShowData();
+            }
         }
 
         private void LoadSystemListDropwdown()

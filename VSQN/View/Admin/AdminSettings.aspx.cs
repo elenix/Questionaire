@@ -25,24 +25,16 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null &&( Session["user_role"].ToString() == "A" || Session["user_role"].ToString() == "M") )
+            if (Session["save_setting"] != null)
             {
-                if (Session["save_setting"] != null)
-                {
-                    string msg = Session["save_setting"].ToString();
-                    ShowMessage(msg, MessageType.Success);
-                    Session["save_setting"] = null;
-                }
-
-                if (!IsPostBack)
-                {
-                    ExtractData();
-                }
+                string msg = Session["save_setting"].ToString();
+                ShowMessage(msg, MessageType.Success);
+                Session["save_setting"] = null;
             }
 
-            else
+            if (!IsPostBack)
             {
-                Response.Redirect("~/View/Login/Login.aspx");
+                ExtractData();
             }
         }
 

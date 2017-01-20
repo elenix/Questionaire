@@ -19,17 +19,9 @@ namespace VSQN.View
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A") //validation
+            if (!IsPostBack)
             {
-                if (!IsPostBack)
-                {
-                    LoadSystemListDropwdown();
-                }
-            }
-
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
+                LoadSystemListDropwdown();
             }
         }
 

@@ -30,27 +30,19 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
-            {
-                RBTable.Columns.Add("RB_BOX");
-                CBTable.Columns.Add("CB_BOX");
+            RBTable.Columns.Add("RB_BOX");
+            CBTable.Columns.Add("CB_BOX");
 
-                if (!IsPostBack)
+            if (!IsPostBack)
+            {
+                if (Session["Row_Ref_Code"] != null)
                 {
-                    if (Session["Row_Ref_Code"] != null)
-                    {
-                        AutoGenerateEdit.Text = Session["Row_Ref_Code"].ToString();
-                    }
-
-                    ExtractData();
-                    LoadSystemListDropwdown();
-                    AnswerField();
-
+                    AutoGenerateEdit.Text = Session["Row_Ref_Code"].ToString();
                 }
-            }
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
+
+                ExtractData();
+                LoadSystemListDropwdown();
+                AnswerField();
             }
         }
 

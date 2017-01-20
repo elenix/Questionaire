@@ -24,19 +24,12 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && (Session["user_role"].ToString() == "A" || Session["user_role"].ToString() == "M"))
-            {
-                _rbTable.Columns.Add("RB_BOX");
-                _cbTable.Columns.Add("CB_BOX");
+            _rbTable.Columns.Add("RB_BOX");
+            _cbTable.Columns.Add("CB_BOX");
 
-                if (!IsPostBack)
-                {
-                    LoadSystemListDropwdown();
-                }
-            }
-            else
+            if (!IsPostBack)
             {
-                Response.Redirect("~/View/Login/Login.aspx");
+                LoadSystemListDropwdown();
             }
         }
 

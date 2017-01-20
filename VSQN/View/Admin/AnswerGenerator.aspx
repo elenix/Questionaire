@@ -77,7 +77,7 @@
         <div class="form-group row">
             <hr />
             <div class="col-md-2 col-form-label">
-                <asp:Button runat="server" ID="btnBack" Text="Back" OnClick="Change_Page" CssClass="btn btn-danger btnanim" Width="100%" />
+                <asp:Button runat="server" ID="btnBack" Text="Back" OnClick="btnBack_ChangePage" CssClass="btn btn-danger btnanim" Width="100%" />
             </div>
         </div>
     </div>

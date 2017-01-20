@@ -22,29 +22,22 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
+            if (!IsPostBack)
             {
-                if (!IsPostBack)
+                if (Session["update_message"] != null)
                 {
-                    if (Session["update_message"] != null)
-                    {
-                        _message = Session["update_message"].ToString();
-                        ShowMessage(_message, MessageType.Info);
-                        Session["update_message"] = null;
-                    }
-                    else if (Session["cancel_edit"] != null)
-                    {
-                        _message = Session["cancel_edit"].ToString();
-                        ShowMessage(_message, MessageType.Warning);
-                        Session["cancel_edit"] = null;
-                    }
-
-                    ShowData();
+                    _message = Session["update_message"].ToString();
+                    ShowMessage(_message, MessageType.Info);
+                    Session["update_message"] = null;
                 }
-            }
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
+                else if (Session["cancel_edit"] != null)
+                {
+                    _message = Session["cancel_edit"].ToString();
+                    ShowMessage(_message, MessageType.Warning);
+                    Session["cancel_edit"] = null;
+                }
+
+                ShowData();
             }
         }
 
@@ -75,7 +68,7 @@ namespace VSQN.View.Admin
             }
             else
             {
-                pstringQuery = "Select email, Company, username, user_role, status from UserAuth ORDER BY user_role ASC";
+                pstringQuery = "Select email, Company, username, user_role, status from UserAuth where user_role = 'A' or user_role = 'U' ORDER BY user_role ASC";
             }
 
             _con.Open();

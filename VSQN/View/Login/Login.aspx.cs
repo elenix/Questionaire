@@ -64,15 +64,15 @@ namespace VSQN.View.Login
 
                         switch (_usertype)
                         {
-                            case "M":
+                            case "M": //master
                                 Response.Redirect("~/View/Admin/QuestionSetup.aspx");
                                 break;
 
-                            case "A":
+                            case "A": //admin
                                 Response.Redirect("~/View/Admin/QuestionSetup.aspx");
                                 break;
 
-                            case "U":
+                            case "U": //users
                                 if(_status == "E")
                                 {
                                     Response.Redirect("~/View/User/UserAbout.aspx");

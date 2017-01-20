@@ -25,19 +25,11 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A") // validation
-            {
-                ExtractData();
-                LoadHrmsPanel();
-                LoadEssPanel();
-                LoadHrssPanel();
-                LoadSaasPanel();
-            }
-
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
-            }
+            ExtractData();
+            LoadHrmsPanel();
+            LoadEssPanel();
+            LoadHrssPanel();
+            LoadSaasPanel();
         }
 
         private void ExtractData()

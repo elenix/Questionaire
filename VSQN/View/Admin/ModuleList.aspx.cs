@@ -24,25 +24,17 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
+            LoadUserModule();
+
+            if (!IsPostBack)
             {
-                LoadUserModule();
+                SelectedSystem();
 
-                if (!IsPostBack)
-                {
-                    SelectedSystem();
-
-                    var company = Session["Answer_UserCompany"];
-                    CompanyName.Text = "The list of available " + _system + "'s Module for <b>" + company.ToString() + "'s</b> company"; 
-                    ExtractTotalQuestion();
-                    ExtractStatus();
-                    ShowData();
-                }
-            }
-
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
+                var company = Session["Answer_UserCompany"];
+                CompanyName.Text = "The list of available " + _system + "'s Module for <b>" + company.ToString() + "'s</b> company";
+                ExtractTotalQuestion();
+                ExtractStatus();
+                ShowData();
             }
         } 
 

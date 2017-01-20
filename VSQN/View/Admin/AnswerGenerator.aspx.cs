@@ -16,34 +16,24 @@ namespace VSQN.View.Admin
         DataTable _dt;
         SqlCommand _command;
         int _typeOfInput;
-        string _fieldTypeEdit;
-        string _textAnswer;
         List<string> _optionAnswerText = new List<string>();
         List<int> _optionAnswerID = new List<int>();
         List<int> _checkedOption = new List<int>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
+            Load_Question();
+
+            if (!IsPostBack)
             {
-                Load_Question();
-
-                if (!IsPostBack)
-                {
-                    ExtractUserTextAnswer();
-                    AnswerTextField();
-                }
-
-                AnswerOptionField();
+                ExtractUserTextAnswer();
+                AnswerTextField();
             }
 
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
-            }
+            AnswerOptionField();
         }
 
-        protected void Change_Page(object sender, EventArgs e)
+        protected void btnBack_ChangePage(object sender, EventArgs e)
         {
             Response.Redirect("~/View/Admin/AnswerList.aspx");
         }
@@ -102,7 +92,7 @@ namespace VSQN.View.Admin
 
             using (_con = new SqlConnection(cs))
             {
-                switch (_typeOfInput)
+                switch (_typeOfInput) //get from Load_Question();
                 {
                     case 1:
                         using (_command = new SqlCommand(TextQuery, _con))
@@ -206,7 +196,7 @@ namespace VSQN.View.Admin
             }
         }
 
-        private void AnswerTextField()
+        private void AnswerTextField() //multiview panel
         {
             //For NULL value
             if (_typeOfInput == 0)
@@ -232,7 +222,7 @@ namespace VSQN.View.Admin
             }
         }
 
-        private void AnswerOptionField()
+        private void AnswerOptionField() //multiview panel
         {
             //For NULL value
             if (_typeOfInput == 0)
