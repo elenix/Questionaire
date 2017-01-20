@@ -56,7 +56,7 @@ namespace VSQN.View.Admin
 
         private void ExtractData()
         {
-            string query = "ExtractQuestionData";
+            string query = "SELECT System_FK, Module_FK, Ques, In_Type_FK, Seq_Number from QuestionBank where Ref_Code = @Ref_Cod;";
             string TextData = "Select * from Question_Answer_TextType where Ref_FK = @Ref_Cod ";
             string OptionData = "Select * from Question_Answer_OptionType where Ref_FK = @Ref_Cod ";
             string attachmentData = "Select * from Question_Answer_Attachment where Ref_FK = @Ref_Cod ";
@@ -67,7 +67,6 @@ namespace VSQN.View.Admin
             {
                 using (_command = new SqlCommand(query, _con))
                 {
-                    _command.CommandType = CommandType.StoredProcedure;
                     _command.Parameters.AddWithValue("@Ref_Cod", AutoGenerateEdit.Text);
                     _con.Open();
                     DataTable data = new DataTable();
@@ -552,7 +551,7 @@ namespace VSQN.View.Admin
         protected void button_create(object sender, EventArgs e)
         {
             #region SQL query command
-            const string query = "AddQuestionProcedure";
+            const string query = "INSERT INTO QuestionBank(System_FK,Module_FK,Ques,In_Type_FK,Seq_Number) VALUES (@System,@Module,@ques,@TOI,@Seq) SELECT SCOPE_IDENTITY()";
             const string queryText = "INSERT INTO Question_Answer_TextType(Ref_FK,Ans_Default,Field_Type) VALUES (@Ref_Cod,@answer,@FieldNum)";
             const string queryOption = "INSERT INTO Question_Answer_OptionType(Ref_FK,Ans_Option) VALUES (@Ref_Code,@Answer_Option)";
             const string queryAttachment = "INSERT INTO Question_Answer_Attachment (Ref_FK, doc_type) VALUES (@Ref_Cod,@doc_type)";
@@ -581,7 +580,6 @@ namespace VSQN.View.Admin
                 {
                     using (_command = new SqlCommand(query, _con))
                     {
-                        _command.CommandType = CommandType.StoredProcedure;
                         _command.Parameters.AddWithValue("@System", systemId);
                         _command.Parameters.AddWithValue("@Module", moduleId);
                         _command.Parameters.AddWithValue("@Seq", SeqNum.Text);

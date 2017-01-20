@@ -12,7 +12,7 @@ namespace VSQN.View.Login
 {
     public partial class Login : Page
     {
-        private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString; // take from ~/Web.config string
         private SqlConnection _con;
         private SqlDataAdapter _adapt;
         private DataTable _dt;
@@ -55,15 +55,19 @@ namespace VSQN.View.Login
                     {
                         foreach (DataRow row in _dt.Rows)
                         { 
-                            Session["username"] = row["Company"].ToString();
-                            Session["user_email"] = row["email"].ToString();
-                            Session["user_role"] = row["user_role"].ToString();
+                            Session["username"] = row["Company"].ToString(); //store company name to show "welcome" on top page
+                            Session["user_email"] = row["email"].ToString(); //store as primary key to load data in database
+                            Session["user_role"] = row["user_role"].ToString(); //to use as validation for page. admin for admin page, user for user page
                             _usertype = row["user_role"].ToString();
-                            _status = row["status"].ToString();
+                            _status = row["status"].ToString(); // E = enable, D = disabled
                         }
 
                         switch (_usertype)
                         {
+                            case "M":
+                                Response.Redirect("~/View/Admin/QuestionSetup.aspx");
+                                break;
+
                             case "A":
                                 Response.Redirect("~/View/Admin/QuestionSetup.aspx");
                                 break;
@@ -102,20 +106,15 @@ namespace VSQN.View.Login
             MultiView.ActiveViewIndex = 1;
         }
 
-        private void ShowMessage(string message, MessageType type)
+        private void ShowMessage(string message, MessageType type) //load msg from javascript
         {
             ScriptManager.RegisterStartupScript(this, type: GetType(), key: Guid.NewGuid().ToString(), script: "ShowMessage('" + message + "','" + type + "');", addScriptTags: true);
 
         }
 
-        protected void Register_New(object sender, EventArgs e)
+        private static string Encrypt(string clearText) //to save password in encypt mode
         {
-           
-        }
-
-        private static string Encrypt(string clearText)
-        {
-            string EncryptionKey = "VISUALSOLUTION1991";
+            string EncryptionKey = "VISUALSOLUTION1991"; //unique string
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {

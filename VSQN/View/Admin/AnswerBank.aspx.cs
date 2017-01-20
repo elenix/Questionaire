@@ -19,7 +19,7 @@ namespace VSQN.View
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
+            if (Session["user_role"] != null && Session["user_role"].ToString() == "A") //validation
             {
                 if (!IsPostBack)
                 {
@@ -33,10 +33,10 @@ namespace VSQN.View
             }
         }
 
-        private void LoadSystemListDropwdown()
+        private void LoadSystemListDropwdown() //load system list from System_List.dbo
         {
             _con = new SqlConnection(_cs);
-            const string com = "Select * from System_List";
+            const string com = "Select * from System_List"; 
             _adapt = new SqlDataAdapter(com, _con);
             _dt = new DataTable();
             _adapt.Fill(_dt);
@@ -56,12 +56,12 @@ namespace VSQN.View
             ShowData();
         }
 
-        protected void SystemList_SelectedIndexChanged(object sender, EventArgs e)
+        protected void SystemList_SelectedIndexChanged(object sender, EventArgs e) //trigered when system list menu is selected.
         { 
             ShowData();
         }
 
-        private void ShowData()
+        private void ShowData() // select single data in (HRMS/ESS/HRSS/SAAS)_User_Info.dbo
         {
             _dt = new DataTable();
             string query = "SELECT DISTINCT User_Email,Company FROM HRMS_User_Info where Company = 'nonedattooo';";
@@ -102,7 +102,7 @@ namespace VSQN.View
             ViewState["sortdr"] = "Asc";
         }
 
-        protected void Result_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void Result_PageIndexChanging(object sender, GridViewPageEventArgs e) //gridview page index
         {
             ResultAnswerList.PageIndex = e.NewPageIndex;
             ShowData();
@@ -114,14 +114,14 @@ namespace VSQN.View
             Session["Answer_UserCompany"] = null;
             Session["System_Selected"] = null;
 
-            Session["Answer_UserEmail"] = ((Label)ResultAnswerList.Rows[e.NewEditIndex].FindControl("lblemail")).Text;
-            Session["Answer_UserCompany"] = ((Label)ResultAnswerList.Rows[e.NewEditIndex].FindControl("lblCompany")).Text;
+            Session["Answer_UserEmail"] = ((Label)ResultAnswerList.Rows[e.NewEditIndex].FindControl("lblemail")).Text; //for use in ModuleList.dbo
+            Session["Answer_UserCompany"] = ((Label)ResultAnswerList.Rows[e.NewEditIndex].FindControl("lblCompany")).Text; //for use in ModuleList.dbo
             Session["System_Selected"] = SystemList.SelectedIndex;
 
             Response.Redirect("~/View/Admin/ModuleList.aspx");
         }
 
-        protected void Result_Sorting(object sender, GridViewSortEventArgs e)
+        protected void Result_Sorting(object sender, GridViewSortEventArgs e) //gridview sorting
         {
             DataTable dtrslt = (DataTable)ViewState["dirState"];
 
@@ -144,6 +144,6 @@ namespace VSQN.View
 
             }
 
-        }
+        } 
     }
 }

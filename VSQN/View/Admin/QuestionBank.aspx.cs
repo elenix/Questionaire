@@ -22,8 +22,8 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
-            {
+            //if (Session["user_role"] != null && (Session["user_role"].ToString() == "A" || Session["user_role"].ToString() == "M"))
+            //{
                 if (!IsPostBack)
                 {
                     LoadSystemListDropwdown();
@@ -49,11 +49,11 @@ namespace VSQN.View.Admin
 
                     ShowData();
                 }
-            }
-            else
-            {
-                Response.Redirect("~/View/Login/Login.aspx");
-            }
+            //}
+            //else
+            //{
+            //    Response.Redirect("~/View/Login/Login.aspx");
+            //}
 
         }
 

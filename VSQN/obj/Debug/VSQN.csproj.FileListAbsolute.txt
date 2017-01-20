@@ -10,3 +10,10 @@ D:\Projects\Visualsolution\Questionaire\VSQN\bin\AjaxControlToolkit.dll
 D:\Projects\Visualsolution\Questionaire\VSQN\obj\Debug\VSQN.csprojResolveAssemblyReference.cache
 D:\Projects\Visualsolution\Questionaire\VSQN\obj\Debug\VSQN.dll
 D:\Projects\Visualsolution\Questionaire\VSQN\obj\Debug\VSQN.pdb
+D:\Projects\Visualsolution\E-Questionnaire\VSQN\bin\VSQN.dll.config
+D:\Projects\Visualsolution\E-Questionnaire\VSQN\bin\VSQN.dll
+D:\Projects\Visualsolution\E-Questionnaire\VSQN\bin\VSQN.pdb
+D:\Projects\Visualsolution\E-Questionnaire\VSQN\bin\AjaxControlToolkit.dll
+D:\Projects\Visualsolution\E-Questionnaire\VSQN\obj\Debug\VSQN.csprojResolveAssemblyReference.cache
+D:\Projects\Visualsolution\E-Questionnaire\VSQN\obj\Debug\VSQN.dll
+D:\Projects\Visualsolution\E-Questionnaire\VSQN\obj\Debug\VSQN.pdb

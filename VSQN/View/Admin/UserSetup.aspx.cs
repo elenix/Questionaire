@@ -13,7 +13,7 @@ namespace VSQN.View.Admin
 {
     public partial class UserSetup : Page
     {
-        private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        private readonly string _cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString; // take from ~/Web.config string
         SqlConnection _con;
         SqlCommand _command;
         readonly List<string> _hrmSmodule = new List<string>();
@@ -25,7 +25,7 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
+            if (Session["user_role"] != null && Session["user_role"].ToString() == "A") // validation
             {
                 ExtractData();
                 LoadHrmsPanel();
@@ -303,6 +303,16 @@ namespace VSQN.View.Admin
 
         protected void btn_UncheckAll(object sender, EventArgs e)
         {
+            uncheckAll();
+        }
+
+        protected void btn_CheckAll(object sender, EventArgs e)
+        {
+            checkAll();
+        }
+
+        protected void uncheckAll()
+        {
             foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
             {
                 child.Checked = false;
@@ -324,7 +334,7 @@ namespace VSQN.View.Admin
             }
         }
 
-        protected void btn_CheckAll(object sender, EventArgs e)
+        protected void checkAll()
         {
             foreach (var child in panelHRMS.Controls.OfType<CheckBox>())
             {
@@ -332,6 +342,16 @@ namespace VSQN.View.Admin
             }
 
             foreach (var child in panelESS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = true;
+            }
+
+            foreach (var child in panelHRSS.Controls.OfType<CheckBox>())
+            {
+                child.Checked = true;
+            }
+
+            foreach (var child in panelSAAS.Controls.OfType<CheckBox>())
             {
                 child.Checked = true;
             }
@@ -536,10 +556,11 @@ namespace VSQN.View.Admin
 
         private void ClearAll()
         {
-            userRole.SelectedIndex = 0;
             userName.Text = string.Empty;
             newEmail.Text = string.Empty;
             companyId.Text = string.Empty;
+            uncheckAll();
+            userRole.SelectedIndex = 0;
         }
     }
 }

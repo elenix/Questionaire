@@ -13,9 +13,9 @@ using System.Web.UI.WebControls;
 
 namespace VSQN.View.Admin
 {
-    public partial class AdminSettings : System.Web.UI.Page
+    public partial class AdminSettings : Page
     {
-        string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        string cs = ConfigurationManager.ConnectionStrings["conn"].ConnectionString; // take from ~/Web.config string
         SqlConnection _con;
         DataTable _dt;
         SqlCommand _command;
@@ -25,7 +25,7 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
+            if (Session["user_role"] != null &&( Session["user_role"].ToString() == "A" || Session["user_role"].ToString() == "M") )
             {
                 if (Session["save_setting"] != null)
                 {
@@ -46,7 +46,7 @@ namespace VSQN.View.Admin
             }
         }
 
-        private void ShowMessage(string message, MessageType type)
+        private void ShowMessage(string message, MessageType type) //~Scripts/Alert.js
         {
             ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), "ShowMessage('" + message + "','" + type + "');", true);
 

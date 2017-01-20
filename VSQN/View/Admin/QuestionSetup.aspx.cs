@@ -24,7 +24,7 @@ namespace VSQN.View.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user_role"] != null && Session["user_role"].ToString() == "A")
+            if (Session["user_role"] != null && (Session["user_role"].ToString() == "A" || Session["user_role"].ToString() == "M"))
             {
                 _rbTable.Columns.Add("RB_BOX");
                 _cbTable.Columns.Add("CB_BOX");
@@ -213,7 +213,7 @@ namespace VSQN.View.Admin
 
         protected int Write_Question()
         {
-            const string query = "AddQuestionProcedure";
+            const string query = "INSERT INTO QuestionBank(System_FK,Module_FK,Ques,In_Type_FK,Seq_Number) VALUES (@System,@Module,@ques,@TOI,@Seq) SELECT SCOPE_IDENTITY()";
             var typeOfInputId = int.Parse(TypeOfInput.SelectedValue);
             int refCode;
             var moduleId = int.Parse(ModuleMenu.SelectedValue);
@@ -223,7 +223,7 @@ namespace VSQN.View.Admin
             {
                 using (_command = new SqlCommand(query, _con))
                 {
-                    _command.CommandType = CommandType.StoredProcedure;
+                    //_command.CommandType = CommandType.StoredProcedure;
                     _command.Parameters.AddWithValue("@System", systemId);
                     _command.Parameters.AddWithValue("@Module", moduleId);
                     _command.Parameters.AddWithValue("@Seq", SeqNum.Text);
